@@ -113,6 +113,37 @@
             color: #e2e8f0;
         }
 
+        /* 🔥 Floating Change Password Button */
+        /* 🔥 Bottom Left Floating Change Password Button */
+        .change-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            padding: 10px 18px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+            z-index: 5;
+            transition: 0.3s;
+            text-decoration: none;
+            }
+
+.change-btn:hover {
+    background: rgba(255,255,255,0.25);
+    transform: scale(1.05);
+}
+
+
+        .change-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 <body>
@@ -126,6 +157,9 @@
     </div>
 
     <h1>Welcome to Simats Belongs Information</h1>
+
+    <!-- Floating Change Password -->
+    <a href="/change_password" class="change-btn">Change Password</a>
 
     <div class="container">
         
