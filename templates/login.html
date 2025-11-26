@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login – Final Boss UI</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* FLOATING PARTICLES */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.stars span {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    animation: rise 12s linear infinite;
+}
+@keyframes rise {
+    from { transform: translateY(110vh) scale(0.4); opacity: 0.4; }
+    to   { transform: translateY(-10vh) scale(1); opacity: 1; }
+}
+
+/* LOGIN CARD MATCHED EXACTLY TO HOMEPAGE BOX DESIGN */
+.wrapper {
+    z-index: 2;
+    width: 400px;
+    padding: 40px;
+    border-radius: 25px;
+
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 0 25px rgba(0,0,0,0.55);
+    position: relative;
+    overflow: hidden;
+}
+
+/* GLOWING GRADIENT ANIMATION LIKE HOMEPAGE */
+.wrapper::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 25px;
+    background: linear-gradient(135deg,#ff512f,#dd2476,#1e90ff,#ff9a00);
+    background-size: 400% 400%;
+    animation: glow 7s ease infinite;
+    z-index: -1;
+    filter: blur(10px);
+    opacity: 0.45;
+}
+
+@keyframes glow {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+h2 {
+    font-size: 30px;
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px rgba(255,255,255,0.5);
+}
+
+/* INPUT FIELDS */
+.input-box {
+    text-align: left;
+    margin-bottom: 18px;
+}
+.input-box label {
+    color: #e2e8f0;
+    font-size: 14px;
+}
+.input-box input {
+    width: 94%;
+    padding: 13px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    outline: none;
+    font-size: 15px;
+}
+.input-box input:focus {
+    border-color: #ff9a00;
+    box-shadow: 0 0 15px rgba(255,154,0,0.65);
+}
+
+/* BUTTON */
+button {
+    width: 101%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg,#ff512f,#dd2476);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+button:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.15);
+}
+
+/* LINK */
+.link {
+    margin-top: 15px;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+.link a {
+    color: #ff9a00;
+    text-decoration: none;
+    font-weight: 600;
+}
+.link a:hover { text-decoration: underline; }
+
+</style>
+</head>
+
+<body>
+
+<div class="stars">
+    <span style="left:10%; animation-delay:1s;"></span>
+    <span style="left:30%; animation-delay:2s;"></span>
+    <span style="left:50%; animation-delay:3s;"></span>
+    <span style="left:70%; animation-delay:4s;"></span>
+    <span style="left:90%; animation-delay:1.5s;"></span>
+</div>
+
+<div class="wrapper">
+    <h2>Welcome Back 👋</h2>
+
+    <form method="POST">
+        <input type="text" name="fake_username" style="display:none">
+        <input type="password" name="fake_password" style="display:none">
+
+        <div class="input-box">
+            <label>Username</label>
+            <input type="text" name="l_user" placeholder="Enter username" required autocomplete="off">
+        </div>
+
+        <div class="input-box">
+            <label>Password</label>
+            <input type="password" name="l_pass" placeholder="Enter password" required autocomplete="new-password">
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div class="link">
+        New user? <a href="{{ url_for('register') }}">Create an account</a>
+    </div>
+</div>
+
+</body>
+</html>

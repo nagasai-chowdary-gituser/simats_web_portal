@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Successful</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            width: 360px;
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        a button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: #0058ff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        a button:hover {
+            background: #0041c7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Registration Successful 🎉</h2>
+    <p>Your account has been created successfully.</p>
+
+    <a href="{{ url_for('login') }}">
+        <button>Go to Login</button>
+    </a>
+</div>
+
+</body>
+</html>

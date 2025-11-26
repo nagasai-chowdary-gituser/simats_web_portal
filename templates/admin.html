@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard – Final Boss</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Poppins, sans-serif;
+        background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+        padding: 40px;
+        color: white;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 40px;
+        margin-bottom: 30px;
+        text-shadow: 0 0 12px rgba(255,255,255,0.6);
+    }
+
+    .table-box {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 0 0 25px rgba(0,0,0,0.45);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        color: white;
+    }
+
+    th {
+        background: linear-gradient(135deg,#ff512f,#dd2476);
+        padding: 14px;
+        font-size: 18px;
+        border-radius: 10px;
+    }
+
+    td {
+        padding: 12px;
+        font-size: 16px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    tr:hover {
+        background: rgba(255,255,255,0.15);
+        transition: 0.3s;
+    }
+
+    .logout-btn {
+        margin-top: 20px;
+        padding: 12px 25px;
+        border-radius: 10px;
+        border: none;
+        background: rgba(255,255,255,0.25);
+        cursor: pointer;
+        font-weight: 600;
+        color: white;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .logout-btn:hover {
+        background: rgba(255,255,255,0.38);
+        transform: scale(1.05);
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Admin Control Panel</h1>
+
+<div class="table-box">
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Reg No</th>
+        <th>Password</th>
+    </tr>
+
+    {% for u in users %}
+    <tr>
+        <td>{{ u["id"] }}</td>
+        <td>{{ u["username"] }}</td>
+        <td>{{ u["email"] }}</td>
+        <td>{{ u["reg_number"] }}</td>
+        <td>{{ u["password"] }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+</div>
+
+<button onclick="window.location.href='/logout'" class="logout-btn">Logout</button>
+
+</body>
+</html>
