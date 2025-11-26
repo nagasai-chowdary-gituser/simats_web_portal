@@ -113,11 +113,9 @@
             color: #e2e8f0;
         }
 
-        /* 🔥 Floating Change Password Button */
-        /* 🔥 Bottom Left Floating Change Password Button */
-        .change-btn {
+        /* 🔥 Floating Buttons (Change Password + Profile) */
+        .float-btn {
             position: fixed;
-            bottom: 20px;
             left: 20px;
             padding: 10px 18px;
             background: rgba(255,255,255,0.12);
@@ -131,18 +129,15 @@
             z-index: 5;
             transition: 0.3s;
             text-decoration: none;
-            }
+        }
 
-.change-btn:hover {
-    background: rgba(255,255,255,0.25);
-    transform: scale(1.05);
-}
-
-
-        .change-btn:hover {
+        .float-btn:hover {
             background: rgba(255,255,255,0.25);
             transform: scale(1.05);
         }
+
+        .change-btn { bottom: 20px; }
+        .profile-btn { bottom: 70px; }
 
     </style>
 </head>
@@ -156,10 +151,13 @@
         <span style="left:90%; animation-delay:1.5s; animation-duration:10s;"></span>
     </div>
 
-    <h1>Welcome to Simats Belongs Information</h1>
+    <h1>SIMATS Smart Tools</h1>
 
-    <!-- Floating Change Password -->
-    <a href="/change_password" class="change-btn">Change Password</a>
+    <!-- Floating PROFILE Button -->
+    <a href="/profile" class="float-btn profile-btn">My Profile 👤</a>
+
+    <!-- Floating Change Password Button -->
+    <a href="/change_password" class="float-btn change-btn">Change Password</a>
 
     <div class="container">
         

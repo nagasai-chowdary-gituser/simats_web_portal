@@ -56,7 +56,7 @@
             overflow: hidden;
         }
 
-        /* Glowing border animation (same as homepage boxes) */
+        /* Glowing border animation */
         .box::before {
             content: "";
             position: absolute;
@@ -71,8 +71,8 @@
         }
 
         @keyframes glow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
@@ -158,6 +158,10 @@
 
         <input type="text" name="reg_username" placeholder="Choose Username" value="{{ username }}" required autocomplete="new-password">
         <input type="email" name="reg_email" placeholder="Email Address" value="{{ email }}" required autocomplete="new-password">
+
+        <!-- ⭐ NEW SECURITY QUESTION FIELD -->
+        <input type="text" name="reg_bike" placeholder="Your Favorite Bike (Security Question)" required>
+
         <input type="password" name="reg_password" placeholder="Create Password" required autocomplete="new-password">
 
         {% if error %}

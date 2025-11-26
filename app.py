@@ -18,27 +18,30 @@ app.secret_key = "super_secret_key"
 db = SQLAlchemy(app)
 
 # -----------------------------
-# USER MODEL (WITH is_admin)
+# USER MODEL
 # -----------------------------
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    reg_number = db.Column(db.String(20), nullable=True)
     password = db.Column(db.String(200), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
-
+    security_bike = db.Column(db.String(120), nullable=True)
 
 # -----------------------------
-# CREATE TABLES + DEFAULT ADMIN (Flask 3 safe)
+# CREATE ADMIN IF NOT EXISTS
 # -----------------------------
 admin_created = False
 
+def extract_reg_no(email: str):
+    try:
+        return email.split(".")[0]
+    except:
+        return ""
+
 @app.before_request
 def create_admin_once():
-    """
-    Runs before every request, but only creates admin once using a flag.
-    Flask 3 removed before_first_request, so this is the safe workaround.
-    """
     global admin_created
 
     if not admin_created:
@@ -49,8 +52,10 @@ def create_admin_once():
             admin = User(
                 username="admin",
                 email="admin@system.com",
+                reg_number="ADMIN",
                 password=generate_password_hash("admin123"),
-                is_admin=True
+                is_admin=True,
+                security_bike="adminbike"
             )
             db.session.add(admin)
             db.session.commit()
@@ -58,108 +63,42 @@ def create_admin_once():
 
         admin_created = True
 
-
 # -----------------------------
 # HELPERS
 # -----------------------------
-def safe(v):
-    try:
-        if not v:
-            return 0
-        v = v.strip()
-        return int(v) if v.isdigit() else 0
-    except:
-        return 0
-
-
 def login_required(admin_only=False):
-    """
-    Decorator to protect routes.
-    - If user not logged in -> redirect to /login
-    - If admin_only=True and user is not admin -> block
-    """
     def decorator(f):
         @wraps(f)
         def wrapper(*args, **kwargs):
             if "user_id" not in session:
                 return redirect(url_for("login"))
-
             if admin_only and not session.get("is_admin"):
-                return "❌ Access denied – Admin only"
-
+                return "❌ Access Denied – Admin Only"
             return f(*args, **kwargs)
         return wrapper
     return decorator
 
 
 # -----------------------------
-# DEFAULT ROUTE
+# ROUTES
 # -----------------------------
 @app.route("/")
 def default_route():
     return redirect(url_for("login"))
 
-
-# -----------------------------
-# HOME (PROTECTED)
-# -----------------------------
 @app.route("/home")
 @login_required()
 def index():
     return render_template("index.html")
 
-
 # -----------------------------
-# ATTENDANCE (PROTECTED)
+# USER PROFILE PAGE
 # -----------------------------
-@app.route("/attendance", methods=["GET", "POST"])
+@app.route("/profile")
 @login_required()
-def attendance_calc():
-    if request.method == "POST":
-        total = float(request.form.get("total_classes", 0))
-        attended = float(request.form.get("no_of_classes_attended", 0))
-        result = round(attended / total * 100, 2) if total else 0
-        return render_template("attendance.html", results=result)
-    return render_template("attendance.html")
-
-
-# -----------------------------
-# CGPA (PROTECTED)
-# -----------------------------
-@app.route("/cgpa", methods=["GET", "POST"])
-@login_required()
-def cgpa_calc():
-    if request.method == "POST":
-        s = safe(request.form.get("s_grades"))
-        a = safe(request.form.get("a_grades"))
-        b = safe(request.form.get("b_grades"))
-        c = safe(request.form.get("c_grades"))
-        d = safe(request.form.get("d_grades"))
-        e = safe(request.form.get("e_grades"))
-
-        total_points = s*10 + a*9 + b*8 + c*7 + d*6 + e*5
-        total_subs = s + a + b + c + d + e
-
-        if not total_subs:
-            return render_template("cgpa.html", results="0.00", words="Enter at least one subject")
-
-        cgpa = round(total_points / total_subs, 2)
-
-        if cgpa > 9:
-            words = "Excellent ⭐"
-        elif cgpa >= 8:
-            words = "Very Good 👍"
-        elif cgpa >= 7:
-            words = "Good 🙂"
-        elif cgpa >= 6:
-            words = "Average 😐"
-        else:
-            words = "Needs Improvement ⚠️"
-
-        return render_template("cgpa.html", results=cgpa, words=words)
-
-    return render_template("cgpa.html", results="", words="")
-
+def profile():
+    user = User.query.get(session["user_id"])
+    return render_template("profile.html", user=user)
 
 # -----------------------------
 # REGISTER
@@ -172,33 +111,32 @@ def register():
         username = request.form["reg_username"].strip()
         email = request.form["reg_email"].strip()
         password = request.form["reg_password"].strip()
+        bike = request.form["reg_bike"].strip()
 
-        # Block "admin" username for normal users
         if username.lower() == "admin":
-            error = "❌ Username 'admin' is reserved."
-            return render_template("register.html", error=error)
+            return render_template("register.html", error="❌ 'admin' is reserved")
 
-        # SIMATS email validation
         pattern = r"^\d+\.simats@saveetha\.com$"
         if not re.match(pattern, email):
-            error = "⚠ Only SIMATS Email allowed (Ex: 192424292.simats@saveetha.com)"
-            return render_template("register.html", error=error)
-
-        if not username or not email or not password:
-            error = "All fields required"
-            return render_template("register.html", error=error)
+            return render_template("register.html", error="⚠ Only SIMATS Email allowed")
 
         existing = User.query.filter(
             (User.username == username) | (User.email == email)
         ).first()
         if existing:
-            error = "User already exists"
-            return render_template("register.html", error=error)
+            return render_template("register.html", error="User already exists")
 
-        hashed = generate_password_hash(password)
-        new_user = User(username=username, email=email, password=hashed, is_admin=False)
+        reg_no = extract_reg_no(email)
 
-        db.session.add(new_user)
+        user = User(
+            username=username,
+            email=email,
+            reg_number=reg_no,
+            password=generate_password_hash(password),
+            is_admin=False,
+            security_bike=bike
+        )
+        db.session.add(user)
         db.session.commit()
 
         return render_template("register_success.html")
@@ -221,26 +159,93 @@ def login():
         user = User.query.filter_by(username=username).first()
 
         if not user:
-            message = "❌ No username found"
-            shake = True
-            return render_template("login.html", message=message, shake=shake)
+            return render_template("login.html", shake=True, message="❌ Username not found")
 
         if not check_password_hash(user.password, password):
-            message = "❌ Incorrect password"
-            shake = True
-            return render_template("login.html", message=message, shake=shake)
+            return render_template("login.html", shake=True, message="❌ Wrong password")
 
-        # Success login -> Save session
         session["user_id"] = user.id
         session["username"] = user.username
         session["is_admin"] = user.is_admin
 
         if user.is_admin:
             return redirect(url_for("admin_page"))
-        else:
-            return redirect(url_for("index"))
+        return redirect(url_for("index"))
 
     return render_template("login.html", message=message, shake=shake)
+
+# -----------------------------
+# FORGOT PASSWORD
+# -----------------------------
+@app.route("/forgot_password", methods=["GET", "POST"])
+def forgot_password():
+    message = ""
+
+    if request.method == "POST":
+        username = request.form["username"].strip()
+        bike = request.form["bike"].strip()
+        new_pass = request.form["new_password"].strip()
+
+        user = User.query.filter_by(username=username).first()
+
+        if not user:
+            return render_template("forgot_password.html", message="❌ Username not found")
+
+        if user.security_bike.lower() != bike.lower():
+            return render_template("forgot_password.html", message="❌ Wrong bike name")
+
+        user.password = generate_password_hash(new_pass)
+        db.session.commit()
+
+        return render_template("forgot_password.html", message="✅ Password Updated Successfully!")
+
+    return render_template("forgot_password.html", message=message)
+
+# -----------------------------
+# USER CHANGE PASSWORD
+# -----------------------------
+@app.route("/change_password", methods=["GET", "POST"])
+@login_required()
+def change_password():
+    message = ""
+    if request.method == "POST":
+
+        old = request.form["old_password"]
+        new = request.form["new_password"]
+        conf = request.form["confirm_password"]
+
+        user = User.query.get(session["user_id"])
+
+        if not check_password_hash(user.password, old):
+            return render_template("change_password.html", message="❌ Old password incorrect")
+
+        if new != conf:
+            return render_template("change_password.html", message="❌ Passwords do not match")
+
+        user.password = generate_password_hash(new)
+        db.session.commit()
+
+        return render_template("change_password.html", message="✅ Password changed!")
+
+    return render_template("change_password.html", message=message)
+
+# -----------------------------
+# ADMIN PAGE WITH SEARCH + COUNT
+# -----------------------------
+@app.route("/admin")
+@login_required(admin_only=True)
+def admin_page():
+
+    search = request.args.get("search", "").strip()
+
+    if search:
+        users = User.query.filter(User.reg_number.like(f"%{search}%")).all()
+    else:
+        users = User.query.all()
+
+    user_count = len(User.query.all())
+
+    return render_template("admin.html", users=users, search=search, user_count=user_count)
 
 
 # -----------------------------
@@ -251,51 +256,72 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for("login"))
-
-
 # -----------------------------
-# ADMIN PAGE (ADMIN ONLY)
+# ATTENDANCE PAGE
 # -----------------------------
-@app.route("/admin")
-@login_required(admin_only=True)
-def admin_page():
-    users = User.query.all()
-    return render_template("admin.html", users=users)
-# -----------------------------
-# CHANGE PASSWORD (PROTECTED)
-# -----------------------------
-@app.route("/change_password", methods=["GET", "POST"])
+@app.route("/attendance", methods=["GET", "POST"])
 @login_required()
-def change_password():
-    message = ""
-    success = False
-
+def attendance_calc():
     if request.method == "POST":
-        old_pass = request.form["old_password"]
-        new_pass = request.form["new_password"]
-        confirm_pass = request.form["confirm_password"]
+        try:
+            total = float(request.form.get("total_classes", 0))
+            attended = float(request.form.get("no_of_classes_attended", 0))
+            result = round(attended / total * 100, 2) if total else 0
+        except:
+            result = 0
 
-        user = User.query.get(session["user_id"])
+        return render_template("attendance.html", results=result)
 
-        # Check old password
-        if not check_password_hash(user.password, old_pass):
-            message = "❌ Old password is incorrect"
-            return render_template("change_password.html", message=message, success=success)
+    return render_template("attendance.html", results="")
+# -----------------------------
+# CGPA PAGE
+# -----------------------------
+@app.route("/cgpa", methods=["GET", "POST"])
+@login_required()
+def cgpa_calc():
+    if request.method == "POST":
 
-        # Check match
-        if new_pass != confirm_pass:
-            message = "❌ New passwords do not match"
-            return render_template("change_password.html", message=message, success=success)
+        # Get values safely
+        def safe_int(v):
+            try:
+                if v.strip() == "":
+                    return 0
+                return int(v)
+            except:
+                return 0
 
-        # Update new password
-        user.password = generate_password_hash(new_pass)
-        db.session.commit()
+        s = safe_int(request.form.get("s_grades", "0"))
+        a = safe_int(request.form.get("a_grades", "0"))
+        b = safe_int(request.form.get("b_grades", "0"))
+        c = safe_int(request.form.get("c_grades", "0"))
+        d = safe_int(request.form.get("d_grades", "0"))
+        e = safe_int(request.form.get("e_grades", "0"))
 
-        success = True
-        message = "✅ Password changed successfully!"
-        return render_template("change_password.html", message=message, success=success)
+        total_points = s*10 + a*9 + b*8 + c*7 + d*6 + e*5
+        total_subs = s + a + b + c + d + e
 
-    return render_template("change_password.html", message=message, success=success)
+        if total_subs == 0:
+            return render_template("cgpa.html", results="0.00", words="Please enter valid values")
+
+        cgpa = round(total_points / total_subs, 2)
+
+        # Words based on CGPA
+        if cgpa > 9:
+            words = "Excellent ⭐"
+        elif cgpa >= 8:
+            words = "Very Good 👍"
+        elif cgpa >= 7:
+            words = "Good 🙂"
+        elif cgpa >= 6:
+            words = "Average 😐"
+        else:
+            words = "Needs Improvement ⚠️"
+
+        return render_template("cgpa.html", results=cgpa, words=words)
+
+    return render_template("cgpa.html", results="", words="")
+
+
 
 
 

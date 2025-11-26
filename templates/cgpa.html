@@ -16,13 +16,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
-            /* SAME BACKGROUND AS HOME + LOGIN + REGISTER */
             background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
             overflow: hidden;
         }
 
-        /* 🌟 FLOATING STARS GOING UP (same as home) */
+        /* ⭐ FLOATING STARS (unchanged) */
         .stars {
             position: fixed;
             width: 100%;
@@ -31,7 +29,6 @@
             pointer-events: none;
             z-index: 0;
         }
-
         .stars span {
             position: absolute;
             width: 6px;
@@ -40,14 +37,15 @@
             border-radius: 50%;
             animation: rise 12s linear infinite;
         }
-
         @keyframes rise {
             from { transform: translateY(110vh) scale(0.3); opacity: 0.4; }
-            to   { transform: translateY(-10vh) scale(1); opacity: 1; }
+            to { transform: translateY(-10vh) scale(1); opacity: 1; }
+        }
+        label{
+            color: white;
         }
 
-
-        /* MAIN GRID */
+        /* MAIN LAYOUT */
         .container {
             position: relative;
             z-index: 2;
@@ -58,7 +56,7 @@
             gap: 30px;
         }
 
-        /* PANEL WITH SAME GLOW */
+        /* LEFT PANEL (unchanged) */
         .panel {
             background: rgba(255,255,255,0.08);
             padding: 35px;
@@ -67,13 +65,8 @@
             backdrop-filter: blur(25px);
             box-shadow: 0 0 35px rgba(0,0,0,0.55);
             position: relative;
-            overflow: hidden;
-            animation: fadeUp 0.8s ease forwards;
-            opacity: 0;
-            transform: translateY(20px);
         }
 
-        /* glowing border same as other pages */
         .panel::before {
             content: "";
             position: absolute;
@@ -93,11 +86,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-
         h1 {
             color: #fff;
             font-size: 32px;
@@ -106,29 +94,16 @@
             text-shadow: 0 0 15px rgba(255,255,255,0.4);
         }
 
-        label {
-            color: #dbeafe;
-            font-size: 15px;
-        }
-
-        .input-box {
-            margin-bottom: 18px;
-        }
-
         input {
-            width: 100%;
+            width: 95%;
             padding: 13px;
             margin-top: 6px;
+            margin-bottom: 15px;
             border-radius: 12px;
             border: 1px solid rgba(255,255,255,0.25);
             background: rgba(255,255,255,0.15);
             color: white;
             font-size: 16px;
-        }
-
-        input:focus {
-            border-color: #ff9a00;
-            box-shadow: 0 0 15px rgba(255,154,0,0.7);
         }
 
         .btn {
@@ -142,59 +117,87 @@
             font-size: 18px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.25s;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.2);
+        /* RIGHT PANEL — updated to match screenshot */
+        .result-box {
+            text-align: center;
+            padding: 30px;
         }
 
-        .result-title {
-            font-size: 22px;
-            color: #bfdbfe;
-            margin-bottom: 10px;
+        .circle-wrapper {
+            margin: auto;
+            width: 160px;
+            height: 160px;
         }
 
-        .result-value {
-            font-size: 55px;
+        .circle {
             color: white;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: conic-gradient(#f8f7f7 calc(var(--percent)*1%), #1e1e35 0%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circle-inner {
+            width: 120px;
+            height: 120px;
+            background: rgb(77, 148, 170);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .cgpa-big {
+            color: white;
+            font-size: 40px;
             font-weight: 800;
-            text-shadow: 0 0 22px rgba(255,255,255,0.8);
+            margin-top: 40px;
         }
 
-        .badge {
-            margin-top: 12px;
-            padding: 10px 20px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.22);
-            color: white;
-            font-weight: 600;
-            display: inline-block;
+        .grade {
+            font-size: 50px;
+            margin-top: 20px;
+            font-weight: 700;
+            color: #52ff90;
+        }
+
+        .words {
+            font-size: 40px;
+            color: #d1d5db;
+            margin-top: 10px;
+            font-weight: 800;
         }
 
         .home-btn {
-            width: 100%;
-            margin-top: 25px;
-            padding: 12px;
+            width: 30%;
+            margin-top: 20px;
+            padding: 14px;
             border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.25);
-            background: rgba(255,255,255,0.18);
+            border: none;
+            background: linear-gradient(135deg,#ff512f,#dd2476);
             color: white;
+            font-size: 18px;
+            font-weight: 700;
             cursor: pointer;
         }
 
         .home-btn:hover {
-            background: rgba(255,255,255,0.30);
             transform: scale(1.05);
+            background: linear-gradient(135deg,#ff512f,#dd2476);
         }
-
     </style>
 </head>
 
 <body>
 
-    <!-- ⭐ SAME FLOATING STARS AS HOME PAGE -->
+    <!-- Stars -->
     <div class="stars">
         <span style="left:10%; animation-duration:7s;"></span>
         <span style="left:30%; animation-duration:9s;"></span>
@@ -205,57 +208,59 @@
 
     <div class="container">
 
-        <!-- LEFT PANEL -->
+        <!-- LEFT PANEL (unchanged) -->
         <div class="panel">
             <h1>Enter Your Grades</h1>
 
-            <form action="{{ url_for('cgpa_calc') }}" method="post">
+            <form method="POST">
 
-                <div class="input-box">
-                    <label>S Grade Subjects</label>
-                    <input type="number" name="s_grades" placeholder="Number of S Grades">
-                </div>
+                <label>S Grade</label>
+                <input type="number" name="s_grades" placeholder="Enter S Grades">
 
-                <div class="input-box">
-                    <label>A Grade Subjects</label>
-                    <input type="number" name="a_grades" placeholder="Number of A Grades">
-                </div>
+                <label>A Grade</label>
+                <input type="number" name="a_grades" placeholder="Enter A Grades">
 
-                <div class="input-box">
-                    <label>B Grade Subjects</label>
-                    <input type="number" name="b_grades" placeholder="Number of B Grades">
-                </div>
+                <label>B Grade</label>
+                <input type="number" name="b_grades" placeholder="Enter B Grades">
 
-                <div class="input-box">
-                    <label>C Grade Subjects</label>
-                    <input type="number" name="c_grades" placeholder="Number of C Grades">
-                </div>
+                <label>C Grade</label>
+                <input type="number" name="c_grades" placeholder="Enter C Grades">
 
-                <div class="input-box">
-                    <label>D Grade Subjects</label>
-                    <input type="number" name="d_grades" placeholder="Number of D Grades">
-                </div>
+                <label>D Grade</label>
+                <input type="number" name="d_grades" placeholder="Enter D Grades">
 
-                <div class="input-box">
-                    <label>E Grade Subjects</label>
-                    <input type="number" name="e_grades" placeholder="Number of E Grades">
-                </div>
+                <label>E Grade</label>
+                <input type="number" name="e_grades" placeholder="Enter E Grades">
 
-                <button class="btn" type="submit">Calculate CGPA</button>
+                <button class="btn">Calculate CGPA</button>
             </form>
         </div>
 
-        <!-- RIGHT PANEL -->
-        <div class="panel">
-            <h1>Your CGPA Result</h1>
+        <!-- RIGHT PANEL (new design like screenshot) -->
+        <div class="panel result-box">
 
-            <div class="result-title">Performance Score</div>
+            <div class="circle-wrapper">
+                <div class="circle" style="--percent: {{ results|float * 10 }}">
+                    <div class="circle-inner">
+                        {{ (results|float * 10)|round(1) }}%
+                    </div>
+                </div>
+            </div>
 
-            <div class="result-value">{{ results }}</div>
+            <div class="cgpa-big">{{ results }}/ CGPA</div>
 
-            <div class="badge">{{ words }}</div>
+            <div class="grade">
+                {% if results|float >= 9 %} A+ 
+                {% elif results|float >= 8 %} A
+                {% elif results|float >= 7 %} B
+                {% else %} 
+                {% endif %}
+            </div>
 
-            <button class="home-btn" onclick="window.location.href='/home'">Go to Home</button>
+            <div class="words">{{ words }}</div>
+
+            <button class="home-btn" onclick="window.location.href='/home'">Go Home</button>
+
         </div>
 
     </div>

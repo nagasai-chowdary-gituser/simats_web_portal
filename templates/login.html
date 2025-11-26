@@ -126,7 +126,7 @@ button:hover {
     filter: brightness(1.15);
 }
 
-/* SIGNUP LINK */
+/* LINKS */
 .link {
     margin-top: 15px;
     color: #e2e8f0;
@@ -139,7 +139,23 @@ button:hover {
 }
 .link a:hover { text-decoration: underline; }
 
-/* ERROR MESSAGE (RED GLOW) */
+/* FORGOT PASSWORD LINK */
+.forgot {
+    margin-top: -10px;
+    margin-bottom: 15px;
+    text-align: right;
+}
+.forgot a {
+    color: #ffb84d;
+    font-size: 13px;
+    text-decoration: none;
+    font-weight: 600;
+}
+.forgot a:hover {
+    text-decoration: underline;
+}
+
+/* ERROR MESSAGE */
 .error-msg {
     background: rgba(255,0,0,0.20);
     border: 1px solid rgba(255,0,0,0.35);
@@ -156,7 +172,6 @@ button:hover {
 .shake {
     animation: shakeAnim 0.35s ease;
 }
-
 @keyframes shakeAnim {
     0%   { transform: translateX(0); }
     25%  { transform: translateX(-8px); }
@@ -177,7 +192,7 @@ button:hover {
     <span style="left:90%; animation-delay:1.5s;"></span>
 </div>
 
-<!-- SHAKE CLASS ADDED CONDITIONALLY -->
+<!-- SHAKE CLASS -->
 <div class="wrapper {% if shake %}shake{% endif %}">
     <h2>Welcome Back 👋</h2>
 
@@ -198,6 +213,11 @@ button:hover {
         <div class="input-box">
             <label>Password</label>
             <input type="password" name="l_pass" placeholder="Enter password" required autocomplete="new-password">
+        </div>
+
+        <!-- FORGOT PASSWORD LINK -->
+        <div class="forgot">
+            <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
         </div>
 
         <button type="submit">Login</button>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Profile</title>
+<style>
+body {
+    background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    font-family: Poppins, sans-serif;
+    color: white;
+    padding:40px;
+}
+.box {
+    width: 400px;
+    margin:auto;
+    padding:25px;
+    background:rgba(255,255,255,0.15);
+    border-radius:20px;
+    backdrop-filter: blur(12px);
+    text-align: center ;
+}
+.info {
+    margin:10px 0;
+    font-size:18px;
+}
+.btn {
+    padding:12px 20px;
+    display:block;
+    margin:15px auto;
+    border-radius:12px;
+    background:#dd2476;
+    color:white;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>My Profile 👤</h2>
+
+    <div class="info">Username: {{ user.username }}</div>
+    <div class="info">Email: {{ user.email }}</div>
+    <div class="info">Reg No: {{ user.reg_number }}</div>
+
+    <a class="btn" href="/change_password">Change Password</a>
+    <a class="btn" href="/home">Back to Home Page</a>
+</div>
+
+</body>
+</html>
