@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Calculator</title>
-
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
-
         body {
             margin: 0;
             padding: 0;
@@ -20,7 +17,6 @@
             background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
             overflow: hidden;
         }
-
         /* Floating particles animation */
         .particles {
             position: fixed;
@@ -31,7 +27,6 @@
             top: 0;
             left: 0;
         }
-
         .particles span {
             position: absolute;
             width: 8px;
@@ -40,12 +35,10 @@
             border-radius: 50%;
             animation: move 12s linear infinite;
         }
-
         @keyframes move {
             from { transform: translateY(110vh) scale(0.3); }
             to { transform: translateY(-10vh) scale(1); }
         }
-
         /* Final Boss Card */
         .card {
             width: 450px;
@@ -61,11 +54,9 @@
             transform: translateY(25px);
             opacity: 0;
         }
-
         @keyframes fadeUp {
             to { opacity: 1; transform: translateY(0px); }
         }
-
         /* Soft neon border */
         .card::before {
             content: "";
@@ -80,13 +71,11 @@
             filter: blur(6px);
             opacity: 0.55;
         }
-
         @keyframes glow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
         h1 {
             text-align: center;
             font-size: 34px;
@@ -95,13 +84,11 @@
             font-weight: 700;
             text-shadow: 0 0 12px rgba(255,255,255,0.4);
         }
-
         form {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
-
         input {
             padding: 12px;
             border-radius: 12px;
@@ -113,17 +100,14 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
         }
-
         input::placeholder {
             color: #e2e8f0;
             opacity: 1;
         }
-
         input:focus {
             border-color: #ff9a00;
             box-shadow: 0 0 15px rgba(255,154,0,0.65);
         }
-
         button {
             margin-top: 5px;
             padding: 15px;
@@ -138,13 +122,11 @@
             transition: 0.3s;
             box-shadow: 0 8px 22px rgba(221,36,118,0.5);
         }
-
         button:hover {
             transform: translateY(-3px);
             filter: brightness(1.15);
             box-shadow: 0 12px 35px rgba(221,36,118,0.7);
         }
-
         /* Highlight Result */
         .result-box {
             margin-top: 20px;
@@ -158,13 +140,11 @@
             border: 1px solid rgba(255,255,255,0.35);
             box-shadow: 0 0 20px rgba(255,154,0,0.4);
         }
-
         /* Home Button */
         .home-btn {
             margin-top: 20px;
             text-align: center;
         }
-
         .home-btn button {
             padding: 12px 25px;
             border-radius: 12px;
@@ -175,17 +155,14 @@
             transition: 0.3s;
             font-weight: 600;
         }
-
         .home-btn button:hover {
             background: linear-gradient(135deg,#ff512f,#dd2476);
             box-shadow: 0 0 20px rgba(221,36,118,0.7);
             transform: scale(1.05);
         }
-
     </style>
 </head>
 <body>
-
     <!-- Floating animated particles -->
     <div class="particles">
         <span style="left:10%; animation-delay:1s; animation-duration:7s;"></span>
@@ -194,27 +171,20 @@
         <span style="left:70%; animation-delay:5s; animation-duration:8s;"></span>
         <span style="left:90%; animation-delay:1.5s; animation-duration:10s;"></span>
     </div>
-
     <div class="card">
         <h1>Attendance Calculator</h1>
-
         <form action="{{ url_for('attendance_calc') }}" method="post">
             <input type="text" name="no_of_classes_attended" placeholder="Number of Classes Attended" required>
             <input type="text" name="total_classes" placeholder="Total Classes" required>
-
             <button type="submit">Calculate Attendance</button>
         </form>
-
         <div class="result-box">
             Attendance: {{ results }} %
         </div>
-
         <!-- GO HOME BUTTON -->
         <div class="home-btn">
             <button onclick="window.location.href='/'">Go to Home</button>
         </div>
-
     </div>
-
 </body>
 </html>

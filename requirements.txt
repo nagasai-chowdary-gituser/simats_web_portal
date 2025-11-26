@@ -1,1 +1,7 @@
 flask
+pandas
+numpy
+seaborn
+gunicorn
+scikit-learn
+dill
