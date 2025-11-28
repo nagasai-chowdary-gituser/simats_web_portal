@@ -5,10 +5,78 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-# ------------------- FONT + STYLE HELPERS ------------------------
+# ============================================================
+#   FIXED TABLE OF CONTENTS STRUCTURE (FINAL VERSION)
+# ============================================================
+
+TOC_STRUCTURE = [
+    ("Abstract", ["—"], "2"),
+
+    ("Chapter 1", [
+        "1.1 Background Information",
+        "1.2 Problem Definition",
+        "1.3 Objectives of the Study",
+        "1.4 Scope of the Project",
+        "1.5 Methodology Overview"
+    ], "6–9"),
+
+    ("Chapter 2", [
+        "2.1 Problem Analysis",
+        "2.2 Evidence and Motivation",
+        "2.3 Stakeholder Requirements",
+        "2.4 Challenges Identified",
+        "2.5 Supporting Research",
+        "2.6 Summary"
+    ], "10–12"),
+
+    ("Chapter 3", [
+        "3.1 System Design",
+        "3.2 Architecture Overview",
+        "3.3 Tools and Technologies",
+        "3.4 Data Flow Diagram",
+        "3.5 Functional Description",
+        "3.6 Engineering Standards",
+        "3.7 Design Justification",
+        "3.8 Summary"
+    ], "13–16"),
+
+    ("Chapter 4", [
+        "4.1 Implementation Details",
+        "4.2 Algorithms Used",
+        "4.3 Model or System Workflow",
+        "4.4 Performance Evaluation",
+        "4.5 Challenges Encountered",
+        "4.6 Summary"
+    ], "17–19"),
+
+    ("Chapter 5", [
+        "5.1 Learning Outcomes",
+        "5.2 Collaboration and Teamwork",
+        "5.3 Application of Standards",
+        "5.4 Problem-solving Skills",
+        "5.5 Industry Exposure",
+        "5.6 Personal Growth",
+        "5.7 Summary"
+    ], "20–23"),
+
+    ("Chapter 6", [
+        "6.1 Summary of Work",
+        "6.2 Major Findings",
+        "6.3 Impact and Significance",
+        "6.4 Limitations",
+        "6.5 Future Scope",
+        "6.6 Conclusion"
+    ], "24–26"),
+
+    ("References", ["—"], "27"),
+    ("Appendices", ["—"], "28–30")
+]
+
+# ============================================================
+#   STYLE FUNCTION
+# ============================================================
 
 def set_style(paragraph, *, bold=False, align="justify", size=12):
-    """Apply Times New Roman formatting."""
     for run in paragraph.runs:
         run.font.name = "Times New Roman"
         run._element.rPr.rFonts.set(qn("w:eastAsia"), "Times New Roman")
@@ -25,30 +93,23 @@ def set_style(paragraph, *, bold=False, align="justify", size=12):
     paragraph.paragraph_format.line_spacing = 1.5
 
 
-# ------------------- CLEAN AI TEXT ------------------------
+# ============================================================
+#   CLEAN TEXT
+# ============================================================
 
 def clean_text(text: str):
-    text = re.sub(r"#+ ", "", text)  # remove ##, ###, ####
-    text = text.replace("*", "")     # remove bullets
+    text = re.sub(r"#+ ", "", text)
+    text = re.sub(r"\*", "", text)
     return text.strip()
 
 
-# ------------------- TABLE OF CONTENTS ------------------------
+# ============================================================
+#   TABLE OF CONTENTS BUILDER
+# ============================================================
 
-def extract_subheadings(content):
-    """Extract headings like 1.1 Something"""
-    subs = []
-    for line in content.split("\n"):
-        line = line.strip()
-        if re.match(r"^\d+\.\d+\s", line):
-            subs.append(line)
-    return subs
+def insert_table_of_contents(doc):
 
-
-def insert_table_of_contents(doc, sections):
-    """Create SIMATS-style Table of Contents."""
-
-    # TITLE
+    # Title
     title = doc.add_paragraph("TABLE OF CONTENTS")
     for r in title.runs:
         r.font.name = "Times New Roman"
@@ -58,28 +119,24 @@ def insert_table_of_contents(doc, sections):
 
     doc.add_paragraph()
 
-    # TABLE
+    # Table Grid
     table = doc.add_table(rows=1, cols=4)
     table.style = "Table Grid"
 
     headers = ["S.No.", "Chapter", "Topics", "Page No."]
-    hdr_cells = table.rows[0].cells
+    hdr = table.rows[0].cells
 
     for i, h in enumerate(headers):
-        p = hdr_cells[i].paragraphs[0]
+        p = hdr[i].paragraphs[0]
         run = p.add_run(h)
-        run.font.name = "Times New Roman"
         run.font.size = Pt(8)
+        run.font.name = "Times New Roman"
         run.bold = True
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-    # CONTENT
     sno = 1
-    for chapter_title, content in sections.items():
 
-        subs = extract_subheadings(content)
-        topics_text = "\n".join(subs) if subs else "—"
-
+    for chapter, topics, pages in TOC_STRUCTURE:
         row = table.add_row().cells
 
         # S.No
@@ -90,57 +147,75 @@ def insert_table_of_contents(doc, sections):
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
         # Chapter Name
-        chapter_clean = chapter_title.split(":")[0]  # "Chapter 1"
         p = row[1].paragraphs[0]
-        r = p.add_run(chapter_clean)
+        r = p.add_run(chapter)
         r.font.name = "Times New Roman"
         r.font.size = Pt(8)
         r.bold = True
-        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
         # Topics
         p = row[2].paragraphs[0]
-        r = p.add_run(topics_text)
+        r = p.add_run("\n".join(topics))
         r.font.name = "Times New Roman"
         r.font.size = Pt(8)
-        p.alignment = WD_ALIGN_PARAGRAPH.LEFT
 
-        # Page Numbers (Static)
+        # Page No
         p = row[3].paragraphs[0]
-        r = p.add_run("")  # You can fill this later
+        r = p.add_run(pages)
         r.font.name = "Times New Roman"
         r.font.size = Pt(8)
         p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
         sno += 1
 
-    # TABLE KEEP TOGETHER
-    for row in table.rows:
-        tr = row._tr
-        trPr = tr.get_or_add_trPr()
-        cant_split = OxmlElement("w:cantSplit")
-        trPr.append(cant_split)
 
-
-# ------------------- DOCX BUILDER ------------------------
+# ============================================================
+#   DOCX BUILDER
+# ============================================================
 
 def create_ai_docx(sections: dict, output_path: str):
     doc = Document()
 
-    insert_table_of_contents(doc, sections)
+    # 1) Insert Table of Contents
+    insert_table_of_contents(doc)
 
-    # Add each chapter
-    for section_title, content in sections.items():
+    # BREAK PAGE
+    doc.add_page_break()
 
-        # MAIN HEADING
-        heading = doc.add_paragraph(section_title)
+    # 2) CHAPTERS IN FIXED ORDER
+    for chapter_title, _, _ in TOC_STRUCTURE:
+
+        # Skip if not generated by AI
+        if chapter_title not in sections:
+            continue
+
+        content = sections[chapter_title]
+
+        # Handle References differently
+        if chapter_title.lower() == "references":
+            heading = doc.add_paragraph("References")
+            set_style(heading, bold=True, size=16, align="center")
+
+            for line in content.split("\n"):
+                if line.strip():
+                    p = doc.add_paragraph(line)
+                    set_style(p, bold=False, size=12, align="left")
+
+            doc.add_page_break()
+            continue
+
+        # Normal Chapter
+        heading = doc.add_paragraph(chapter_title)
         set_style(heading, bold=True, size=16, align="center")
 
-        text = clean_text(content)
-        for line in text.split("\n"):
+        cleaned = clean_text(content)
+
+        for line in cleaned.split("\n"):
+
             if not line.strip():
                 continue
 
+            # Bold for 1.1 format
             if re.match(r"^\d+\.\d+\s", line):
                 p = doc.add_paragraph(line)
                 set_style(p, bold=True, size=12, align="left")
