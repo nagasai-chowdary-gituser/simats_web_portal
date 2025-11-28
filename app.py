@@ -333,39 +333,46 @@ def capstone_form():
 @app.route("/generate_capstone", methods=["POST"])
 def generate_capstone():
 
-    title = request.form.get("title")
+    # Accept JSON input from fetch()
+    data = request.get_json()
+    if not data or "title" not in data:
+        return {"error": "Title missing"}, 400
+
+    title = data["title"].strip()
 
     # 1. Generate AI content
     sections = generate_ai_content(title)
 
-    # Paths
+    # Create output directory
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "ai_capstone", "output")
     os.makedirs(output_dir, exist_ok=True)
 
-    # 2. Create AI chapters as DOCX
+    # 2. Create AI chapters DOCX
     ai_docx_path = os.path.join(output_dir, "ai_chapters.docx")
     create_ai_docx(sections, ai_docx_path)
 
-    # 3. First 5 DOCX pages (unchanged)
+    # 3. Load static DOCX pages
     docx_dir = os.path.join(base_dir, "ai_capstone", "templates_docx")
     fixed_pages = [
         os.path.join(docx_dir, "page1_title.docx"),
         os.path.join(docx_dir, "page2_declaration.docx"),
         os.path.join(docx_dir, "page3_bonafide.docx"),
-        os.path.join(docx_dir, "page4_acknowledgement.docx"),
+        os.path.join(docx_dir, "page4_acknowledgement.docx")
     ]
 
-    # 4. Merge (fixed pages + AI chapters)
+    # 4. Merge all DOCX files
     final_docx = os.path.join(output_dir, "final_capstone.docx")
     merge_docx(fixed_pages + [ai_docx_path], final_docx)
 
-    # 5. Send Word file to user
+    # 5. Send file BINARY for fetch() download
     return send_file(
         final_docx,
         as_attachment=True,
+        mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         download_name="Capstone_Report.docx"
     )
+
 
 
 

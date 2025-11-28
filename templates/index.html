@@ -55,14 +55,15 @@
         }
 
         .container {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 40px;
             z-index: 3;
         }
 
         .box {
             width: 280px;
-            height: 250px;
+            height: 181px;
             border-radius: 25px;
             padding: 20px;
             text-align: center;
@@ -113,7 +114,7 @@
             color: #e2e8f0;
         }
 
-        /* 🔥 Floating Buttons (Change Password + Profile) */
+        /* Floating Buttons */
         .float-btn {
             position: fixed;
             left: 20px;
@@ -160,15 +161,23 @@
     <a href="/change_password" class="float-btn change-btn">Change Password</a>
 
     <div class="container">
-        
+
+        <!-- Attendance -->
         <div class="box" onclick="window.location.href='/attendance'">
             <h2>Attendance</h2>
             <p>Calculate your attendance percentage</p>
         </div>
 
+        <!-- CGPA -->
         <div class="box" onclick="window.location.href='/cgpa'">
             <h2>CGPA</h2>
             <p>Calculate your SIMATS-based CGPA</p>
+        </div>
+
+        <!-- ⭐ NEW CAPSTONE FORM (same style, same size) -->
+        <div class="box" onclick="window.location.href='/capstone'">
+            <h2>Capstone Maker</h2>
+            <p>Create Your Simats Capstone Project Report</p>
         </div>
 
     </div>

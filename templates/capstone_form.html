@@ -18,7 +18,7 @@
     }
 
     .container {
-        width: 420px;
+        width: 500px;
         background: rgba(255, 255, 255, 0.1);
         padding: 30px;
         border-radius: 18px;
@@ -63,6 +63,7 @@
         cursor: pointer;
         transition: 0.2s;
         font-weight: 600;
+        margin: 10px 0;
     }
 
     button:hover {
@@ -70,7 +71,7 @@
         transform: scale(1.03);
     }
 
-    /* Loading Overlay */
+    /* Loader */
     #loaderOverlay {
         display: none;
         position: fixed;
@@ -119,19 +120,52 @@
 <div class="container">
     <h2>SIMATS Capstone<br>Report Generator</h2>
 
-    <form id="capstoneForm" action="/generate_capstone" method="POST">
-
+    <form id="capstoneForm" onsubmit="startCapstone(event)">
         <label>Project Title:</label>
-        <input type="text" name="title" placeholder="Enter your Project Title" required>
+        <input type="text" id="titleInput" placeholder="Enter your Project Title" required>
 
         <button type="submit">Generate Capstone</button>
+        <button type="button" onclick="window.location.href='/index'">Go To Home Page</button>
     </form>
 </div>
 
 <script>
-    document.getElementById("capstoneForm").addEventListener("submit", () => {
-        document.getElementById("loaderOverlay").style.display = "block";
+function startCapstone(event) {
+    event.preventDefault(); // STOP normal form submission
+
+    const title = document.getElementById("titleInput").value.trim();
+    if (!title) return;
+
+    document.getElementById("loaderOverlay").style.display = "block"; // Show loader
+
+    fetch("/generate_capstone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: title })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Server Error");
+        return response.blob();
+    })
+    .then(blob => {
+        // Trigger download
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Capstone_Report.docx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        // Hide loader
+        document.getElementById("loaderOverlay").style.display = "none";
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Error generating capstone!");
+        document.getElementById("loaderOverlay").style.display = "none";
     });
+}
 </script>
 
 </body>
