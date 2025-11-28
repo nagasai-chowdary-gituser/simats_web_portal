@@ -1,9 +1,16 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, send_file
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import re
 from functools import wraps
+import uuid
+
+# Capstone generator imports
+from ai_capstone.ai_engine import generate_ai_content
+from ai_capstone.create_ai_docx import create_ai_docx
+from ai_capstone.utils.docx_filler import merge_docx
+
 
 app = Flask(__name__)
 
@@ -320,6 +327,46 @@ def cgpa_calc():
         return render_template("cgpa.html", results=cgpa, words=words)
 
     return render_template("cgpa.html", results="", words="")
+@app.route("/capstone")
+def capstone_form():
+    return render_template("capstone_form.html")
+@app.route("/generate_capstone", methods=["POST"])
+def generate_capstone():
+
+    title = request.form.get("title")
+
+    # 1. Generate AI content
+    sections = generate_ai_content(title)
+
+    # Paths
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(base_dir, "ai_capstone", "output")
+    os.makedirs(output_dir, exist_ok=True)
+
+    # 2. Create AI chapters as DOCX
+    ai_docx_path = os.path.join(output_dir, "ai_chapters.docx")
+    create_ai_docx(sections, ai_docx_path)
+
+    # 3. First 5 DOCX pages (unchanged)
+    docx_dir = os.path.join(base_dir, "ai_capstone", "templates_docx")
+    fixed_pages = [
+        os.path.join(docx_dir, "page1_title.docx"),
+        os.path.join(docx_dir, "page2_declaration.docx"),
+        os.path.join(docx_dir, "page3_bonafide.docx"),
+        os.path.join(docx_dir, "page4_acknowledgement.docx"),
+    ]
+
+    # 4. Merge (fixed pages + AI chapters)
+    final_docx = os.path.join(output_dir, "final_capstone.docx")
+    merge_docx(fixed_pages + [ai_docx_path], final_docx)
+
+    # 5. Send Word file to user
+    return send_file(
+        final_docx,
+        as_attachment=True,
+        download_name="Capstone_Report.docx"
+    )
+
 
 
 

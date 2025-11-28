@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SIMATS Capstone Generator</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Poppins, sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+    }
+
+    .container {
+        width: 420px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 30px;
+        border-radius: 18px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    label {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        margin-top: 6px;
+        margin-bottom: 18px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-weight: 500;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        background: #6a5acd;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+        font-weight: 600;
+    }
+
+    button:hover {
+        background: #7c6ee3;
+        transform: scale(1.03);
+    }
+
+    /* Loading Overlay */
+    #loaderOverlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 9999;
+        text-align: center;
+        padding-top: 230px;
+        color: white;
+        font-size: 20px;
+    }
+
+    .spinner {
+        border: 6px solid rgba(255,255,255,0.3);
+        border-top: 6px solid #6a5acd;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        animation: spin 1s linear infinite;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+</head>
+<body>
+
+<div id="loaderOverlay">
+    <div class="spinner"></div>
+    <p>Generating your Capstone Report...<br>Please wait 5–10 seconds.</p>
+</div>
+
+<div class="container">
+    <h2>SIMATS Capstone<br>Report Generator</h2>
+
+    <form id="capstoneForm" action="/generate_capstone" method="POST">
+
+        <label>Project Title:</label>
+        <input type="text" name="title" placeholder="Enter your Project Title" required>
+
+        <button type="submit">Generate Capstone</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById("capstoneForm").addEventListener("submit", () => {
+        document.getElementById("loaderOverlay").style.display = "block";
+    });
+</script>
+
+</body>
+</html>
