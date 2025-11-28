@@ -1,20 +1,11 @@
-import os
-from PyPDF2 import PdfMerger
+from docxcompose.composer import Composer
+from docx import Document
 
-def merge_pdfs(pdf_list, output_path):
-    """
-    pdf_list = list of PDF file paths in correct order
-    output_path = final merged PDF
-    """
-    merger = PdfMerger()
+def merge_docx(doc_paths, output_path):
+    master = Document(doc_paths[0])
+    composer = Composer(master)
 
-    for pdf in pdf_list:
-        if os.path.exists(pdf):
-            merger.append(pdf)
-        else:
-            print(f"[WARNING] PDF not found: {pdf}")
+    for doc in doc_paths[1:]:
+        composer.append(Document(doc))
 
-    with open(output_path, "wb") as final_pdf:
-        merger.write(final_pdf)
-
-    merger.close()
+    composer.save(output_path)

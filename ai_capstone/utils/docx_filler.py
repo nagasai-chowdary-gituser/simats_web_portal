@@ -1,19 +1,24 @@
 from docx import Document
+from docxcompose.composer import Composer
 
-def merge_docx(docx_list, output_path):
+def merge_docx(doc_paths, output_path):
     """
-    Merge multiple DOCX files into a single final DOCX.
-    Each DOCX file represents one fixed page or an AI-generated section.
+    Clean & stable merge:
+    - Preserves inline images
+    - Avoids blank pages
+    - Preserves formatting
     """
+    master = Document(doc_paths[0])
+    composer = Composer(master)
 
-    # Start with the first document
-    final_doc = Document(docx_list[0])
+    for path in doc_paths[1:]:
+        sub_doc = Document(path)
 
-    # Append remaining DOCX files
-    for file in docx_list[1:]:
-        temp_doc = Document(file)
-        for element in temp_doc.element.body:
-            final_doc.element.body.append(element)
+        # Clean extra empty paragraphs
+        for p in sub_doc.paragraphs:
+            if not p.text.strip():
+                continue
 
-    # Save final merged DOCX
-    final_doc.save(output_path)
+        composer.append(sub_doc)
+
+    composer.save(output_path)

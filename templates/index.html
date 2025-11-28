@@ -130,6 +130,7 @@
             z-index: 5;
             transition: 0.3s;
             text-decoration: none;
+            margin: 15px;
         }
 
         .float-btn:hover {
@@ -139,6 +140,7 @@
 
         .change-btn { bottom: 20px; }
         .profile-btn { bottom: 70px; }
+        .Logout-btn { bottom: 120px;}
 
     </style>
 </head>
@@ -159,6 +161,9 @@
 
     <!-- Floating Change Password Button -->
     <a href="/change_password" class="float-btn change-btn">Change Password</a>
+    <!-- Floating Log Out Button-->
+    <a href="/login" class="float-btn Logout-btn">Log Out</a>
+    
 
     <div class="container">
 
@@ -179,7 +184,10 @@
             <h2>Capstone Maker</h2>
             <p>Create Your Simats Capstone Project Report</p>
         </div>
-
+        <div class="box" onclick="window.location.href='/pdfs'">
+            <h2>Concept Maps</h2>
+            <p>Simats Concept Maps Avilable Here</p>
+        </div>
     </div>
 
 </body>

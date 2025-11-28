@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session, send_file
+from flask import Flask, request, render_template, redirect, url_for, session, send_file, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -263,6 +263,7 @@ def admin_page():
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 # -----------------------------
 # ATTENDANCE PAGE
 # -----------------------------
@@ -280,6 +281,7 @@ def attendance_calc():
         return render_template("attendance.html", results=result)
 
     return render_template("attendance.html", results="")
+
 # -----------------------------
 # CGPA PAGE
 # -----------------------------
@@ -288,7 +290,6 @@ def attendance_calc():
 def cgpa_calc():
     if request.method == "POST":
 
-        # Get values safely
         def safe_int(v):
             try:
                 if v.strip() == "":
@@ -312,7 +313,6 @@ def cgpa_calc():
 
         cgpa = round(total_points / total_subs, 2)
 
-        # Words based on CGPA
         if cgpa > 9:
             words = "Excellent ⭐"
         elif cgpa >= 8:
@@ -327,45 +327,40 @@ def cgpa_calc():
         return render_template("cgpa.html", results=cgpa, words=words)
 
     return render_template("cgpa.html", results="", words="")
+
+# -----------------------------
+# CAPSTONE FORM
+# -----------------------------
 @app.route("/capstone")
 def capstone_form():
     return render_template("capstone_form.html")
+
 @app.route("/generate_capstone", methods=["POST"])
 def generate_capstone():
 
-    # Accept JSON input from fetch()
     data = request.get_json()
     if not data or "title" not in data:
         return {"error": "Title missing"}, 400
 
     title = data["title"].strip()
 
-    # 1. Generate AI content
     sections = generate_ai_content(title)
 
-    # Create output directory
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "ai_capstone", "output")
     os.makedirs(output_dir, exist_ok=True)
 
-    # 2. Create AI chapters DOCX
     ai_docx_path = os.path.join(output_dir, "ai_chapters.docx")
     create_ai_docx(sections, ai_docx_path)
 
-    # 3. Load static DOCX pages
     docx_dir = os.path.join(base_dir, "ai_capstone", "templates_docx")
     fixed_pages = [
-        os.path.join(docx_dir, "page1_title.docx"),
-        os.path.join(docx_dir, "page2_declaration.docx"),
-        os.path.join(docx_dir, "page3_bonafide.docx"),
-        os.path.join(docx_dir, "page4_acknowledgement.docx")
-    ]
+        os.path.join(docx_dir, "fixed_front_pages.docx")
+        ]
 
-    # 4. Merge all DOCX files
     final_docx = os.path.join(output_dir, "final_capstone.docx")
     merge_docx(fixed_pages + [ai_docx_path], final_docx)
 
-    # 5. Send file BINARY for fetch() download
     return send_file(
         final_docx,
         as_attachment=True,
@@ -374,9 +369,25 @@ def generate_capstone():
     )
 
 
+# ============================================================
+# ⚡ PDF DOWNLOAD SYSTEM (FINAL BOSS ADDED)
+# ============================================================
 
+PDF_FOLDER = os.path.join(BASE_DIR, "static", "pdfs")
 
+@app.route("/pdfs")
+@login_required()
+def list_pdfs():
+    if not os.path.exists(PDF_FOLDER):
+        os.makedirs(PDF_FOLDER)
 
+    pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.lower().endswith(".pdf")]
+    return render_template("pdf_list.html", pdfs=pdf_files)
+
+@app.route("/download/<filename>")
+@login_required()
+def download_pdf(filename):
+    return send_from_directory(PDF_FOLDER, filename, as_attachment=True)
 
 
 # -----------------------------

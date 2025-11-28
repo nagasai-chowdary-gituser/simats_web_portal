@@ -1,11 +1,12 @@
+from docxcompose.composer import Composer
 from docx import Document
 
-def merge_docx(docx_list, output_path):
-    final_doc = Document(docx_list[0])  # first page
+def merge_docx(docs, output_path):
+    master = Document(docs[0])
+    composer = Composer(master)
 
-    for file in docx_list[1:]:
-        temp = Document(file)
-        for element in temp.element.body:
-            final_doc.element.body.append(element)
+    for doc_path in docs[1:]:
+        sub = Document(doc_path)
+        composer.append(sub)   # this preserves images, headers, footers
 
-    final_doc.save(output_path)
+    composer.save(output_path)

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download PDFs</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: "Poppins", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+            overflow: hidden;
+        }
+
+        /* floating stars */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0; left: 0;
+            z-index: 0;
+        }
+
+        .stars span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.72);
+            border-radius: 50%;
+            animation: rise 12s linear infinite;
+        }
+
+        @keyframes rise {
+            from { transform: translateY(110vh) scale(0.3); opacity: 0.4; }
+            to   { transform: translateY(-10vh) scale(1); opacity: 1; }
+        }
+
+        /* main card */
+        .card {
+            width: 530px;
+            height: 600px;
+            padding: 40px;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.10);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 0 28px rgba(0,0,0,0.55);
+            z-index: 2;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            border-radius: 40px;
+            background: linear-gradient(135deg,#ff512f,#dd2476,#1e90ff,#ff9a00);
+            background-size: 400% 400%;
+            animation: glow 7s ease infinite;
+            z-index: -1;
+            opacity: 0.45;
+            filter: blur(12px);
+        }
+
+        @keyframes glow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 12px rgba(255,255,255,0.5);
+        }
+
+        /* SEARCH BOX */
+        .search-box {
+            width: 93%;
+            margin-bottom: 18px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: rgba(255,255,255,0.20);
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-box input::placeholder {
+            color: #ddd;
+        }
+
+        /* scrollable area */
+        .scroll-area {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        .scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.4);
+            border-radius: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            background: rgba(255,255,255,0.15);
+            padding: 13px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            color: #e2e8f0;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* buttons */
+        a.download-btn {
+            padding: 4px 10px;
+            border-radius: 5px;
+            background: linear-gradient(135deg,#ff512f,#dd2476);
+            color: white;
+            text-decoration: none;
+            font-weight: 550;
+            transition: 0.25s;
+        }
+
+        a.download-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.2);
+        }
+
+        .home-btn {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 14px;
+            font-size: 16px;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.25s;
+        }
+
+        .home-btn:hover {
+            background: rgba(255,255,255,0.32);
+            transform: scale(1.05);
+        }
+
+    </style>
+
+</head>
+<body>
+
+<!-- stars -->
+<div class="stars">
+    <span style="left:10%; animation-duration:7s;"></span>
+    <span style="left:30%; animation-duration:9s;"></span>
+    <span style="left:50%; animation-duration:11s;"></span>
+    <span style="left:70%; animation-duration:8s;"></span>
+    <span style="left:90%; animation-duration:10s;"></span>
+</div>
+
+<div class="card">
+
+    <h2>📄 Download PDFs</h2>
+
+    <!-- SEARCH BOX -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search PDF...">
+    </div>
+
+    <!-- Scrollable List -->
+    <div class="scroll-area">
+        <ul id="pdfList">
+            {% for pdf in pdfs %}
+            <li>
+                <span>{{ pdf }}</span>
+                <a class="download-btn" href="/download/{{ pdf }}">Download</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <button class="home-btn" onclick="window.location.href='/home'">⬅ Go Home</button>
+</div>
+
+<script>
+    // LIVE SEARCH FILTER
+    const searchInput = document.getElementById("searchInput");
+    const pdfList = document.getElementById("pdfList");
+    const items = pdfList.getElementsByTagName("li");
+
+    searchInput.addEventListener("keyup", () => {
+        let filter = searchInput.value.toLowerCase();
+
+        for (let i = 0; i < items.length; i++) {
+            let filename = items[i].innerText.toLowerCase();
+
+            if (filename.includes(filter)) {
+                items[i].style.display = "";
+            } else {
+                items[i].style.display = "none";
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
