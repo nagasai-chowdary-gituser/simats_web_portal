@@ -1,0 +1,277 @@
+{
+    "users": {
+        "__legacy__": {
+            "profile": {
+                "last_topic": "Break all hostel fees for boys.",
+                "department": "AI&DS"
+            },
+            "chat_history": []
+        },
+        "30fbb43d-52bb-4bbe-902f-058ec73f08b9": {
+            "profile": {
+                "last_topic": "Key Strengths of the ARMS Portal",
+                "user_name": "Naveen",
+                "preferred_name": "Naveen"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me my name"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! I\u2019m not sure what your name is\u2014could you let me know?"
+                },
+                {
+                    "role": "user",
+                    "content": "i am naveen"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi Naveen! How can I help you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me my name"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi Naveen!  \nYour name is Naveen."
+                },
+                {
+                    "role": "user",
+                    "content": "\ud83c\udfe0 Residential & Hostel Facilities"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi Naveen!  \nHere\u2019s a quick snapshot of the residential and hostel facilities at SIMATS:\n\n## Overview\n- **Multiple hostel blocks** catering to both genders and different accommodation tiers.\n- Each block is named after its location or type (e.g., *VAIGAI*, *PALLAR*, *NEW HOSTEL*).\n- Facilities include AC and non\u2011AC options, with varying room capacities.\n\n## Hostel Blocks & Key Details\n\n- **DLX (VAIGAI) \u2013 6 in 1 AC**  \n  - Capacity: 6 students per room  \n  - Fees: \u20b970,000 (annual) / \u20b940,000 (semester) / \u20b91,10,000 (total)\n\n- **DLX (VAIGAI) \u2013 4 in 1 AC**  \n  - Capacity: 4 students per room  \n  - Fees: \u20b960,000 / \u20b940,000 / \u20b91,00,000\n\n- **NDLX (VAIGAI) \u2013 4 in 1 AC**  \n  - Capacity: 4 students per room  \n  - Fees: \u20b954,000 / \u20b940,000 / \u20b994,000\n\n- **PALLAR (BOYS) \u2013 6 in 1 NON\u2011AC**  \n  - Capacity: 6 students per room  \n  - Fees: \u20b932,800 / \u20b940,000 / \u20b972,800\n\n- **NEW HOSTEL \u2013 3 in 1 AC**  \n  - Capacity: 3 students per room  \n  - Fees: \u20b992,000 / \u20b940,000 / \u20b91,32,000\n\n## What\u2019s Included\n- **Basic amenities**: shared bathrooms, study areas, and common lounges.\n- **Security**: 24/7 on\u2011site staff and CCTV coverage.\n- **Dining**: On\u2011campus mess with meal plans (details available upon request).\n\nFeel free to let me know if you\u2019d like more specifics on any block, or if you need contact details for the hostel office! \ud83c\udf93\u2728"
+                },
+                {
+                    "role": "user",
+                    "content": "Benefits for Students"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi Naveen!  \nHere\u2019s a quick rundown of the **Benefits for Students** highlighted in the SIMATS student portal:\n\n## \ud83d\udcd8 Benefits for Students\n\n| Feature | Benefit |\n|---------|---------|\n| **Attendance View** | Lets you track your attendance in real\u2011time, helping you stay above the required threshold to sit for exams. |\n| **Enrollment Control** | Enables you to select and manage your subjects online\u2014no more manual forms or late registrations. |\n\nThese tools are part of SIMATS\u2019s effort to keep students informed and in control of their academic journey. If you\u2019d like more details on any feature or how to access them, just let me know! \ud83c\udf93\u2728"
+                },
+                {
+                    "role": "user",
+                    "content": "Key Strengths of the ARMS Portal"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi Naveen!  \n\nHere are the **key strengths** of the ARMS Portal as highlighted in the SIMATS documentation:\n\n## \ud83d\udccc Key Strengths\n\n- **Reliability** \u2013 Consistently available for students to access their academic information.  \n- **Transparency** \u2013 Provides clear, real\u2011time visibility into grades, attendance, and other academic metrics.  \n- **Convenience** \u2013 Centralizes all student\u2011related tasks (registration, fee payment, etc.) in one user\u2011friendly interface.  \n- **Efficiency** \u2013 Streamlines processes that were previously manual, saving time for both students and staff.  \n- **Real\u2011time Dashboard** \u2013 Offers an up\u2011to\u2011date overview of academic status and deadlines.  \n- **Modernization** \u2013 Replaces outdated paper\u2011based systems with a digital platform that is easier to navigate and maintain.  \n\nThese strengths collectively make the ARMS Portal a vital tool for enhancing the student experience at SIMATS. If you\u2019d like more details or have any other questions, just let me know! \ud83c\udf93\u2728"
+                }
+            ],
+            "updated_at": "2025-11-28T10:52:10.534615+00:00"
+        },
+        "f6a928f7-9cae-4c7a-8d5b-853aa0971bac": {
+            "profile": {
+                "last_topic": "tell me my name"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "tell me my name"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! I don\u2019t have access to your personal details, so I\u2019m not sure what your name is. If you\u2019d like me to help with anything else, just let me know!"
+                }
+            ],
+            "updated_at": "2025-11-28T10:52:35.326537+00:00"
+        },
+        "web_user_1ozh0lbxweo": {
+            "profile": {
+                "last_topic": "tell me about simats fee structure"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi bot"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I help you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me about simats fee structure"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \nHere\u2019s a quick snapshot of the **SIMATS fee structure** based on the college documents:\n\n---\n\n## Overview\n- **SIMATS** (School of Integrated Management & Applied Technology Studies) charges a **flat academic fee** for all students.\n- The fee is **not tiered** by percentage concessions or merit; it\u2019s the same for every enrollee.\n\n## Fees\n- **Annual Academic Fee:** \u20b91,60,000  \n  - This amount covers tuition, lab access, library, and other academic resources.\n- **No Percentage Concession Slabs:**  \n  - Unlike some departments, SIMATS does not offer reduced rates based on CGPA or other criteria.\n\n## Additional Financial Notes\n- **Founder\u2019s Day Awards:**  \n  - Students who achieve high CGPAs and maintain no\u2011fail grades may receive institutional cash awards.  \n  - These awards are **below \u20b91,00,000** unless the student is a top department ranker (rare cases).\n\n---\n\nIf you need more details\u2014like payment deadlines, installment options, or scholarship eligibility\u2014just let me know! \ud83c\udf93\u2728"
+                }
+            ],
+            "updated_at": "2025-11-28T19:30:01.585304+00:00"
+        },
+        "web_user_4lwji5goefm": {
+            "profile": {
+                "last_topic": "ok give me the list of hostels in simats"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I help you with your campus questions today?"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me how many boys hostels is there in simats collage"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \nI\u2019m not sure how many boys\u2019 hostels are available at SIMATS College based on the documents I have. It would be best to check directly with the college office for the most accurate and up\u2011to\u2011date information."
+                },
+                {
+                    "role": "user",
+                    "content": "boys hostels names"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \nI\u2019m not sure about the specific names of the boys\u2019 hostels at SIMATS College based on the documents I have. It would be best to check directly with the college office for the most accurate and up\u2011to\u2011date information."
+                },
+                {
+                    "role": "user",
+                    "content": "simats fee structure"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## \ud83d\udcd8 Overview  \nSIMATS College charges a **flat academic fee** for all students, regardless of the department or program. The fee structure is straightforward and does not follow the typical percentage\u2011based concession slabs that many institutions use.\n\n## \ud83d\udcb0 Fees  \n- **Annual Academic Fee:** \u20b91,60,000 per year  \n- **Concession Policy:** No percentage\u2011based concessions; the flat fee applies to every student.  \n- **Additional Incentives:**  \n  - Students who achieve high CGPAs and maintain no\u2011fail grades may receive a **Founder\u2019s Day institutional cash award**.  \n  - These awards are capped at \u20b91,00,000 unless the student is a top department ranker, in which case the prize may exceed this amount.\n\n---\n\nIf you need more detailed breakdowns (e.g., hostel, library, or other ancillary fees) or the latest updates, it\u2019s best to reach out to the SIMATS College administration directly. Let me know if there\u2019s anything else you\u2019d like to explore! \ud83c\udf93\u2728"
+                },
+                {
+                    "role": "user",
+                    "content": "simats full form"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not sure what the full form of \u201cSIMATS\u201d is based on the documents I have. It would be best to check directly with the college office or their official website for the most accurate information. Let me know if there\u2019s anything else I can help with! \ud83c\udf93\u2728"
+                },
+                {
+                    "role": "user",
+                    "content": "did you know about krishna hostel"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## \ud83d\udcd8 Krishna Hostel\n\n- **Type:** Boys\u2019 hostel  \n- **Status:** One of the major hostels currently in operation at SIMATS College.  \n- **Other Boys\u2019 Hostels:** Noyal Hostel, Pallar Hostel, and the New Hostel (AC 3\u2011in\u20111 premium category).  \n\nIf you\u2019d like more details such as room availability, amenities, or contact information, let me know and I can help you find the right point of contact. \ud83c\udf93\u2728"
+                },
+                {
+                    "role": "user",
+                    "content": "ok give me the list of hostels in simats"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## \ud83d\udcd8 Hostels at SIMATS College  \n\n| Hostel | Type | Notes |\n|--------|------|-------|\n| **Krishna Hostel** | Boys | One of the major hostels currently in operation. |\n| **Noyal Hostel** | Boys | Another boys\u2019 hostel on campus. |\n| **Pallar Hostel** | Boys | Also part of the boys\u2019 hostel network. |\n| **New Hostel (AC 3\u2011in\u20111 Premium)** | Boys | AC\u2011equipped, 3\u2011in\u20111 premium category. |\n\n> **Note:** The documents I have don\u2019t mention any girls\u2019 hostels, so I\u2019m not sure if there are separate accommodations for female students. If you need that information, it\u2019s best to check the college\u2019s official website or contact the administration directly.  \n\nLet me know if you\u2019d like more details about any of these hostels or anything else! \ud83c\udf93\u2728"
+                }
+            ],
+            "updated_at": "2025-11-28T19:36:13.740877+00:00"
+        },
+        "web_user_9bxolu50cw4": {
+            "profile": {
+                "last_topic": "hi bot"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi bot"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I help you today?"
+                }
+            ],
+            "updated_at": "2025-11-29T03:41:31.489145+00:00"
+        },
+        "web_user_bvwf0dljw54": {
+            "profile": {
+                "last_topic": "do you know about circular building"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi bot"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I help you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "find the phone number of kalaivani facultty"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\u2022 Dr.\u202fKalaiyarasi \u2014 Phone: 637\u2011914\u20115197"
+                },
+                {
+                    "role": "user",
+                    "content": "do you know about circular building"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## Overview  \nThe campus features a **distinctive circular (or curved) building** that serves as the main fa\u00e7ade of the college.  \n- It showcases a modern design with a prominent \u201cSIMATS Engineering\u201d sign in large letters.  \n- The circular shape is a unique architectural element that sets the campus apart from typical rectangular blocks.  \n\n## Key Features  \n- **Central Hub**: Acts as a visual anchor for the campus, often used for orientation and campus tours.  \n- **Modern Design**: Combines contemporary aesthetics with functional space for administrative and academic activities.  \n- **Integration with Other Blocks**: Surrounding departmental wings (CSE, ECE, Mechanical, Civil) and facilities such as labs, libraries, and seminar halls connect to this central circular structure.  \n\nIf you\u2019d like more details about the building\u2019s interior layout or its specific uses, feel free to ask! \ud83c\udf93\u2728"
+                }
+            ],
+            "updated_at": "2025-11-29T03:44:34.005323+00:00"
+        },
+        "web_user_4g52etp41zc": {
+            "profile": {
+                "last_topic": "hi"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I help you with your campus questions today?"
+                }
+            ],
+            "updated_at": "2025-11-29T03:48:01.372950+00:00"
+        },
+        "web_user_b8a3lmhns4p": {
+            "profile": {
+                "last_topic": "tell me about circular building"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I help you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me about simats fee structure"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## Overview  \nSIMATS (School of Information Management and Applied Technology Studies) follows a **flat\u2011fee** model for its academic programs.  \n\n- **Annual Academic Fee:** \u20b91,60,000  \n- No percentage\u2011based concession slabs are applied.  \n- The fee covers tuition, academic resources, and access to campus facilities for the entire academic year.  \n\n## Additional Notes  \n- Students who excel academically may receive Founder\u2019s Day cash awards, but these are separate from the tuition fee and typically stay below \u20b91,00,000 unless the student is a top department ranker.  \n\nIf you need more details (e.g., payment deadlines, installment options, or scholarship eligibility), feel free to ask!"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me about circular building"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## Circular Building at SIMATS\n\n- **Design**  \n  - The campus\u2019s front fa\u00e7ade showcases a **distinctive circular/curved building** that gives the college a modern, eye\u2011catching look.  \n  - The main block prominently displays the \u201cSIMATS Engineering\u201d signage in large letters, making it a landmark for visitors and students alike.  \n\n- **Functionality**  \n  - This circular structure houses key administrative and academic spaces, including lecture halls, faculty offices, and collaborative work areas.  \n  - Its curved layout promotes natural light distribution and creates an open, welcoming environment for learning and interaction.  \n\n- **Campus Layout**  \n  - The circular building is part of a broader campus design that includes separate wings for each engineering branch (CSE, ECE, Mechanical, Civil).  \n  - Additional facilities such as labs, libraries, and seminar halls are arranged around these wings, ensuring easy navigation and accessibility.  \n\nFeel free to let me know if you\u2019d like more details about any specific department or facility!"
+                }
+            ],
+            "updated_at": "2025-11-29T03:50:56.434160+00:00"
+        }
+    }
+}

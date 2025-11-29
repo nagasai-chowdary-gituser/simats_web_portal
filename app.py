@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session, send_file, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, session, send_file, send_from_directory, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -10,6 +10,14 @@ import uuid
 from ai_capstone.ai_engine import generate_ai_content
 from ai_capstone.create_ai_docx import create_ai_docx
 from ai_capstone.utils.docx_filler import merge_docx
+
+# AI-BOT imports
+from src.config.config import Config
+from src.document_ingestion.document_processor import DocumentProcessor
+from src.vectorstore.vectorstore import VectorStore
+from src.graph_builder.graph_builder import GraphBuilder
+from src.memory.persistent_memory import UserMemoryManager
+import time
 
 
 app = Flask(__name__)
@@ -23,6 +31,49 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = "super_secret_key"
 
 db = SQLAlchemy(app)
+
+# ============================================================
+# ⭐⭐⭐ CHATBOT ENGINE SETUP (GLOBAL) ⭐⭐⭐
+# ============================================================
+
+# 1) LLM
+llm = Config.get_llm()
+
+# 2) Load college documents
+processor = DocumentProcessor(
+    chunk_size=Config.CHUNK_SIZE,
+    chunk_overlap=Config.CHUNK_OVERLAP
+)
+
+print("📄 Loading college documents for chatbot...")
+docs = processor.process(Config.DOCUMENT_SOURCES)
+print(f"✅ Loaded {len(docs)} chunks")
+
+# 3) Create vectorstore + retriever
+vs = VectorStore()
+vs.create_vectorstore(docs)
+retriever = vs.get_retriever()
+
+# 4) Graph cache (agentic / normal)
+graph_cache = {}
+
+def get_graph(agentic: bool):
+    if agentic in graph_cache:
+        return graph_cache[agentic]
+
+    graph = GraphBuilder(
+        retriever=retriever,
+        llm=llm,
+        use_agentic=agentic
+    ).build()
+
+    graph_cache[agentic] = graph
+    return graph
+
+# ============================================================
+# END CHATBOT ENGINE SETUP
+# ============================================================
+
 
 # -----------------------------
 # USER MODEL
@@ -388,6 +439,48 @@ def list_pdfs():
 @login_required()
 def download_pdf(filename):
     return send_from_directory(PDF_FOLDER, filename, as_attachment=True)
+
+
+# ============================================================
+# ⭐⭐⭐ FLOATING CHATBOT WIDGET API ⭐⭐⭐
+# ============================================================
+
+@app.route("/chatbot-ask", methods=["POST"])
+def chatbot_ask():
+    """
+    Endpoint used by chatbot_widget.js
+    """
+    data = request.get_json() or {}
+    user_message = data.get("message", "")
+    agentic_mode = data.get("agentic", True)
+    user_id = data.get("userId") or "anonymous"
+
+    graph = get_graph(agentic_mode)
+
+    # Fetch user context from persistent memory
+    user_context = UserMemoryManager.fetch_context(user_id)
+    state_payload = {
+        "question": user_message,
+        "user_id": user_id,
+        "memory": user_context.get("profile", {}),
+        "chat_history": user_context.get("chat_history", [])
+    }
+
+    try:
+        result = graph.invoke(state_payload)
+
+        if isinstance(result, dict):
+            answer = result.get("answer", "Sorry, I couldn't generate an answer.")
+        else:
+            answer = getattr(result, "answer", "Sorry, I couldn't generate an answer.")
+
+        time.sleep(0.6)  # typing delay
+
+    except Exception as e:
+        answer = f"⚠️ Backend error: {str(e)}"
+        print("❌ Error:", e)
+
+    return jsonify({"answer": answer})
 
 
 # -----------------------------
