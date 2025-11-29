@@ -36,7 +36,7 @@ Use formal academic English, single continuous paragraph. Do NOT add headings.
         "Chapter 1": f"""
 Write CHAPTER 1: INTRODUCTION for the capstone project titled "{title}".
 
-Target length: around 3–4 Word pages (roughly 600 words).
+Target length: around 3–4 Word pages (roughly 700-800 words).
 
 Structure the content with these numbered subheadings, EXACTLY in this format:
 
@@ -54,7 +54,7 @@ Just plain paragraphs under each subheading.
         "Chapter 2": f"""
 Write CHAPTER 2: PROBLEM ANALYSIS AND REVIEW for the capstone titled "{title}".
 
-Target length: around 3–4 Word pages (roughly 600 words).
+Target length: around 3–4 Word pages (roughly 700-800 words).
 
 Use EXACTLY these subheadings:
 
@@ -72,7 +72,7 @@ No bullet points. Only paragraphs.
         "Chapter 3": f"""
 Write CHAPTER 3: SYSTEM DESIGN AND ARCHITECTURE for the capstone titled "{title}".
 
-Target length: around 3 Word pages (roughly 600 words).
+Target length: around 3 Word pages (roughly 700-800 words).
 
 Use EXACTLY these subheadings:
 
@@ -91,7 +91,7 @@ No bullet lists.
         "Chapter 4": f"""
 Write CHAPTER 4: IMPLEMENTATION AND RESULTS for the capstone titled "{title}".
 
-Target length: around 3 Word pages (roughly 600 words).
+Target length: around 3 Word pages (roughly 700-800 words).
 
 Use EXACTLY these subheadings:
 
@@ -109,7 +109,7 @@ Focus on technical clarity. No bullet points.
         "Chapter 5": f"""
 Write CHAPTER 5: LEARNING, REFLECTION AND PROFESSIONAL ETHICS for the capstone titled "{title}".
 
-Target length: around 3 Word pages (roughly 600 words).
+Target length: around 3 Word pages (roughly 700-800 words).
 
 Use EXACTLY these subheadings:
 
@@ -127,7 +127,7 @@ No bullet lists.
         "Chapter 6": f"""
 Write CHAPTER 6: CONCLUSION AND FUTURE SCOPE for the capstone titled "{title}".
 
-Target length: around 2–3 Word pages (roughly 500 words).
+Target length: around 2–3 Word pages (roughly 550-600 words).
 
 Use EXACTLY these subheadings:
 

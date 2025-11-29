@@ -10,7 +10,7 @@ from docx.oxml import OxmlElement
 # ============================================================
 
 TOC_STRUCTURE = [
-    ("Abstract", ["—"], "2"),
+    ("Abstract", ["—"], "6"),
 
     ("Chapter 1", [
         "1.1 Background Information",
@@ -18,7 +18,7 @@ TOC_STRUCTURE = [
         "1.3 Objectives of the Study",
         "1.4 Scope of the Project",
         "1.5 Methodology Overview"
-    ], "6–9"),
+    ], "7–11"),
 
     ("Chapter 2", [
         "2.1 Problem Analysis",
@@ -27,7 +27,7 @@ TOC_STRUCTURE = [
         "2.4 Challenges Identified",
         "2.5 Supporting Research",
         "2.6 Summary"
-    ], "10–12"),
+    ], "12-16"),
 
     ("Chapter 3", [
         "3.1 System Design",
@@ -38,7 +38,7 @@ TOC_STRUCTURE = [
         "3.6 Engineering Standards",
         "3.7 Design Justification",
         "3.8 Summary"
-    ], "13–16"),
+    ], "17-20"),
 
     ("Chapter 4", [
         "4.1 Implementation Details",
@@ -47,7 +47,7 @@ TOC_STRUCTURE = [
         "4.4 Performance Evaluation",
         "4.5 Challenges Encountered",
         "4.6 Summary"
-    ], "17–19"),
+    ], "21-24"),
 
     ("Chapter 5", [
         "5.1 Learning Outcomes",
@@ -57,7 +57,7 @@ TOC_STRUCTURE = [
         "5.5 Industry Exposure",
         "5.6 Personal Growth",
         "5.7 Summary"
-    ], "20–23"),
+    ], "25-28"),
 
     ("Chapter 6", [
         "6.1 Summary of Work",
@@ -66,10 +66,10 @@ TOC_STRUCTURE = [
         "6.4 Limitations",
         "6.5 Future Scope",
         "6.6 Conclusion"
-    ], "24–26"),
+    ], "29-31"),
 
-    ("References", ["—"], "27"),
-    ("Appendices", ["—"], "28–30")
+    ("References", ["—"], "32"),
+    ("Appendices", ["—"], "33")
 ]
 
 # ============================================================
@@ -172,14 +172,14 @@ def insert_table_of_contents(doc):
 def create_ai_docx(sections: dict, output_path: str):
     doc = Document()
 
-    # 1) Insert TOC
+    # 1) Insert TOC (do not touch)
     insert_table_of_contents(doc)
     doc.add_page_break()
 
     # 2) CHAPTERS IN FIXED ORDER
     for chapter_title, _, _ in TOC_STRUCTURE:
 
-        # Find matching AI-generated key for this chapter
+        # Find matching AI-generated key
         real_key = None
         for key in sections.keys():
             if key.lower().startswith(chapter_title.lower()):
@@ -192,7 +192,9 @@ def create_ai_docx(sections: dict, output_path: str):
         content = sections[real_key]
         cleaned = clean_text(content)
 
+        # ---------------------------------------------------
         # SPECIAL — REFERENCES
+        # ---------------------------------------------------
         if chapter_title.lower() == "references":
             heading = doc.add_paragraph("REFERENCES")
             set_style(heading, bold=True, size=16, align="center")
@@ -207,10 +209,21 @@ def create_ai_docx(sections: dict, output_path: str):
             continue
 
         # ---------------------------------------------------
-        # SINGLE-LINE CHAPTER HEADING (NO DUPLICATE)
-        # e.g. "CHAPTER 1: INTRODUCTION"
+        # FINAL BOSS — SINGLE-LINE CHAPTER HEADING
+        # Always prints:  CHAPTER X: TITLE
+        # Never duplicates
         # ---------------------------------------------------
-        heading_text = real_key.upper()
+        if ":" in real_key:
+            # AI generated correct heading
+            heading_text = real_key.upper()
+        else:
+            # Extract title from content first line
+            first_line = cleaned.split("\n")[0].strip()
+            if ":" in first_line:
+                heading_text = first_line.upper()
+            else:
+                # fallback if no title found
+                heading_text = f"{real_key.upper()}: INTRODUCTION"
 
         heading = doc.add_paragraph()
         run = heading.add_run(heading_text)
@@ -218,25 +231,32 @@ def create_ai_docx(sections: dict, output_path: str):
         run.font.name = "Times New Roman"
         run.font.size = Pt(16)
         heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
-        doc.add_paragraph()
 
+        doc.add_paragraph()  # spacing
 
         # ---------------------------------------------------
-        # CONTENT
+        # CONTENT SECTION
         # ---------------------------------------------------
         for line in cleaned.split("\n"):
             line = line.strip()
             if not line:
                 continue
 
-            # Bold subheadings (1.1, 1.2 ...)
+            # Skip duplicate headings inside content
+            if line.lower().startswith("chapter"):
+                continue
+
+            # Bold subheadings: 1.1, 1.2, 3.4 etc.
             if re.match(r"^\d+\.\d+\s", line):
                 p = doc.add_paragraph(line)
                 set_style(p, bold=True, size=12, align="left")
+
             else:
                 p = doc.add_paragraph(line)
                 set_style(p, bold=False, size=12, align="justify")
 
         doc.add_page_break()
 
+    # SAVE FILE
     doc.save(output_path)
+

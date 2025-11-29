@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI Tools Explorer</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Background stars */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+}
+.stars span{
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    animation: floatUp 12s linear infinite;
+}
+@keyframes floatUp{
+    from{ transform: translateY(110vh) scale(0.3); opacity:0.5; }
+    to{ transform: translateY(-10vh) scale(1); opacity:1; }
+}
+
+/* Title */
+.title {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 38px;
+    font-weight: 700;
+    text-shadow: 0 0 15px rgba(255,255,255,0.5);
+}
+
+/* Search bar */
+.search-box {
+    width: 60%;
+    margin: 30px auto;
+}
+.search-box input{
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    border: none;
+    background: rgba(255,255,255,0.18);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    backdrop-filter: blur(10px);
+}
+.search-box input::placeholder { color: #ddd; }
+
+/* Categories */
+.categories {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.category {
+    padding: 12px 20px;
+    margin: 6px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    transition: 0.3s;
+}
+.category:hover {
+    transform: scale(1.07);
+    border-color: #ff9a00;
+}
+
+/* Tools Grid */
+.tools-grid {
+    width: 80%;
+    margin: 30px auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.tool-card {
+    padding: 25px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.20);
+    transition: 0.3s;
+    cursor: pointer;
+}
+.tool-card:hover {
+    transform: scale(1.06);
+    border-color:#ff9a00;
+    box-shadow:0 0 20px rgba(255,154,0,0.7);
+}
+
+/* Button */
+.home-btn {
+    display: block;
+    margin: 40px auto;
+    padding: 15px 25px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.25);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    width: 200px;
+    text-align: center;
+}
+.home-btn:hover{
+    transform: scale(1.07);
+    border-color:#ff9a00;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars">
+    <span style="left:10%; animation-duration:8s;"></span>
+    <span style="left:30%; animation-duration:10s;"></span>
+    <span style="left:60%; animation-duration:9s;"></span>
+    <span style="left:80%; animation-duration:11s;"></span>
+</div>
+
+<h1 class="title">AI Tools Explorer</h1>
+
+<!-- Search -->
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search any AI tool..." onkeyup="filterTools()">
+</div>
+
+<!-- Categories -->
+<div class="categories">
+    <div class="category" onclick="filterCategory('all')">All</div>
+    <div class="category" onclick="filterCategory('research')">Research</div>
+    <div class="category" onclick="filterCategory('writing & editing')">Writing</div>
+    <div class="category" onclick="filterCategory('coding & programming')">Coding</div>
+    <div class="category" onclick="filterCategory('design & presentation')">Design</div>
+    <div class="category" onclick="filterCategory('note-taking & study')">Study</div>
+    <div class="category" onclick="filterCategory('mathematics & science')">Math</div>
+</div>
+
+<!-- Tools Grid (REQUIRED) -->
+<div class="tools-grid" id="toolsGrid"></div>
+
+<!-- Load JSON + Build Cards -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("/static/data/ai_tools.json")
+        .then(res => res.json())
+        .then(data => loadTools(data.ai_tools_for_students))
+})
+
+function loadTools(categories) {
+    const grid = document.getElementById("toolsGrid");
+    grid.innerHTML = "";
+
+    categories.forEach(cat => {
+        let catTag = cat.category.toLowerCase();
+
+        cat.tools.forEach(tool => {
+            let card = document.createElement("div");
+            card.classList.add("tool-card");
+
+            card.setAttribute("data-category", catTag);
+            card.setAttribute("data-name", tool.toLowerCase());
+
+            card.innerHTML = `
+                <h2>${tool}</h2>
+                <p>${cat.category}</p>
+            `;
+
+            grid.appendChild(card);
+        });
+    });
+}
+
+function filterTools() {
+    let text = document.getElementById("searchInput").value.toLowerCase();
+    let tools = document.querySelectorAll(".tool-card");
+
+    tools.forEach(t => {
+        let name = t.getAttribute("data-name");
+        t.style.display = name.includes(text) ? "block" : "none";
+    });
+}
+
+function filterCategory(cat) {
+    let tools = document.querySelectorAll(".tool-card");
+
+    tools.forEach(t => {
+        let category = t.getAttribute("data-category");
+
+        if (cat === "all" || category === cat.toLowerCase()) {
+            t.style.display = "block";
+        } else {
+            t.style.display = "none";
+        }
+    });
+}
+</script>
+
+<a href="/home" class="home-btn">⬅ Go Home</a>
+
+</body>
+</html>

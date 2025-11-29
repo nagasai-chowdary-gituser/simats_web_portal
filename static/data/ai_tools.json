@@ -1,0 +1,94 @@
+{
+  "ai_tools_for_students": [
+    {
+      "category": "research",
+      "tools": [
+        "Perplexity AI",
+        "Semantic Scholar",
+        "Connected Papers",
+        "Elicit",
+        "Zotero",
+        "Mendeley",
+        "EndNote",
+        "Research Rabbit",
+        "Scite",
+        "NotebookLM"
+      ]
+    },
+    {
+      "category": "Writing & Editing",
+      "tools": [
+        "ChatGPT",
+        "ChatGPT-4o",
+        "Grammarly",
+        "QuillBot",
+        "Wordtune",
+        "LanguageTool",
+        "Hemingway Editor",
+        "Sudowrite",
+        "Turnitin",
+        "ProWritingAid"
+      ]
+    },
+    {
+      "category": "Coding & Programming",
+      "tools": [
+        "GitHub Copilot",
+        "Cursor IDE",
+        "Codeium",
+        "Replit Ghostwriter",
+        "Tabnine",
+        "Amazon Q Developer",
+        "JetBrains AI Assistant",
+        "Windsurf AI",
+        "Pieces for Developers",
+        "AskCodi"
+      ]
+    },
+    {
+      "category": "Design & Presentation",
+      "tools": [
+        "Canva",
+        "Canva Magic Design",
+        "Microsoft Designer",
+        "Beautiful.ai",
+        "Gamma",
+        "Tome",
+        "Figma",
+        "FigJam AI",
+        "DALL·E",
+        "SlidesAI"
+      ]
+    },
+    {
+      "category": "Note-Taking & Study",
+      "tools": [
+        "Notion AI",
+        "Mem AI",
+        "Obsidian with AI plugins",
+        "NotebookLM",
+        "Readwise Reader",
+        "Quizlet Q-Chat",
+        "Anki",
+        "Explainpaper",
+        "Fireflies.ai",
+        "Otter.ai"
+      ]
+    },
+    {
+      "category": "Mathematics & Science",
+      "tools": [
+        "Wolfram Alpha",
+        "Wolfram ChatGPT Plugin",
+        "Photomath",
+        "Mathway",
+        "Symbolab",
+        "Desmos",
+        "GeoGebra",
+        "SciSpace",
+        "Labster",
+        "Microsoft Math Solver"
+      ]
+    }
+  ]
+}

@@ -272,6 +272,134 @@
                 }
             ],
             "updated_at": "2025-11-29T03:50:56.434160+00:00"
+        },
+        "2": {
+            "profile": {
+                "last_topic": "cls"
+            },
+            "chat_history": [
+                {
+                    "role": "user",
+                    "content": "hi"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!"
+                },
+                {
+                    "role": "user",
+                    "content": "how are you"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! I'm doing great, thanks for asking. How can I help you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "where simats collage located"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n## \ud83d\udccd Location of SIMATS College  \nSIMATS College is situated at:  \n\n**Saveetha Nagar, Thandalam, Chennai \u2013 602105**  \n\nFeel free to visit or contact the college for more details!"
+                },
+                {
+                    "role": "user",
+                    "content": "tell me the mobile number of (dr c chandravathi) and tell me is this faculty is strict or loose"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not finding any information on a faculty member named **Dr. C Chandravathi** in the documents I have. I\u2019m not sure about their contact details or teaching style. It might be best to reach out to the college\u2019s administration or the relevant department for accurate information."
+                },
+                {
+                    "role": "user",
+                    "content": "ok then tell me her number"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not finding any record of a faculty member named **Dr. C Chandravathi** in the documents I have, so I don\u2019t have a mobile number to share. It might be best to reach out to the college\u2019s administration or the relevant department for accurate contact details."
+                },
+                {
+                    "role": "user",
+                    "content": "give me the number of dr n vijaya"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not finding any record of a faculty member named **Dr.\u202fN\u202fVijaya** in the documents I have. I don\u2019t have a phone number to share for that name. It might be best to reach out to the college\u2019s administration or the relevant department for accurate contact details."
+                },
+                {
+                    "role": "user",
+                    "content": "telle me how many faculty number with you just tell me count"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not sure about the exact count of faculty members from the documents I have. It would be best to check the college\u2019s official website or contact the administration office for the most up\u2011to\u2011date figure."
+                },
+                {
+                    "role": "user",
+                    "content": "give me the number of kalaivani"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n\u2022 **Dr. Kalathi\u202fV** \u2014 Phone: 994\u202f085\u202f5711  \n\nIf you\u2019re looking for a different \u201cKalaivani\u201d or need additional contact details, feel free to let me know!"
+                },
+                {
+                    "role": "user",
+                    "content": "i want  kalaivani"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not sure what specific information you\u2019re looking for regarding \u201ckalaivani.\u201d If you need contact details or any other specific info, just let me know and I\u2019ll do my best to help!"
+                },
+                {
+                    "role": "user",
+                    "content": "i want kalaivani's number"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n\u2022 **Dr. Kalathi\u202fV** \u2014 Phone: 994\u202f085\u202f5711"
+                },
+                {
+                    "role": "user",
+                    "content": "hi bot"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I assist you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "do you know about shahid student give his reg no"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! I\u2019m not sure about Shahid\u2019s registration number. It\u2019s best to reach out to the college administration or the registrar\u2019s office for that information. Let me know if there\u2019s anything else I can help with!"
+                },
+                {
+                    "role": "user",
+                    "content": "hi iam nagasai"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! \ud83d\udc4b How can I assist you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "how much fees for cse ai&ds branch"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\n### Fees for the CSE AI & DS Branch  \nThe fee structure for the Computer Science & Engineering (AI & Data Science) specialization is tiered based on the student\u2019s qualifying percentage. The highest premium fee band applies to this branch.  \n\n| Qualifying Percentage | Annual Fee (\u20b9) |\n|-----------------------|----------------|\n| Above 90% | \u20b92,50,000 |\n| 80\u202f%\u201389\u202f% | \u20b93,02,500 |\n| 70\u202f%\u201379\u202f% | \u20b93,55,000 |\n| 65\u202f%\u201369\u202f% | \u20b94,07,500 |\n| 60\u202f%\u201364\u202f% | \u20b94,60,000 (approx.) |\n\n> **Note:** These figures are for the academic year and may be subject to annual revisions. If you need the exact fee for a specific year or additional details (e.g., hostel, lab, or library charges), let me know!"
+                },
+                {
+                    "role": "user",
+                    "content": "cls"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \nIt looks like you typed \u201ccls.\u201d If you\u2019d like to clear the chat or start fresh, just let me know and I\u2019ll reset the context for you. If you meant something else, feel free to clarify!"
+                }
+            ],
+            "updated_at": "2025-11-29T11:23:48.911898+00:00"
         }
     }
 }

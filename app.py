@@ -5,6 +5,7 @@ import os
 import re
 from functools import wraps
 import uuid
+import json
 
 # Capstone generator imports
 from ai_capstone.ai_engine import generate_ai_content
@@ -18,9 +19,13 @@ from src.vectorstore.vectorstore import VectorStore
 from src.graph_builder.graph_builder import GraphBuilder
 from src.memory.persistent_memory import UserMemoryManager
 import time
+# Payments Gateway
+import razorpay
 
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+
 
 # -----------------------------
 # DB CONFIG
@@ -57,6 +62,7 @@ retriever = vs.get_retriever()
 # 4) Graph cache (agentic / normal)
 graph_cache = {}
 
+
 def get_graph(agentic: bool):
     if agentic in graph_cache:
         return graph_cache[agentic]
@@ -87,16 +93,19 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     security_bike = db.Column(db.String(120), nullable=True)
 
+
 # -----------------------------
 # CREATE ADMIN IF NOT EXISTS
 # -----------------------------
 admin_created = False
+
 
 def extract_reg_no(email: str):
     try:
         return email.split(".")[0]
     except:
         return ""
+
 
 @app.before_request
 def create_admin_once():
@@ -121,20 +130,57 @@ def create_admin_once():
 
         admin_created = True
 
+
 # -----------------------------
-# HELPERS
+# AUTH HELPERS (DECORATORS)
 # -----------------------------
-def login_required(admin_only=False):
-    def decorator(f):
-        @wraps(f)
-        def wrapper(*args, **kwargs):
-            if "user_id" not in session:
-                return redirect(url_for("login"))
-            if admin_only and not session.get("is_admin"):
-                return "❌ Access Denied – Admin Only"
-            return f(*args, **kwargs)
-        return wrapper
-    return decorator
+def login_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return wrapper
+
+
+def admin_required(f):
+    @wraps(f)
+    def wrapper(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login"))
+        if not session.get("is_admin"):
+            return "❌ Access Denied – Admin Only"
+        return f(*args, **kwargs)
+    return wrapper
+
+
+# -----------------------------
+# GLOBAL FIREWALL – BLOCK ALL WITHOUT LOGIN
+# -----------------------------
+@app.before_request
+def block_unauthenticated_access():
+    """
+    This runs BEFORE every request.
+    If user is not logged in, only allow:
+      - login
+      - register
+      - forgot_password
+      - static files
+    Everything else → redirect to /login
+    """
+    # allow static files & OPTIONS preflight
+    if request.endpoint == "static" or request.method == "OPTIONS":
+        return
+
+    open_endpoints = {"login", "register", "forgot_password"}
+
+    # If route is open, allow
+    if request.endpoint in open_endpoints:
+        return
+
+    # For all other endpoints, require login
+    if "user_id" not in session:
+        return redirect(url_for("login"))
 
 
 # -----------------------------
@@ -142,21 +188,26 @@ def login_required(admin_only=False):
 # -----------------------------
 @app.route("/")
 def default_route():
+    session.clear()
+    # Even if someone hits "/", firewall will redirect if not logged in
     return redirect(url_for("login"))
 
+
 @app.route("/home")
-@login_required()
+@login_required
 def index():
     return render_template("index.html")
+
 
 # -----------------------------
 # USER PROFILE PAGE
 # -----------------------------
 @app.route("/profile")
-@login_required()
+@login_required
 def profile():
     user = User.query.get(session["user_id"])
     return render_template("profile.html", user=user)
+
 
 # -----------------------------
 # REGISTER
@@ -207,6 +258,7 @@ def register():
 # -----------------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    session.clear()
     message = ""
     shake = False
 
@@ -231,6 +283,7 @@ def login():
         return redirect(url_for("index"))
 
     return render_template("login.html", message=message, shake=shake)
+
 
 # -----------------------------
 # FORGOT PASSWORD
@@ -259,11 +312,12 @@ def forgot_password():
 
     return render_template("forgot_password.html", message=message)
 
+
 # -----------------------------
 # USER CHANGE PASSWORD
 # -----------------------------
 @app.route("/change_password", methods=["GET", "POST"])
-@login_required()
+@login_required
 def change_password():
     message = ""
     if request.method == "POST":
@@ -287,11 +341,12 @@ def change_password():
 
     return render_template("change_password.html", message=message)
 
+
 # -----------------------------
 # ADMIN PAGE WITH SEARCH + COUNT
 # -----------------------------
 @app.route("/admin")
-@login_required(admin_only=True)
+@admin_required
 def admin_page():
 
     search = request.args.get("search", "").strip()
@@ -310,16 +365,17 @@ def admin_page():
 # LOGOUT
 # -----------------------------
 @app.route("/logout")
-@login_required()
+@login_required
 def logout():
     session.clear()
     return redirect(url_for("login"))
+
 
 # -----------------------------
 # ATTENDANCE PAGE
 # -----------------------------
 @app.route("/attendance", methods=["GET", "POST"])
-@login_required()
+@login_required
 def attendance_calc():
     if request.method == "POST":
         try:
@@ -333,11 +389,12 @@ def attendance_calc():
 
     return render_template("attendance.html", results="")
 
+
 # -----------------------------
 # CGPA PAGE
 # -----------------------------
 @app.route("/cgpa", methods=["GET", "POST"])
-@login_required()
+@login_required
 def cgpa_calc():
     if request.method == "POST":
 
@@ -379,14 +436,18 @@ def cgpa_calc():
 
     return render_template("cgpa.html", results="", words="")
 
+
 # -----------------------------
 # CAPSTONE FORM
 # -----------------------------
 @app.route("/capstone")
+@login_required
 def capstone_form():
     return render_template("capstone_form.html")
 
+
 @app.route("/generate_capstone", methods=["POST"])
+@login_required
 def generate_capstone():
 
     data = request.get_json()
@@ -407,7 +468,7 @@ def generate_capstone():
     docx_dir = os.path.join(base_dir, "ai_capstone", "templates_docx")
     fixed_pages = [
         os.path.join(docx_dir, "fixed_front_pages.docx")
-        ]
+    ]
 
     final_docx = os.path.join(output_dir, "final_capstone.docx")
     merge_docx(fixed_pages + [ai_docx_path], final_docx)
@@ -423,11 +484,11 @@ def generate_capstone():
 # ============================================================
 # ⚡ PDF DOWNLOAD SYSTEM (FINAL BOSS ADDED)
 # ============================================================
-
 PDF_FOLDER = os.path.join(BASE_DIR, "static", "pdfs")
 
+
 @app.route("/pdfs")
-@login_required()
+@login_required
 def list_pdfs():
     if not os.path.exists(PDF_FOLDER):
         os.makedirs(PDF_FOLDER)
@@ -435,8 +496,9 @@ def list_pdfs():
     pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.lower().endswith(".pdf")]
     return render_template("pdf_list.html", pdfs=pdf_files)
 
+
 @app.route("/download/<filename>")
-@login_required()
+@login_required
 def download_pdf(filename):
     return send_from_directory(PDF_FOLDER, filename, as_attachment=True)
 
@@ -444,20 +506,16 @@ def download_pdf(filename):
 # ============================================================
 # ⭐⭐⭐ FLOATING CHATBOT WIDGET API ⭐⭐⭐
 # ============================================================
-
 @app.route("/chatbot-ask", methods=["POST"])
+@login_required
 def chatbot_ask():
-    """
-    Endpoint used by chatbot_widget.js
-    """
     data = request.get_json() or {}
     user_message = data.get("message", "")
     agentic_mode = data.get("agentic", True)
-    user_id = data.get("userId") or "anonymous"
+    user_id = str(session.get("user_id") or "anonymous")   # 🔥 FIXED
 
     graph = get_graph(agentic_mode)
 
-    # Fetch user context from persistent memory
     user_context = UserMemoryManager.fetch_context(user_id)
     state_payload = {
         "question": user_message,
@@ -474,13 +532,40 @@ def chatbot_ask():
         else:
             answer = getattr(result, "answer", "Sorry, I couldn't generate an answer.")
 
-        time.sleep(0.6)  # typing delay
+        time.sleep(0.6)
 
     except Exception as e:
         answer = f"⚠️ Backend error: {str(e)}"
         print("❌ Error:", e)
 
     return jsonify({"answer": answer})
+
+### For Staff Numbers
+FACULTY_FILE = os.path.join(BASE_DIR, "static", "data", "final_staff_numbers_fix.json")
+
+@app.route("/faculty")
+@login_required
+def faculty_page():
+    try:
+        with open(FACULTY_FILE, "r", encoding="utf-8") as f:
+            faculty_list = json.load(f)
+    except Exception as e:
+        faculty_list = []
+        print("Error loading faculty JSON:", e)
+
+    return render_template("faculty.html", faculty=faculty_list)
+### ai tools for students
+@app.route("/ai-tools")
+@login_required
+def ai_tools():
+    import json, os
+    tools_file = os.path.join(BASE_DIR, "static", "data", "ai_tools.json")
+
+    with open(tools_file, "r", encoding="utf-8") as f:
+        tools = json.load(f)
+
+    return render_template("ai_tools.html", tools=tools)
+
 
 
 # -----------------------------

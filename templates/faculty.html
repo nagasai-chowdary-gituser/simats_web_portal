@@ -1,0 +1,206 @@
+<!-- ⭐ BACKGROUND STARS LIKE OTHER PAGES -->
+<div class="stars">
+    <span style="left:10%; animation-duration:7s;"></span>
+    <span style="left:30%; animation-duration:9s;"></span>
+    <span style="left:50%; animation-duration:6s;"></span>
+    <span style="left:70%; animation-duration:8s;"></span>
+    <span style="left:90%; animation-duration:10s;"></span>
+</div>
+
+<h1 class="title">SIMATS Faculty Directory</h1>
+
+<div class="faculty-box">
+    <h2>Search Faculty :-</h2>
+
+    <input type="text" id="searchInput" placeholder="Search faculty..." onkeyup="filterFaculty()">
+
+    <ul id="facultyList">
+        {% for f in faculty %}
+        <li class="faculty-item">
+            <span class="name">{{ f["FACULTY NAME"] }}</span>
+            <span class="phone">{{ f["PHONE NUMBER"] }}</span>
+        </li>
+        {% endfor %}
+    </ul>
+    <button class="home-btn" onclick="window.location.href='/home'">⬅ Go To Home</button>
+
+</div>
+
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+
+    body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+        font-family: "Poppins", sans-serif;
+        height: 100vh;
+        overflow: hidden;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    /* 🌟 FLOATING STARS */
+    .stars {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+    .stars span {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: rgba(255,255,255,0.7);
+        border-radius: 50%;
+        animation: starsUp 12s linear infinite;
+    }
+    @keyframes starsUp {
+        from { transform: translateY(110vh) scale(0.4); opacity: 0.4; }
+        to   { transform: translateY(-10vh) scale(1); opacity: 1; }
+    }
+
+    .title {
+        font-size: 35px;
+        margin-top: 30px;
+        z-index: 2;
+        text-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+
+    /* ⭐ MAIN BOX */
+    .faculty-box {
+        width: 39.9999%;
+        max-width: 900px;
+        background: rgba(255,255,255,0.10);
+        border-radius: 25px;
+        padding: 30px;
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.25);
+        box-shadow: 0 0 35px rgba(0,0,0,0.55);
+        position: relative;
+        z-index: 2;
+        margin-top: 30px;
+    }
+
+    .faculty-box::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        border-radius: 25px;
+        background: linear-gradient(135deg,#ff512f,#dd2476,#1e90ff,#ff9a00);
+        background-size: 400% 400%;
+        animation: glow 7s ease infinite;
+        z-index: -1;
+        opacity: 0.45;
+        filter: blur(10px);
+    }
+
+    @keyframes glow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    h2{
+        margin-top: 1px;
+    }
+
+    /* SEARCH BOX */
+    #searchInput {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.25);
+        background: rgba(255,255,255,0.15);
+        color: white;
+        font-size: 16px;
+    }
+    #searchInput::placeholder {
+        color: #e2e8f0;
+    }
+
+    /* LIST ITEMS */
+    #facultyList {
+        list-style: none;
+        padding: 0;
+        height: 400px;
+        margin: 0;
+        max-height: 420px;
+        overflow-y: auto;
+    }
+
+    .faculty-item {
+        display: flex;
+        height: 20px;
+        width: 560px;
+        justify-content: space-between;
+        padding: 15px;
+        margin-bottom: 12px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.15);
+        transition: 0.2s;
+    }
+
+    .faculty-item:hover {
+        transform: scale(1.02);
+        border-color: #ff9a00;
+        box-shadow: 0 0 15px rgba(255,154,0,0.7);
+    }
+
+    .name {
+        font-weight: 600;
+        font-size: 18px;
+        color: #fff;
+    }
+    .phone {
+        font-weight: 700;
+        font-size: 17px;
+        color: #fbbf24;
+    }
+    .home-btn {
+    width: 98%;
+    padding: 14px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    backdrop-filter: blur(12px);
+
+    transition: 0.3s;
+    text-shadow: 0 0 8px rgba(255,255,255,0.5);
+    box-shadow: 0 0 18px rgba(0,0,0,0.35);
+}
+
+.home-btn:hover {
+    transform: scale(1.05);
+    background: rgba(255,255,255,0.25);
+    border-color: #ff9a00;
+    box-shadow: 0 0 25px rgba(255,154,0,0.8);
+}
+
+</style>
+
+
+<script>
+function filterFaculty() {
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let items = document.querySelectorAll(".faculty-item");
+
+    items.forEach(item => {
+        let name = item.querySelector(".name").innerText.toLowerCase();
+        item.style.display = name.includes(input) ? "flex" : "none";
+    });
+}
+</script>

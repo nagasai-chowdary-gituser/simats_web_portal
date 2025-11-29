@@ -54,18 +54,23 @@
             text-shadow: 0 0 15px rgba(255,255,255,0.4);
         }
 
+        /* ⭐ NEW GRID LAYOUT ⭐ */
         .container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            grid-auto-rows: 200px; /* auto height */
+            gap: 55px;
+            width: 900px;
+            margin-top: 19%;
             z-index: 3;
         }
 
+        /* Box style same as before */
         .box {
-            width: 280px;
-            height: 181px;
+            width: 100%;
+            height: 100%;
             border-radius: 25px;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
             background: rgba(255,255,255,0.10);
             backdrop-filter: blur(16px);
@@ -102,8 +107,8 @@
         }
 
         .box h2 {
-            margin-top: 60px;
-            font-size: 26px;
+            margin-top: 40px;
+            font-size: 24px;
             color: #fff;
             text-shadow: 0 0 12px rgba(255,255,255,0.5);
         }
@@ -138,9 +143,8 @@
             transform: scale(1.05);
         }
 
-        .change-btn { bottom: 20px; }
-        .profile-btn { bottom: 70px; }
-        .Logout-btn { bottom: 120px;}
+        .profile-btn { bottom: 20px; }
+        .Logout-btn { bottom: 70px;}
     </style>
 </head>
 <body>
@@ -158,40 +162,46 @@
     <!-- Floating PROFILE Button -->
     <a href="/profile" class="float-btn profile-btn">My Profile 👤</a>
 
-    <!-- Floating Change Password Button -->
-    <a href="/change_password" class="float-btn change-btn">Change Password</a>
-
     <!-- Floating Log Out Button-->
     <a href="/login" class="float-btn Logout-btn">Log Out</a>
 
+    <!-- ⭐ NEW 3×2 GRID ⭐ -->
     <div class="container">
 
-        <!-- Attendance -->
         <div class="box" onclick="window.location.href='/attendance'">
             <h2>Attendance</h2>
             <p>Calculate your attendance percentage</p>
         </div>
 
-        <!-- CGPA -->
         <div class="box" onclick="window.location.href='/cgpa'">
             <h2>CGPA</h2>
             <p>Calculate your SIMATS-based CGPA</p>
         </div>
 
-        <!-- Capstone Maker -->
         <div class="box" onclick="window.location.href='/capstone'">
             <h2>Capstone Maker</h2>
             <p>Create Your Simats Capstone Project Report</p>
         </div>
 
-        <!-- Concept Maps -->
         <div class="box" onclick="window.location.href='/pdfs'">
             <h2>Concept Maps</h2>
-            <p>Simats Concept Maps Avilable Here</p>
+            <p>Simats Concept Maps Available Here</p>
         </div>
+
+        <div class="box" onclick="window.location.href='/faculty'">
+            <h2>Faculty Numbers</h2>
+            <p>Search The Faculty Numbers</p>
+        </div>
+        <div class="box" onclick="window.location.href='/ai-tools'">
+            <h2>AI-Tools For Students</h2>
+            <p>Here You Can Discover The Ai Tools</p>
+        </div>
+        <!-- Empty placeholder for perfect 3×2 alignment -->
+        <div class="box" style="visibility:hidden;"></div>
+
     </div>
 
-    <!-- ⭐⭐⭐ FLOATING CHATBOT WIDGET (ADDED HERE) ⭐⭐⭐ -->
+    <!-- Chatbot Widget -->
     <link rel="stylesheet" href="{{ url_for('static', filename='chatbot_widget.css') }}">
     <script src="{{ url_for('static', filename='chatbot_widget.js') }}"></script>
 
