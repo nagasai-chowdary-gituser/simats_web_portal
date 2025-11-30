@@ -38,6 +38,15 @@ app.secret_key = "super_secret_key"
 db = SQLAlchemy(app)
 
 # ============================================================
+# ⭐⭐⭐ RAZORPAY PAYMENT CONFIG ⭐⭐⭐
+# ============================================================
+RAZORPAY_KEY_ID = "rzp_test_Rlssl9MYDdeGpC"       # <-- put your Key ID
+RAZORPAY_KEY_SECRET = "turKE03kkV1EAU6AQNG2UDEq"     # <-- put your Secret Key
+
+razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+
+
+# ============================================================
 # ⭐⭐⭐ CHATBOT ENGINE SETUP (GLOBAL) ⭐⭐⭐
 # ============================================================
 
@@ -456,15 +465,18 @@ def generate_capstone():
 
     title = data["title"].strip()
 
+    # 1. Generate AI content
     sections = generate_ai_content(title)
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "ai_capstone", "output")
     os.makedirs(output_dir, exist_ok=True)
 
+    # 2. Create AI chapter DOCX
     ai_docx_path = os.path.join(output_dir, "ai_chapters.docx")
     create_ai_docx(sections, ai_docx_path)
 
+    # 3. Merge with front pages
     docx_dir = os.path.join(base_dir, "ai_capstone", "templates_docx")
     fixed_pages = [
         os.path.join(docx_dir, "fixed_front_pages.docx")
@@ -473,12 +485,16 @@ def generate_capstone():
     final_docx = os.path.join(output_dir, "final_capstone.docx")
     merge_docx(fixed_pages + [ai_docx_path], final_docx)
 
-    return send_file(
-        final_docx,
-        as_attachment=True,
-        mimetype="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        download_name="Capstone_Report.docx"
-    )
+    # 4. Save for payment
+    session["capstone_file_path"] = final_docx
+    session["project_title"] = title
+
+    # 5. ALWAYS send to payment page
+    return jsonify({"redirect": "/payment"})
+
+
+
+
 
 
 # ============================================================
@@ -566,6 +582,105 @@ def ai_tools():
 
     return render_template("ai_tools.html", tools=tools)
 
+
+### Private Policy
+@app.route("/privacy-policy")
+@login_required
+def privacy_policy():
+    return render_template("policies/privacy_policy.html")
+
+@app.route("/refund-policy")
+@login_required
+def refund_policy():
+    return render_template("policies/refund_policy.html")
+
+@app.route("/terms")
+@login_required
+def terms_conditions():
+    return render_template("policies/terms_conditions.html")
+
+@app.route("/shipping-policy")
+@login_required
+def shipping_policy():
+    return render_template("policies/shipping_policy.html")
+
+@app.route("/contact")
+@login_required
+def contact_page():
+    return render_template("policies/contact.html")
+
+### payment
+# ============================================================
+# ⭐⭐⭐ PAYMENT PAGE ⭐⭐⭐
+# ============================================================
+@app.route("/payment")
+@login_required
+def payment_page():
+    amount_rupees = 19
+
+    return render_template(
+        "payment.html",
+        razorpay_key_id=RAZORPAY_KEY_ID,
+        amount_rupees=amount_rupees,
+        username=session.get("username", "Student"),
+        project_title=session.get("project_title", "Capstone Project")
+    )
+
+
+# ============================================================
+# ⭐⭐⭐ CREATE RAZORPAY ORDER ⭐⭐⭐
+# ============================================================
+@app.route("/create_order", methods=["POST"])
+@login_required
+def create_order():
+    amount_rupees = 19
+    amount_paise = amount_rupees * 100
+
+    try:
+        order = razorpay_client.order.create(dict(
+            amount=amount_paise,
+            currency="INR",
+            payment_capture="1"
+        ))
+    except Exception as e:
+        print("❌ Razorpay Error:", e)
+        return jsonify({"error": "Failed to create order"}), 500
+
+    return jsonify(order)
+
+
+# ============================================================
+# ⭐⭐⭐ PAYMENT SUCCESS HANDLER ⭐⭐⭐
+# ============================================================
+@app.route("/payment_success", methods=["POST"])
+@login_required
+def payment_success():
+    data = request.form
+
+    razorpay_payment_id = data.get("razorpay_payment_id")
+    razorpay_order_id = data.get("razorpay_order_id")
+    razorpay_signature = data.get("razorpay_signature")
+
+    # Verify signature
+    try:
+        razorpay_client.utility.verify_payment_signature({
+            "razorpay_order_id": razorpay_order_id,
+            "razorpay_payment_id": razorpay_payment_id,
+            "razorpay_signature": razorpay_signature
+        })
+    except:
+        return "❌ Payment verification failed", 400
+
+    # Allow download of last generated file
+    file_path = session.get("capstone_file_path")
+    if not file_path or not os.path.exists(file_path):
+        return "❌ File missing. Generate again."
+
+    return send_file(
+        file_path,
+        as_attachment=True,
+        download_name="Capstone_Report.docx"
+    )
 
 
 # -----------------------------

@@ -34,10 +34,7 @@
         font-size: 24px;
     }
 
-    label {
-        font-size: 14px;
-        opacity: 0.9;
-    }
+    label { font-size: 14px; opacity: 0.9; }
 
     input {
         width: 100%;
@@ -98,11 +95,7 @@
         margin-bottom: 20px;
     }
 
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
+    @keyframes spin { 100% { transform: rotate(360deg); } }
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(20px); }
         to   { opacity: 1; transform: translateY(0); }
@@ -120,53 +113,46 @@
 <div class="container">
     <h2>SIMATS Capstone<br>Report Generator</h2>
 
-    <form id="capstoneForm" onsubmit="startCapstone(event)">
+    <form id="capstoneForm">
         <label>Project Title:</label>
         <input type="text" id="titleInput" placeholder="Enter your Project Title" required>
 
         <button type="submit">Generate Capstone</button>
-        <button onclick="window.location.href='/home'">Go To Home Page</button>
+        <button onclick="window.location.href='/home'" type="button">Go To Home Page</button>
     </form>
 </div>
 
 <script>
-function startCapstone(event) {
-    event.preventDefault(); // STOP normal form submission
+document.getElementById("capstoneForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
     const title = document.getElementById("titleInput").value.trim();
-    if (!title) return;
+    if (!title) {
+        alert("Enter a title!");
+        return;
+    }
 
-    document.getElementById("loaderOverlay").style.display = "block"; // Show loader
+    document.getElementById("loaderOverlay").style.display = "block";
 
-    fetch("/generate_capstone", {
+    const response = await fetch("/generate_capstone", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: title })
-    })
-    .then(response => {
-        if (!response.ok) throw new Error("Server Error");
-        return response.blob();
-    })
-    .then(blob => {
-        // Trigger download
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "Capstone_Report.docx";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-
-        // Hide loader
-        document.getElementById("loaderOverlay").style.display = "none";
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Error generating capstone!");
-        document.getElementById("loaderOverlay").style.display = "none";
+        body: JSON.stringify({ title })
     });
-}
+
+    const result = await response.json();
+
+    document.getElementById("loaderOverlay").style.display = "none";
+
+    if (result.redirect) {
+        window.location.href = result.redirect;
+    } else {
+        alert("Error generating capstone!");
+    }
+});
 </script>
+
+
 
 </body>
 </html>

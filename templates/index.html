@@ -53,6 +53,10 @@
             font-size: 38px;
             text-shadow: 0 0 15px rgba(255,255,255,0.4);
         }
+        h5{
+            color: rgb(234, 231, 231);
+            font-weight: 100;
+        }
 
         /* ⭐ NEW GRID LAYOUT ⭐ */
         .container {
@@ -143,8 +147,8 @@
             transform: scale(1.05);
         }
 
-        .profile-btn { bottom: 20px; }
-        .Logout-btn { bottom: 70px;}
+        .profile-btn { bottom: 70px; }
+        .Logout-btn { bottom: 120px;}
     </style>
 </head>
 <body>
@@ -180,7 +184,9 @@
 
         <div class="box" onclick="window.location.href='/capstone'">
             <h2>Capstone Maker</h2>
-            <p>Create Your Simats Capstone Project Report</p>
+            <p>Create Your Simats Capstone Report 
+            </p>
+            <h5>Disclimer :- Kindly Fill The Underlined Details In Front Pages After Download</h4>
         </div>
 
         <div class="box" onclick="window.location.href='/pdfs'">
@@ -206,4 +212,78 @@
     <script src="{{ url_for('static', filename='chatbot_widget.js') }}"></script>
 
 </body>
+<footer style="
+    width: 100%;
+    padding: 18px 0;
+    text-align: center;
+    background: rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+    color: #e2e8f0;
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+">
+
+    <a href="/privacy-policy" style="
+        color: #e2e8f0;
+        margin: 0 14px;
+        text-decoration: none;
+        font-size: 14px;
+    ">Privacy Policy</a>
+
+    <span style="color:#666;">|</span>
+
+    <a href="/refund-policy" style="
+        color: #e2e8f0;
+        margin: 0 14px;
+        text-decoration: none;
+        font-size: 14px;
+    ">Refund Policy</a>
+
+    <span style="color:#666;">|</span>
+
+    <a href="/terms" style="
+        color: #e2e8f0;
+        margin: 0 14px;
+        text-decoration: none;
+        font-size: 14px;
+    ">Terms & Conditions</a>
+
+    <span style="color:#666;">|</span>
+
+    <a href="/shipping-policy" style="
+        color: #e2e8f0;
+        margin: 0 14px;
+        text-decoration: none;
+        font-size: 14px;
+    ">Delivery Policy</a>
+
+    <span style="color:#666;">|</span>
+
+    <a href="/contact" style="
+        color: #e2e8f0;
+        margin: 0 14px;
+        text-decoration: none;
+        font-size: 14px;
+    ">Contact Us</a>
+
+</footer>
+
+<script>
+document.querySelectorAll('footer a').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+        link.style.color = '#ff9a00'
+        link.style.textShadow = "0 0 6px rgba(255,154,0,0.7)"
+    })
+    link.addEventListener('mouseleave', () => {
+        link.style.color = '#e2e8f0'
+        link.style.textShadow = "none"
+    })
+})
+</script>
+
+
 </html>

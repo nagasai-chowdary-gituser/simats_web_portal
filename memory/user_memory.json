@@ -275,25 +275,9 @@
         },
         "2": {
             "profile": {
-                "last_topic": "cls"
+                "last_topic": "how many robotic labs are there in simats collage"
             },
             "chat_history": [
-                {
-                    "role": "user",
-                    "content": "hi"
-                },
-                {
-                    "role": "assistant",
-                    "content": "\ud83c\udf93 Hi there!"
-                },
-                {
-                    "role": "user",
-                    "content": "how are you"
-                },
-                {
-                    "role": "assistant",
-                    "content": "\ud83c\udf93 Hi there! I'm doing great, thanks for asking. How can I help you today?"
-                },
                 {
                     "role": "user",
                     "content": "where simats collage located"
@@ -397,9 +381,25 @@
                 {
                     "role": "assistant",
                     "content": "\ud83c\udf93 Hi there!  \nIt looks like you typed \u201ccls.\u201d If you\u2019d like to clear the chat or start fresh, just let me know and I\u2019ll reset the context for you. If you meant something else, feel free to clarify!"
+                },
+                {
+                    "role": "user",
+                    "content": "hi bot"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there! How can I assist you today?"
+                },
+                {
+                    "role": "user",
+                    "content": "how many robotic labs are there in simats collage"
+                },
+                {
+                    "role": "assistant",
+                    "content": "\ud83c\udf93 Hi there!  \n\nI\u2019m not sure how many robotic labs are currently available at SIMATS College. It would be best to check the latest campus brochure or contact the college\u2019s engineering department directly for the most up\u2011to\u2011date information. If you\u2019d like, I can help you find the official contact details!"
                 }
             ],
-            "updated_at": "2025-11-29T11:23:48.911898+00:00"
+            "updated_at": "2025-11-30T06:19:40.039977+00:00"
         }
     }
 }
