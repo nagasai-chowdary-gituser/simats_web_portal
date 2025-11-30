@@ -8,16 +8,18 @@ import uuid
 import json
 
 # Capstone generator imports
-from ai_capstone.ai_engine import generate_ai_content
-from ai_capstone.create_ai_docx import create_ai_docx
-from ai_capstone.utils.docx_filler import merge_docx
+#from ai_capstone.ai_engine import generate_ai_content
+#from ai_capstone.create_ai_docx import create_ai_docx
+#from ai_capstone.utils.docx_filler import merge_docx
 
 # AI-BOT imports
-from src.config.config import Config
-from src.document_ingestion.document_processor import DocumentProcessor
-from src.vectorstore.vectorstore import VectorStore
-from src.graph_builder.graph_builder import GraphBuilder
-from src.memory.persistent_memory import UserMemoryManager
+#from src.config.config import Config
+#from src.document_ingestion.document_processor import DocumentProcessor
+#from src.vectorstore.vectorstore import VectorStore
+#from src.graph_builder.graph_builder import GraphBuilder
+#from src.memory.persistent_memory import UserMemoryManager
+
+
 import time
 # Payments Gateway
 import razorpay
@@ -45,7 +47,7 @@ RAZORPAY_KEY_SECRET = "turKE03kkV1EAU6AQNG2UDEq"     # <-- put your Secret Key
 
 razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
 
-
+"""
 # ============================================================
 # ⭐⭐⭐ CHATBOT ENGINE SETUP (GLOBAL) ⭐⭐⭐
 # ============================================================
@@ -87,7 +89,7 @@ def get_graph(agentic: bool):
 
 # ============================================================
 # END CHATBOT ENGINE SETUP
-# ============================================================
+# ============================================================"""
 
 
 # -----------------------------
@@ -466,6 +468,7 @@ def generate_capstone():
     title = data["title"].strip()
 
     # 1. Generate AI content
+    from ai_capstone.ai_engine import generate_ai_content
     sections = generate_ai_content(title)
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -473,6 +476,8 @@ def generate_capstone():
     os.makedirs(output_dir, exist_ok=True)
 
     # 2. Create AI chapter DOCX
+    from ai_capstone.create_ai_docx import create_ai_docx
+    from ai_capstone.utils.docx_filler import merge_docx
     ai_docx_path = os.path.join(output_dir, "ai_chapters.docx")
     create_ai_docx(sections, ai_docx_path)
 
@@ -518,7 +523,7 @@ def list_pdfs():
 def download_pdf(filename):
     return send_from_directory(PDF_FOLDER, filename, as_attachment=True)
 
-
+"""
 # ============================================================
 # ⭐⭐⭐ FLOATING CHATBOT WIDGET API ⭐⭐⭐
 # ============================================================
@@ -554,7 +559,7 @@ def chatbot_ask():
         answer = f"⚠️ Backend error: {str(e)}"
         print("❌ Error:", e)
 
-    return jsonify({"answer": answer})
+    return jsonify({"answer": answer})"""
 
 ### For Staff Numbers
 FACULTY_FILE = os.path.join(BASE_DIR, "static", "data", "final_staff_numbers_fix.json")
