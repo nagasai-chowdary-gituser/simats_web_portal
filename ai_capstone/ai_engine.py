@@ -10,7 +10,7 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 # Recommended stable model
-MODEL_NAME = "gemini-2.0-flash"       # ✔ Fast + Stable + Long output
+MODEL_NAME = "gemini-1.5-flash"       # ✔ Fast + Stable + Long output
 
 
 def generate_ai_content(title: str) -> dict:
