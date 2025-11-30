@@ -4,13 +4,29 @@ import google.generativeai as genai   # ✔ Works on Render & Local
 # -------- INIT GEMINI CLIENT --------
 api_key = os.getenv("GEMINI_API_KEY")
 if not api_key:
-    raise RuntimeError("GEMINI_API_KEY not set. Use: setx GEMINI_API_KEY \"your-key\"")
+    raise RuntimeError("GEMINI_API_KEY not set")
 
-# Configure Gemini
 genai.configure(api_key=api_key)
 
-# Recommended stable model
-MODEL_NAME = "gemini-1.5-flash"       # ✔ Fast + Stable + Long output
+MODEL_NAME = "gemini-2.0-flash"
+
+# --------------------------
+# SAFE GENERATION FUNCTION
+# --------------------------
+def safe_generate(model, prompt):
+    try:
+        response = model.generate_content(
+            prompt,
+            generation_config={
+                "temperature": 0.55,
+                "max_output_tokens": 2000,  # 🔥 prevents freezing
+            }
+        )
+        return (response.text or "").strip()
+
+    except Exception as e:
+        print("GENERATION ERROR:", e)
+        return "⚠ AI generation failed due to limits. Please regenerate."
 
 
 def generate_ai_content(title: str) -> dict:
@@ -126,27 +142,12 @@ Appendix D – Graphs and Charts
 
     results = {}
 
-    # Create stable model instance
-    model = genai.GenerativeModel(
-        MODEL_NAME,
-        safety_settings=[
-                {"category": "HARM_CATEGORY_DANGEROUS", "threshold": "BLOCK_NONE"},
-                {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-                {"category": "HARM_CATEGORY_SEXUAL", "threshold": "BLOCK_NONE"},
-                {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
-                {"category": "HARM_CATEGORY_VIOLENCE", "threshold": "BLOCK_NONE"},
-                ],
-        generation_config={
-            "temperature": 0.6,
-            "top_p": 0.9,
-        }
-    )
+    model = genai.GenerativeModel(MODEL_NAME)
 
-    for section_key, prompt in prompts.items():
-        try:
-            response = model.generate_content(prompt)
-            results[section_key] = (response.text or "").strip()
-        except Exception as e:
-            results[section_key] = f"⚠ AI generation failed: {str(e)}"
+    # Generate each section individually
+    for key, prompt in prompts.items():
+        print(f"🟦 Generating: {key} ...")
+        results[key] = safe_generate(model, prompt)
+        print(f"🟩 Done: {key}")
 
     return results
