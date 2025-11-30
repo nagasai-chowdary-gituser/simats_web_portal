@@ -1,5 +1,6 @@
 import os
-from google import genai
+import google.generativeai as genai
+
 
 # -------- INIT GEMINI CLIENT --------
 api_key = os.getenv("GEMINI_API_KEY")
@@ -194,4 +195,3 @@ Write in paragraph form, 200-250 words total, formal academic tone.
         results[section_key] = (response.text or "").strip()
 
     return results
-
