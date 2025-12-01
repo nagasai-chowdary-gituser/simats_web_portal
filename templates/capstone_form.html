@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+
 <meta charset="UTF-8">
 <title>SIMATS Capstone Generator</title>
 
@@ -116,7 +118,8 @@
     <form id="capstoneForm">
         <label>Project Title:</label>
         <input type="text" id="titleInput" placeholder="Enter your Project Title" required>
-
+        <h4>Disclimer :-</h4>
+        <p>Kindly Fill The Underlined Details After Generating</p>
         <button type="submit">Generate Capstone</button>
         <button onclick="window.location.href='/home'" type="button">Go To Home Page</button>
     </form>

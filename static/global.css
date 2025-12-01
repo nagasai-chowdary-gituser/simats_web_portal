@@ -1,0 +1,126 @@
+/* =========================================
+   FINAL BOSS GLOBAL RESPONSIVE FIXES
+   Mobile + Tablet + Desktop
+========================================= */
+
+/* Tablets + Mobiles */
+@media (max-width: 1024px) {
+
+    body {
+        padding: 20px !important;
+        height: auto !important;
+        display: block !important;
+    }
+
+    h1 {
+        font-size: 26px !important;
+        margin-top: 20px !important;
+        text-align: center !important;
+    }
+
+    .float-btn {
+        left: 10px !important;
+        padding: 8px 14px !important;
+        font-size: 12px !important;
+    }
+
+    /* Home Page Grid Fix */
+    .container {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+        grid-auto-rows: 180px !important;
+        width: 100% !important;
+        gap: 20px !important;
+        margin-top: 40px !important;
+    }
+
+    .box {
+        height: 180px !important;
+        border-radius: 20px !important;
+        padding: 10px !important;
+    }
+
+    .box h2 {
+        font-size: 20px !important;
+        margin-top: 25px !important;
+    }
+
+    .box p {
+        font-size: 13px !important;
+    }
+
+    /* Forms (Login, Register, Profile, Change Password) */
+    form, .box form {
+        width: 100% !important;
+    }
+
+    input, select {
+        width: 100% !important;
+        font-size: 14px !important;
+        padding: 10px !important;
+    }
+
+    button {
+        font-size: 14px !important;
+        padding: 10px !important;
+        width: 100% !important;
+    }
+
+    /* Faculty list */
+    ul#facultyList li {
+        padding: 12px !important;
+        font-size: 14px !important;
+    }
+
+    /* PDF List */
+    .pdf-box {
+        width: 100% !important;
+        padding: 15px !important;
+    }
+
+    /* Footer */
+    footer {
+        margin-top: 30px !important;
+        position: relative !important;
+    }
+}
+
+/* Extra small screens (Phones < 480px) */
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 22px !important;
+    }
+
+    .box {
+        height: 160px !important;
+    }
+
+    .box h2 {
+        font-size: 18px !important;
+    }
+
+    .box p {
+        font-size: 12px !important;
+    }
+
+    .float-btn {
+        padding: 7px 12px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* Make background stars smaller on mobile */
+@media (max-width: 1024px) {
+    .particles span, .stars span {
+        width: 4px !important;
+        height: 4px !important;
+    }
+}
+
+/* Make forms centered on mobile */
+@media (max-width: 768px) {
+    .box {
+        width: 90% !important;
+        margin: auto !important;
+    }
+}
