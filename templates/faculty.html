@@ -31,20 +31,9 @@
 
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
-
-    body {
-        margin: 0;
-        padding: 0;
-        background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-        font-family: "Poppins", sans-serif;
-        height: 100vh;
-        overflow: hidden;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700,800&family=Inter:wght@300;400;600;700&display=swap');
+    :root{ --bg-deep:#0a0118; --bg-mid:#130828; --bg-navy:#0f1535; --glass: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.12); --neon-purple:#a855f7; --neon-cyan:#06b6d4; --text-primary:#e6eefb; --text-muted: rgba(230,238,251,0.8); --radius-lg:22px }
+    body { margin:0; padding:0; background: linear-gradient(160deg,var(--bg-deep),var(--bg-mid) 40%,var(--bg-navy)); font-family: 'Inter','Poppins', sans-serif; min-height:100vh; overflow:auto; color:var(--text-primary); display:flex; flex-direction:column; align-items:center; padding:28px }
     /* 🌟 FLOATING STARS */
     .stars {
         position: fixed;
@@ -68,39 +57,18 @@
         to   { transform: translateY(-10vh) scale(1); opacity: 1; }
     }
 
-    .title {
-        font-size: 35px;
-        margin-top: 30px;
-        z-index: 2;
-        text-shadow: 0 0 15px rgba(255,255,255,0.5);
-    }
+    .title { font-size: 28px; margin-top: 20px; z-index:2; text-shadow: 0 6px 24px rgba(168,85,247,0.06); font-weight:800 }
 
     /* ⭐ MAIN BOX */
-    .faculty-box {
-        width: 39.9999%;
-        max-width: 900px;
-        background: rgba(255,255,255,0.10);
-        border-radius: 25px;
-        padding: 30px;
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255,255,255,0.25);
-        box-shadow: 0 0 35px rgba(0,0,0,0.55);
-        position: relative;
-        z-index: 2;
-        margin-top: 30px;
-    }
+    .faculty-box { width: min(920px, calc(100% - 48px)); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: var(--radius-lg); padding: 26px; backdrop-filter: blur(20px); border:1px solid var(--glass-border); box-shadow: 0 12px 36px rgba(2,6,23,0.6); position:relative; margin-top: 26px; z-index:2 }
 
     .faculty-box::before {
         content: "";
         position: absolute;
         inset: -2px;
-        border-radius: 25px;
-        background: linear-gradient(135deg,#ff512f,#dd2476,#1e90ff,#ff9a00);
-        background-size: 400% 400%;
-        animation: glow 7s ease infinite;
-        z-index: -1;
-        opacity: 0.45;
-        filter: blur(10px);
+        border-radius: var(--radius-lg);
+        background: linear-gradient(120deg,var(--neon-purple),var(--neon-violet),var(--neon-cyan));
+        background-size: 300% 300%; animation: glow 9s linear infinite; z-index:-1; opacity: 0.22; filter: blur(16px)
     }
 
     @keyframes glow {
@@ -113,16 +81,7 @@
     }
 
     /* SEARCH BOX */
-    #searchInput {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 20px;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.25);
-        background: rgba(255,255,255,0.15);
-        color: white;
-        font-size: 16px;
-    }
+    #searchInput { width: 100%; padding: 12px; margin-bottom: 18px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); color:var(--text-primary); font-size:16px }
     #searchInput::placeholder {
         color: #e2e8f0;
     }
@@ -137,35 +96,12 @@
         overflow-y: auto;
     }
 
-    .faculty-item {
-        display: flex;
-        height: 20px;
-        width: 560px;
-        justify-content: space-between;
-        padding: 15px;
-        margin-bottom: 12px;
-        background: rgba(255,255,255,0.08);
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.15);
-        transition: 0.2s;
-    }
+    .faculty-item { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; margin-bottom:12px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); transition: 0.22s; width:100% }
 
-    .faculty-item:hover {
-        transform: scale(1.02);
-        border-color: #ff9a00;
-        box-shadow: 0 0 15px rgba(255,154,0,0.7);
-    }
+    .faculty-item:hover { transform: translateY(-4px); border-color: rgba(168,85,247,0.25); box-shadow: 0 12px 36px rgba(168,85,247,0.06) }
 
-    .name {
-        font-weight: 600;
-        font-size: 18px;
-        color: #fff;
-    }
-    .phone {
-        font-weight: 700;
-        font-size: 17px;
-        color: #fbbf24;
-    }
+    .name { font-weight: 700; font-size: 16px; color: var(--text-primary) }
+    .phone { font-weight: 700; font-size: 16px; color: var(--neon-cyan) }
     .home-btn {
     width: 98%;
     padding: 14px;
@@ -177,8 +113,8 @@
     cursor: pointer;
     color: #fff;
 
-    background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.06);
     backdrop-filter: blur(12px);
 
     transition: 0.3s;
@@ -186,13 +122,9 @@
     box-shadow: 0 0 18px rgba(0,0,0,0.35);
 }
 
-.home-btn:hover {
-    transform: scale(1.05);
-    background: rgba(255,255,255,0.25);
-    border-color: #ff9a00;
-    box-shadow: 0 0 25px rgba(255,154,0,0.8);
-}
+.home-btn:hover { transform: translateY(-4px); background: linear-gradient(135deg,var(--neon-purple),var(--neon-cyan)); border-color: rgba(168,85,247,0.26); box-shadow: 0 12px 36px rgba(168,85,247,0.12) }
 
+@media (max-width: 768px) { .faculty-box { width: calc(100% - 36px); padding: 18px; } .title{ font-size: 24px } #facultyList { max-height: 260px } }
 </style>
 
 
