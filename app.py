@@ -269,31 +269,45 @@ def register():
 # -----------------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    session.clear()
+    session.clear()   # Ensure no old session stays
     message = ""
     shake = False
 
     if request.method == "POST":
-        username = request.form["l_user"].strip()
+        reg_no = request.form["reg_no"].strip()
         password = request.form["l_pass"].strip()
 
-        user = User.query.filter_by(username=username).first()
+        # Find user by register number
+        user = User.query.filter_by(reg_number=reg_no).first()
 
         if not user:
-            return render_template("login.html", shake=True, message="❌ Username not found")
+            return render_template(
+                "login.html",
+                shake=True,
+                message="❌ Register Number not found"
+            )
 
         if not check_password_hash(user.password, password):
-            return render_template("login.html", shake=True, message="❌ Wrong password")
+            return render_template(
+                "login.html",
+                shake=True,
+                message="❌ Wrong password"
+            )
 
+        # Set session values
         session["user_id"] = user.id
         session["username"] = user.username
+        session["reg_no"] = user.reg_number
         session["is_admin"] = user.is_admin
 
+        # Admin redirect
         if user.is_admin:
             return redirect(url_for("admin_page"))
+
         return redirect(url_for("index"))
 
     return render_template("login.html", message=message, shake=shake)
+
 
 
 # -----------------------------
