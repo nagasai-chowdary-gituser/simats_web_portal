@@ -1,44 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Terms & Conditions</title>
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap');
-		:root{ --bg-deep:#030016; --bg-mid:#0e0520; --glass: rgba(255,255,255,0.04); --glass-border: rgba(255,255,255,0.06); --accent:#a855f7; --text-primary:#e6eefb; --muted: rgba(230,238,251,0.9); --radius:18px }
-		body{ margin:0; font-family:'Inter', 'Poppins', sans-serif; background: linear-gradient(160deg,var(--bg-deep), var(--bg-mid)); color:var(--text-primary); min-height:100vh; padding:36px }
-		.policy-card{ max-width:980px; margin:32px auto; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:28px; border-radius:var(--radius); border:1px solid var(--glass-border); box-shadow: 0 10px 28px rgba(2,6,23,0.45); backdrop-filter: blur(16px) }
-		h1,h2,h3{ color:var(--accent); margin-top:0 }
-		p{ color:var(--muted); line-height:1.7 }
-		@media (max-width:600px){ .policy-card{ padding:18px; margin:18px } }
-	</style>
+    <meta charset="UTF-8">
+    <title>Terms & Conditions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-deep: #0A0A0A;
+            --bg-mid: #0E0E0E;
+
+            --gold-1: #D4AF37;
+            --gold-2: #F5C542;
+            --gold-3: #C9A227;
+
+            --text-primary: rgba(255,255,255,0.95);
+            --text-secondary: rgba(255,255,255,0.75);
+
+            --card-bg: rgba(255,255,255,0.05);
+            --card-border: rgba(212,175,55,0.18);
+
+            --radius: 20px;
+        }
+
+        body {
+            margin: 0;
+            padding: 28px 0 80px 0;
+            background: linear-gradient(160deg, var(--bg-deep), var(--bg-mid));
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Soft golden glow */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212,175,55,0.06), transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(212,175,55,0.05), transparent 70%);
+            filter: blur(50px);
+            z-index: -1;
+        }
+
+        /* Floating Gold Dust */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particles span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(212,175,55,0.7), rgba(212,175,55,0.25));
+            border-radius: 50%;
+            animation: floatUp 23s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.3); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Policy Card */
+        .policy-card {
+            width: min(900px, 92%);
+            padding: 32px;
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+        }
+
+        h1 {
+            font-size: 36px;
+            background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        h3 {
+            color: var(--gold-1);
+            margin-top: 22px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        /* Back Button */
+        .back-btn {
+            margin-top: 24px;
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--gold-1);
+            color: var(--text-primary);
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.25s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: rgba(212,175,55,0.12);
+            color: var(--gold-1);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 600px) {
+            .policy-card { padding: 20px; }
+            h1 { font-size: 26px; }
+        }
+    </style>
 </head>
+
 <body>
-<div class="policy-card">
-<h1>Terms & Conditions</h1>
-<h3>Last updated on Dec 1st 2025</h3>
-<p>For the purpose of these Terms and Conditions, The term "we", "us", "our" used anywhere on this page shall mean CHITTEM JASWANTH, whose registered/operational office is 602105,saveetha school of engineering,thandalam,chennai Kanchipuram TAMIL NADU 602105 . "you", “your”, "user", “visitor” shall mean any natural or legal person who is visiting our website and/or agreed to purchase from us.</p>
-<h3>Your use of the website and/or purchase from us are governed by following Terms and Conditions:
-</h3>
-<p>The content of the pages of this website is subject to change without notice.
 
-Neither we nor any third parties provide any warranty or guarantee as to the accuracy, timeliness, performance, completeness or suitability of the information and materials found or offered on this website for any particular purpose. You acknowledge that such information and materials may contain inaccuracies or errors and we expressly exclude liability for any such inaccuracies or errors to the fullest extent permitted by law.
+    <!-- Gold Dust Background -->
+    <div class="particles">
+        <span style="left: 10%; animation-delay:0s;"></span>
+        <span style="left: 25%; animation-delay:2s;"></span>
+        <span style="left: 45%; animation-delay:4s;"></span>
+        <span style="left: 65%; animation-delay:1s;"></span>
+        <span style="left: 85%; animation-delay:3s;"></span>
+    </div>
 
-Your use of any information or materials on our website and/or product pages is entirely at your own risk, for which we shall not be liable. It shall be your own responsibility to ensure that any products, services or information available through our website and/or product pages meet your specific requirements.
+    <div class="policy-card">
+        <h1>Terms & Conditions</h1>
+        <h3>Last updated on Dec 1st 2025</h3>
 
-Our website contains material which is owned by or licensed to us. This material includes, but are not limited to, the design, layout, look, appearance and graphics. Reproduction is prohibited other than in accordance with the copyright notice, which forms part of these terms and conditions.
+        <p>
+For the purpose of these Terms and Conditions, the terms "we", "us", "our" refer to **CHITTEM JASWANTH**,  
+and "you", "your", "user", "visitor" refer to any person accessing or using this website.
 
-All trademarks reproduced in our website which are not the property of, or licensed to, the operator are acknowledged on the website.
+Your use of our website and purchase of any products/services from us is governed by the Terms and Conditions below.
 
-Unauthorized use of information provided by us shall give rise to a claim for damages and/or be a criminal offense.
+The content on this website is subject to change without prior notice.
 
-From time to time our website may also include links to other websites. These links are provided for your convenience to provide further information.
+We make no warranties regarding the accuracy, reliability, completeness, or suitability of the information provided.  
+You acknowledge that such information may contain errors and we expressly exclude liability for such inaccuracies.
 
-You may not create a link to our website from another website or document without CHITTEM JASWANTH’s prior written consent.
+Your use of any information or materials on this website is entirely at your own risk.  
+It is your responsibility to ensure any products, services, or information meet your requirements.
 
-Any dispute arising out of use of our website and/or purchase with us and/or any engagement with us is subject to the laws of India .
+This website contains content owned or licensed by us.  
+This includes design, layout, appearance, and graphics.  
+Reproduction is prohibited unless permitted as per copyright notice.
 
-We, shall be under no liability whatsoever in respect of any loss or damage arising directly or indirectly out of the decline of authorization for any Transaction, on Account of the Cardholder having exceeded the preset limit mutually agreed by us with our acquiring bank from time to time</p>
-	</div>
+Unauthorised use of any content may lead to a claim for damages and/or be a criminal offence.
+
+Our website may contain links to external sites. These are provided for convenience; we do not take responsibility for their content.
+
+You may NOT create a link to our website without prior written approval from **CHITTEM JASWANTH**.
+
+Any disputes arising out of your use of this website or engagement with us are subject to the laws of **India**.
+
+We hold no liability for any payment failures due to the cardholder exceeding their account limits or bank restrictions.
+        </p>
+
+        <a href="/home" class="back-btn">⬅ Back to Home</a>
+    </div>
 
 </body>
 </html>

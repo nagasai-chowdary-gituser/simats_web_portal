@@ -1,126 +1,181 @@
-/* =========================================
-   FINAL BOSS GLOBAL RESPONSIVE FIXES
-   Mobile + Tablet + Desktop
-========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
-/* Tablets + Mobiles */
-@media (max-width: 1024px) {
+*, *::before, *::after { box-sizing: border-box; }
 
-    body {
-        padding: 20px !important;
-        height: auto !important;
-        display: block !important;
-    }
-
-    h1 {
-        font-size: 26px !important;
-        margin-top: 20px !important;
-        text-align: center !important;
-    }
-
-    .float-btn {
-        left: 10px !important;
-        padding: 8px 14px !important;
-        font-size: 12px !important;
-    }
-
-    /* Home Page Grid Fix */
-    .container {
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
-        grid-auto-rows: 180px !important;
-        width: 100% !important;
-        gap: 20px !important;
-        margin-top: 40px !important;
-    }
-
-    .box {
-        height: 180px !important;
-        border-radius: 20px !important;
-        padding: 10px !important;
-    }
-
-    .box h2 {
-        font-size: 20px !important;
-        margin-top: 25px !important;
-    }
-
-    .box p {
-        font-size: 13px !important;
-    }
-
-    /* Forms (Login, Register, Profile, Change Password) */
-    form, .box form {
-        width: 100% !important;
-    }
-
-    input, select {
-        width: 100% !important;
-        font-size: 14px !important;
-        padding: 10px !important;
-    }
-
-    button {
-        font-size: 14px !important;
-        padding: 10px !important;
-        width: 100% !important;
-    }
-
-    /* Faculty list */
-    ul#facultyList li {
-        padding: 12px !important;
-        font-size: 14px !important;
-    }
-
-    /* PDF List */
-    .pdf-box {
-        width: 100% !important;
-        padding: 15px !important;
-    }
-
-    /* Footer */
-    footer {
-        margin-top: 30px !important;
-        position: relative !important;
-    }
+:root {
+    --bg-deep: #0C0C0C;
+    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
+    --card: #131313;
+    --card-hover: #161616;
+    --gold-1: #D4AF37;
+    --gold-2: #F5C542;
+    --gold-3: #C9A227;
+    --gold-glow: rgba(212, 175, 55, 0.15);
+    --gold-border: rgba(212, 175, 55, 0.18);
+    --gold-border-subtle: rgba(212, 175, 55, 0.08);
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.72);
+    --text-muted: rgba(255, 255, 255, 0.48);
+    --input-bg: rgba(255, 255, 255, 0.03);
+    --input-border: rgba(255, 255, 255, 0.06);
+    --error: #FF6B6B;
+    --success: #4ADE80;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
+    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
+    --shadow-input: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 280ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Extra small screens (Phones < 480px) */
-@media (max-width: 480px) {
-
-    h1 {
-        font-size: 22px !important;
-    }
-
-    .box {
-        height: 160px !important;
-    }
-
-    .box h2 {
-        font-size: 18px !important;
-    }
-
-    .box p {
-        font-size: 12px !important;
-    }
-
-    .float-btn {
-        padding: 7px 12px !important;
-        font-size: 11px !important;
-    }
+body {
+    margin: 0;
+    padding: 24px;
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Make background stars smaller on mobile */
-@media (max-width: 1024px) {
-    .particles span, .stars span {
-        width: 4px !important;
-        height: 4px !important;
-    }
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: -1;
 }
 
-/* Make forms centered on mobile */
-@media (max-width: 768px) {
-    .box {
-        width: 90% !important;
-        margin: auto !important;
-    }
+.wrapper {
+    width: 100%;
+    max-width: 440px;
+    padding: 42px 38px;
+    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
+    border: 0.5px solid var(--gold-border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+.wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
+    opacity: 0.5;
+}
+
+.wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.12) 0%, transparent 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+h2 {
+    margin: 0 0 8px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+}
+
+input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text-primary);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-input);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    outline: none;
+}
+
+input[type="password"]:focus {
+    border-color: var(--gold-1);
+    background: rgba(212, 175, 55, 0.03);
+    box-shadow: var(--shadow-input), 0 0 0 3px rgba(212, 175, 55, 0.08);
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 16px 24px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #0A0A0A;
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: var(--shadow-gold);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+}
+
+.msg {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    background: rgba(255, 107, 107, 0.08);
+    border: 0.5px solid rgba(255, 107, 107, 0.2);
+    color: var(--error);
+}
+
+.success {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(74, 222, 128, 0.08);
+    border: 0.5px solid rgba(74, 222, 128, 0.2);
+    color: var(--success);
+}
+
+a {
+    color: var(--gold-1);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--gold-2);
 }

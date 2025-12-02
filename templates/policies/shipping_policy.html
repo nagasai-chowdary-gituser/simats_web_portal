@@ -1,23 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Shipping / Delivery Policy</title>
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap');
-		:root{ --bg-deep:#030016; --bg-mid:#0e0520; --glass: rgba(255,255,255,0.04); --glass-border: rgba(255,255,255,0.06); --accent:#a855f7; --text-primary:#e6eefb; --muted: rgba(230,238,251,0.9); --radius:18px }
-		body{ margin:0; font-family:'Inter', 'Poppins', sans-serif; background: linear-gradient(160deg,var(--bg-deep), var(--bg-mid)); color:var(--text-primary); min-height:100vh; padding:36px }
-		.policy-card{ max-width:980px; margin:32px auto; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:28px; border-radius:var(--radius); border:1px solid var(--glass-border); box-shadow: 0 10px 28px rgba(2,6,23,0.45); backdrop-filter: blur(16px) }
-		h2,h3{ color:var(--accent); margin-top:0 }
-		p{ color:var(--muted); line-height:1.7 }
-		@media (max-width:600px){ .policy-card{ padding:18px; margin:18px } }
-	</style>
+    <meta charset="UTF-8">
+    <title>Shipping / Delivery Policy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-deep: #0A0A0A;
+            --bg-mid: #0E0E0E;
+
+            --gold-1: #D4AF37;
+            --gold-2: #F5C542;
+            --gold-3: #C9A227;
+
+            --text-primary: rgba(255,255,255,0.92);
+            --text-secondary: rgba(255,255,255,0.75);
+
+            --card-bg: rgba(255,255,255,0.05);
+            --card-border: rgba(212,175,55,0.18);
+
+            --radius: 20px;
+        }
+
+        body {
+            margin: 0;
+            padding: 28px 0 80px 0;
+            background: linear-gradient(160deg, var(--bg-deep), var(--bg-mid));
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Soft golden glow background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(212,175,55,0.06), transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(212,175,55,0.05), transparent 70%);
+            filter: blur(50px);
+            z-index: -1;
+        }
+
+        /* Floating Gold Particles */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particles span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(212,175,55,0.7), rgba(212,175,55,0.25));
+            border-radius: 50%;
+            animation: floatUp 23s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.3); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        .policy-card {
+            width: min(900px, 92%);
+            padding: 32px;
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+        }
+
+        h2 {
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        h3 {
+            color: var(--gold-1);
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .back-btn {
+            margin-top: 24px;
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--gold-1);
+            color: var(--text-primary);
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.25s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: rgba(212,175,55,0.12);
+            color: var(--gold-1);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 600px) {
+            .policy-card { padding: 20px; }
+            h2 { font-size: 26px; }
+        }
+    </style>
 </head>
+
 <body>
-<div class="policy-card">
-<h2>Shipping / Delivery Policy</h2>
-<h3>Last updated on Dec 1st 2025</h3>
-<p>For International buyers, orders are shipped and delivered through registered international courier companies and/or International speed post only. For domestic buyers, orders are shipped through registered domestic courier companies and /or speed post only. Orders are shipped within 1-2 days or as per the delivery date agreed at the time of order confirmation and delivering of the shipment subject to Courier Company / post office norms. CHITTEM JASWANTH is not liable for any delay in delivery by the courier company / postal authorities and only guarantees to hand over the consignment to the courier company or postal authorities within 1-2 days rom the date of the order and payment or as per the delivery date agreed at the time of order confirmation. Delivery of all orders will be to the address provided by the buyer. Delivery of our services will be confirmed on your mail ID as specified during registration. For any issues in utilizing our services you may contact our helpdesk on 8688180266 or jonnalagaddanagasai6@gmail.com</p>
-	</div>
+
+    <!-- Gold Dust BG -->
+    <div class="particles">
+        <span style="left: 10%; animation-delay:0s;"></span>
+        <span style="left: 25%; animation-delay:2s;"></span>
+        <span style="left: 45%; animation-delay:4s;"></span>
+        <span style="left: 65%; animation-delay:1s;"></span>
+        <span style="left: 85%; animation-delay:3s;"></span>
+    </div>
+
+    <div class="policy-card">
+        <h2>Shipping / Delivery Policy</h2>
+        <h3>Last updated on Dec 1st 2025</h3>
+
+        <p>
+For international buyers, orders are shipped through registered international courier services or international speed post.  
+For domestic buyers, all orders are shipped through registered domestic courier services or speed post.
+
+Orders are typically shipped within **1–2 days** of confirmation, or as per the delivery date committed at checkout.  
+Delivery timelines depend strictly on courier / postal service norms.
+
+CHITTEM JASWANTH guarantees only that orders are handed over to the courier/postal service within the promised timeline.  
+Any delay caused by the courier or postal authorities is outside our control.
+
+All orders are shipped to the delivery address provided by the buyer at checkout.  
+Upon successful order confirmation, delivery details will be shared to your registered email address.
+
+For any support related to delivery or service usage, contact our helpdesk at:
+📞 **8688180266**  
+📧 **jonnalagaddanagasai6@gmail.com**
+        </p>
+
+        <a href="/home" class="back-btn">⬅ Back to Home</a>
+    </div>
 
 </body>
 </html>

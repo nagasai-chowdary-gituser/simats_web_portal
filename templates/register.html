@@ -2,123 +2,257 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-        :root{ --bg-deep:#0a0118; --bg-mid:#130828; --bg-navy:#0f1535; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.10); --neon-purple: #a855f7; --neon-cyan: #06b6d4; --text-primary:#e6eefb; --text-muted: rgba(230,238,251,0.8); --radius-lg:22px; }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --bg-deep: #0C0C0C;
+            --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
+            --card: #131313;
+            --gold-1: #D4AF37;
+            --gold-2: #F5C542;
+            --gold-3: #C9A227;
+            --gold-border: rgba(212, 175, 55, 0.18);
+            --gold-border-subtle: rgba(212, 175, 55, 0.08);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.72);
+            --text-muted: rgba(255, 255, 255, 0.48);
+            --input-bg: rgba(255, 255, 255, 0.03);
+            --input-border: rgba(255, 255, 255, 0.06);
+            --error: #FF6B6B;
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
+            --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
+            --shadow-input: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+            --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
         body {
             margin: 0;
-            font-family: 'Inter','Poppins', sans-serif;
-            background: linear-gradient(160deg,var(--bg-deep),var(--bg-mid) 40%,var(--bg-navy));
+            padding: 24px;
+            min-height: 100vh;
+            font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            background: var(--bg-gradient);
             overflow: auto;
             color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Floating Stars */
-        .stars {
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particles {
             position: fixed;
             width: 100%;
             height: 100%;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             pointer-events: none;
             z-index: 1;
         }
-        .stars span {
+
+        .particles span {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            background: rgba(255,255,255,0.7);
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.5), rgba(212, 175, 55, 0.15));
             border-radius: 50%;
-            animation: floatUp 12s linear infinite;
-        }
-        @keyframes floatUp {
-            from { transform: translateY(110vh) scale(0.4); opacity: 0.4; }
-            to   { transform: translateY(-10vh) scale(1); opacity: 1; }
+            animation: float-up 20s linear infinite;
         }
 
-        /* REGISTER BOX */
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0.4); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
         .box {
-            width: 440px; max-width: calc(100% - 40px);
-            padding: 36px;
-            border-radius: var(--radius-lg);
+            position: relative;
             z-index: 2;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 28px rgba(2,6,23,0.45);
-            position: relative; overflow: hidden;
-        }
-
-        /* Glowing border animation */
-        .box::before {
-            content: "";
-            position: absolute;
-            inset: -2px;
+            width: 100%;
+            max-width: 440px;
+            padding: 42px 38px;
             border-radius: var(--radius-lg);
-            background: linear-gradient(120deg,var(--neon-purple),var(--neon-violet),var(--neon-cyan));
-            background-size: 300% 300%; animation: glow 24s linear infinite; z-index: -1; opacity: 0.12; filter: blur(12px);
+            background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
+            border: 0.5px solid var(--gold-border-subtle);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
         }
 
-        @keyframes glow {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
+            opacity: 0.6;
+        }
+
+        .box::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, transparent 30%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
         }
 
         h2 {
-            margin-bottom: 20px;
+            margin: 0 0 28px 0;
             text-align: center;
-            color: #fff;
-            font-size: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 26px;
             font-weight: 700;
-            text-shadow: 0 0 12px rgba(255,255,255,0.5);
+            background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        input { width: 95%; padding: 12px; margin-bottom: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); color: var(--text-primary); font-size: 15px; outline: none; box-shadow: 0 6px 18px rgba(2,6,23,0.4) inset; }
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--input-border);
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            box-shadow: var(--shadow-input);
+            transition: all var(--transition-fast);
+        }
 
         input::placeholder {
-            color: #e2e8f0;
+            color: var(--text-muted);
+        }
+
+        input:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         input:focus {
-            border-color: #ff9a00;
-            box-shadow: 0 0 12px rgba(255,154,0,0.12);
+            border-color: var(--gold-1);
+            background: rgba(212, 175, 55, 0.03);
+            box-shadow: var(--shadow-input), 0 0 0 3px rgba(212, 175, 55, 0.08);
         }
 
-        button { width: 100%; padding: 14px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); background: linear-gradient(135deg, rgba(168,85,247,0.85), rgba(8,145,178,0.85)); color: #fff; font-size: 16px; cursor: pointer; font-weight: 700; transition: all 0.28s ease; box-shadow: 0 8px 22px rgba(168,85,247,0.12); }
+        button {
+            width: 100%;
+            padding: 16px 24px;
+            margin-top: 8px;
+            border-radius: var(--radius-md);
+            border: none;
+            background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+            color: #0A0A0A;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--shadow-gold);
+            transition: all var(--transition-fast);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
 
         button:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        p[style*="color: #ff5050"] {
+            background: rgba(255, 107, 107, 0.08) !important;
+            border: 0.5px solid rgba(255, 107, 107, 0.2) !important;
+            padding: 12px 16px !important;
+            border-radius: var(--radius-sm) !important;
+            color: var(--error) !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            margin-bottom: 16px !important;
         }
 
         .link {
             text-align: center;
-            margin-top: 12px;
+            margin-top: 24px;
             font-size: 14px;
-            color: #e2e8f0;
+            color: var(--text-secondary);
         }
 
-        .link a { text-decoration: none; color: var(--neon-cyan); font-weight: 700; }
+        .link a {
+            text-decoration: none;
+            color: var(--gold-1);
+            font-weight: 600;
+            transition: color var(--transition-fast);
+        }
+
+        .link a:hover {
+            color: var(--gold-2);
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 16px; }
+            .box { padding: 32px 24px; border-radius: var(--radius-md); }
+            h2 { font-size: 22px; }
+            input { padding: 12px 14px; font-size: 14px; }
+            button { padding: 14px 20px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
 
-<!-- Stars -->
-<div class="stars">
-    <span style="left:10%; animation-duration:7s;"></span>
-    <span style="left:30%; animation-duration:9s;"></span>
-    <span style="left:50%; animation-duration:11s;"></span>
-    <span style="left:70%; animation-duration:8s;"></span>
-    <span style="left:90%; animation-duration:10s;"></span>
+<div class="particles">
+    <span style="left:10%; animation-duration:18s;"></span>
+    <span style="left:30%; animation-duration:22s;"></span>
+    <span style="left:50%; animation-duration:20s;"></span>
+    <span style="left:70%; animation-duration:24s;"></span>
+    <span style="left:90%; animation-duration:19s;"></span>
 </div>
 
 <div class="box">
@@ -130,10 +264,7 @@
 
         <input type="text" name="reg_username" placeholder="Choose Username" value="{{ username }}" required autocomplete="new-password">
         <input type="email" name="reg_email" placeholder="Email Address" value="{{ email }}" required autocomplete="new-password">
-
-        <!-- ⭐ NEW SECURITY QUESTION FIELD -->
         <input type="text" name="reg_bike" placeholder="Your Favorite Bike (Security Question)" required>
-
         <input type="password" name="reg_password" placeholder="Create Password" required autocomplete="new-password">
 
         {% if error %}

@@ -1,30 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
 
-<title>My Profile</title>
 <style>
-    :root{ --bg-deep:#0a0118; --bg-mid:#130828; --bg-navy:#0f1535; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.10); --neon-purple:#a855f7; --neon-cyan:#06b6d4; --text-primary:#e6eefb; --text-muted:rgba(230,238,251,0.8); --radius-lg:22px; }
-    body { background: linear-gradient(160deg,var(--bg-deep),var(--bg-mid) 45%,var(--bg-navy)); font-family: 'Inter','Poppins',sans-serif; color:var(--text-primary); padding: 40px; }
-    .box { width: 420px; margin: 0 auto; padding: 26px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius: var(--radius-lg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); box-shadow: 0 10px 28px rgba(2,6,23,0.45); text-align:center }
-    .info { margin:10px 0; font-size:16px; color:var(--text-muted) }
-    .btn { padding:12px 20px; display:block; margin:15px auto; border-radius:14px; background: linear-gradient(135deg, rgba(168,85,247,0.9), rgba(6,182,212,0.9)); color:white; text-decoration:none; border: 1px solid rgba(255,255,255,0.06); font-weight:700; box-shadow: 0 8px 22px rgba(168,85,247,0.10) }
-    @media (max-width: 480px){ .box{ width: calc(100% - 32px); padding:18px } .info{ font-size:14px } .btn{ width:100%; box-sizing:border-box } }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+    --bg-deep: #0C0C0C;
+    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
+    --card: #131313;
+    --gold-1: #D4AF37;
+    --gold-2: #F5C542;
+    --gold-3: #C9A227;
+    --gold-border-subtle: rgba(212, 175, 55, 0.08);
+    --gold-border: rgba(212, 175, 55, 0.18);
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.72);
+    --text-muted: rgba(255, 255, 255, 0.48);
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
+    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
+    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    margin: 0;
+    padding: 28px;
+    background: var(--bg-gradient);
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.box {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 480px;
+    padding: 48px 40px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
+    border: 0.5px solid var(--gold-border-subtle);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    overflow: hidden;
+}
+
+.box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
+    opacity: 0.6;
+}
+
+.profile-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    background: linear-gradient(145deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.02));
+    border: 1px solid var(--gold-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    box-shadow: 0 8px 24px rgba(212, 175, 55, 0.08);
+}
+
+h2 {
+    margin: 0 0 28px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.info {
+    text-align: left;
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.5px solid rgba(255, 255, 255, 0.05);
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.info strong {
+    color: var(--gold-1);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.btn {
+    display: block;
+    padding: 14px 24px;
+    margin: 12px 0 0 0;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    color: #0A0A0A;
+    border: none;
+    box-shadow: var(--shadow-gold);
+}
+
+.btn-gold::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+}
+
+.btn-gold:hover::before { left: 100%; }
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+@media (max-width: 480px) {
+    body { padding: 16px; }
+    .box { padding: 36px 24px; border-radius: var(--radius-md); }
+    .profile-icon { width: 72px; height: 72px; font-size: 32px; }
+    h2 { font-size: 20px; }
+    .info { padding: 14px 16px; font-size: 14px; }
+    .btn { padding: 12px 20px; font-size: 13px; }
+}
 </style>
 </head>
 
 <body>
 
 <div class="box">
-    <h2>My Profile 👤</h2>
+    <div class="profile-icon">👤</div>
+    <h2>My Profile</h2>
 
-    <div class="info">Username: {{ user.username }}</div>
-    <div class="info">Email: {{ user.email }}</div>
-    <div class="info">Reg No: {{ user.reg_number }}</div>
+    <div class="info"><strong>Username</strong>{{ user.username }}</div>
+    <div class="info"><strong>Email</strong>{{ user.email }}</div>
+    <div class="info"><strong>Reg No</strong>{{ user.reg_number }}</div>
 
-    <a class="btn" href="/change_password">Change Password</a>
-    <a class="btn" href="/home">Back to Home Page</a>
+    <a class="btn btn-gold" href="/change_password">Change Password</a>
+    <a class="btn btn-outline" href="/home">← Back to Home</a>
 </div>
 
 </body>

@@ -2,122 +2,283 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
-
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete Payment | Capstone Maker</title>
 
     <!-- Razorpay Checkout CDN -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-        :root{ --bg-deep:#030016; --bg-mid:#100a1b; --neon-purple:#a855f7; --neon-cyan:#06b6d4; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.08); --blur-strong: blur(22px) }
+*, *::before, *::after { box-sizing: border-box; }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: "Poppins", sans-serif;
-            background: radial-gradient(1000px circle at 10% 10%, rgba(168,85,247,0.06), transparent 6%), linear-gradient(135deg,var(--bg-deep),var(--bg-mid));
-            min-height: 100vh;
-            color: var(--text-primary, #e6eefb);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
+:root {
+    --bg-deep: #0C0C0C;
+    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
+    --card: #131313;
+    --gold-1: #D4AF37;
+    --gold-2: #F5C542;
+    --gold-3: #C9A227;
+    --gold-border-subtle: rgba(212, 175, 55, 0.08);
+    --gold-border: rgba(212, 175, 55, 0.18);
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.72);
+    --text-muted: rgba(255, 255, 255, 0.48);
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 22px;
+    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
+    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
+    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        .stars {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0; left: 0;
-            pointer-events: none;
-        }
-        .stars span {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: radial-gradient(circle, rgba(168,85,247,0.95), rgba(6,182,212,0.6));
-            border-radius: 50%;
-            animation: floatUp 12s linear infinite;
-            opacity: 0.95;
-        }
-        @keyframes floatUp {
-            from { transform: translateY(110vh) scale(0.4); opacity: 0.4; }
-            to   { transform: translateY(-10vh) scale(1);   opacity: 1; }
-        }
+body {
+    margin: 0;
+    padding: 28px;
+    background: var(--bg-gradient);
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+}
 
-        .card {
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            padding: 35px;
-            border-radius: 24px;
-            width: 420px;
-            text-align: center;
-            backdrop-filter: var(--blur-strong);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 10px 28px rgba(2,6,23,0.45);
-        }
+body::before {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+}
 
-        h2 {
-            margin: 10px 0 20px;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary, #e6eefb);
-            text-shadow: 0 8px 34px rgba(104,33,122,0.04);
-        }
+/* Subtle gold particles */
+.stars {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
 
-        .pay-btn {
-            margin-top: 20px;
-            padding: 12px 26px;
-            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #070712;
-            cursor: pointer;
-            transition: transform 0.22s ease, box-shadow 0.22s ease;
-            box-shadow: 0 8px 22px rgba(168,85,247,0.10);
-        }
+.stars span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gold-1);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: floatUp 14s linear infinite;
+}
 
-        .pay-btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 10px 28px rgba(168,85,247,0.12);
-        }
-        .pay-btn.secondary { background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color: var(--text-primary, #e6eefb); border: 1px solid rgba(255,255,255,0.04) }
-        .pay-btn + .pay-btn { margin-left: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color: var(--text-primary, #e6eefb); border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 22px rgba(2,6,23,0.5) }
-    </style>
+@keyframes floatUp {
+    from { transform: translateY(110vh) scale(0.3); opacity: 0; }
+    10% { opacity: 0.3; }
+    90% { opacity: 0.3; }
+    to { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+
+.card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 460px;
+    padding: 42px 38px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
+    border: 0.5px solid var(--gold-border-subtle);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
+    opacity: 0.6;
+}
+
+h2 {
+    margin: 0 0 28px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.info-row {
+    text-align: left;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.5px solid rgba(255, 255, 255, 0.05);
+}
+
+.info-row b {
+    color: var(--gold-1);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.info-row span {
+    font-size: 15px;
+    color: var(--text-primary);
+}
+
+.amount-display {
+    margin: 24px 0;
+    padding: 20px;
+    background: linear-gradient(145deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-md);
+}
+
+.amount-display .label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.amount-display .value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--gold-2);
+    margin-top: 4px;
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 16px 24px;
+    margin-top: 8px;
+    border-radius: var(--radius-md);
+    border: none;
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    color: #0A0A0A;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: var(--shadow-gold);
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.pay-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.pay-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
+}
+
+.pay-btn:hover::before { left: 100%; }
+
+.pay-btn.secondary {
+    margin-top: 12px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+}
+
+.pay-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    box-shadow: none;
+}
+
+.pay-btn.secondary::before { display: none; }
+
+@media (max-width: 480px) {
+    body { padding: 16px; }
+    .card { padding: 32px 24px; border-radius: var(--radius-md); }
+    h2 { font-size: 18px; }
+    .amount-display .value { font-size: 26px; }
+    .pay-btn { padding: 14px 20px; font-size: 14px; }
+}
+</style>
 </head>
 
 <body>
 
-    <div class="stars">
-        <span style="left:10%; animation-duration:8s;"></span>
-        <span style="left:30%; animation-duration:10s;"></span>
-        <span style="left:60%; animation-duration:9s;"></span>
-        <span style="left:80%; animation-duration:11s;"></span>
+<!-- Subtle gold particles -->
+<div class="stars">
+    <span style="left:10%; animation-delay:1s; animation-duration:11s;"></span>
+    <span style="left:35%; animation-delay:4s; animation-duration:13s;"></span>
+    <span style="left:60%; animation-delay:2s; animation-duration:10s;"></span>
+    <span style="left:85%; animation-delay:5s; animation-duration:14s;"></span>
+</div>
+
+<div class="card">
+    <h2>Complete Payment to Download Report</h2>
+
+    <div class="info-row">
+        <b>User</b>
+        <span>{{ username }}</span>
     </div>
 
-    <div class="card">
-        <h2>Complete Payment to Download Report</h2>
-
-        <p><b>User:</b> {{ username }}</p>
-        <p><b>Project Title:</b> {{ project_title }}</p>
-        <p><b>Total Amount:</b> ₹{{ amount_rupees }}</p>
-
-        <button class="pay-btn" id="payBtn">Pay Now</button><br>
-        <button class="pay-btn" onclick="window.location.href='/home'">Finished ! Go To Home</button>
+    <div class="info-row">
+        <b>Project Title</b>
+        <span>{{ project_title }}</span>
     </div>
 
-    <form id="paymentForm" action="/payment_success" method="POST" style="display:none;">
-        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
-        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
-        <input type="hidden" name="razorpay_signature" id="razorpay_signature">
-    </form>
+    <div class="amount-display">
+        <div class="label">Total Amount</div>
+        <div class="value">₹{{ amount_rupees }}</div>
+    </div>
 
-    <script>
-        document.getElementById("payBtn").onclick = async function(e) {
+    <button class="pay-btn" id="payBtn">Pay Now</button>
+    <button class="pay-btn secondary" onclick="window.location.href='/home'">← Finished, Go To Home</button>
+</div>
+
+<form id="paymentForm" action="/payment_success" method="POST" style="display:none;">
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+</form>
+
+<script>
+document.getElementById("payBtn").onclick = async function(e) {
     e.preventDefault();
 
     // 1) Create order from backend
@@ -143,14 +304,13 @@
             document.getElementById("paymentForm").submit();
         },
 
-        "theme": { "color": "#ff9a00" }
+        "theme": { "color": "#D4AF37" }
     };
 
     var rzp1 = new Razorpay(options);
     rzp1.open();
 };
-
-    </script>
+</script>
 
 </body>
 </html>

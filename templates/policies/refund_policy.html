@@ -1,37 +1,173 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Refund / Cancellation Policy</title>
-	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@300;400;600;700&display=swap');
-		:root{ --bg-deep:#030016; --bg-mid:#0e0520; --glass: rgba(255,255,255,0.04); --glass-border: rgba(255,255,255,0.06); --accent:#a855f7; --text-primary:#e6eefb; --muted: rgba(230,238,251,0.9); --radius:18px }
-		body{ margin:0; font-family:'Inter', 'Poppins', sans-serif; background: linear-gradient(160deg,var(--bg-deep), var(--bg-mid)); color:var(--text-primary); min-height:100vh; padding:36px }
-		.policy-card{ max-width:980px; margin:32px auto; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:28px; border-radius:var(--radius); border:1px solid var(--glass-border); box-shadow: 0 10px 28px rgba(2,6,23,0.45); backdrop-filter: blur(16px) }
-		h2,h3,h4,h5{ color:var(--accent); margin-top:0 }
-		p{ color:var(--muted); line-height:1.7 }
-		@media (max-width:600px){ .policy-card{ padding:18px; margin:18px } }
-	</style>
+    <meta charset="UTF-8">
+    <title>Refund / Cancellation Policy</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-deep: #0A0A0A;
+            --bg-mid: #0E0E0E;
+            --gold-1: #D4AF37;
+            --gold-2: #F5C542;
+            --gold-3: #C9A227;
+
+            --text-primary: rgba(255,255,255,0.92);
+            --text-secondary: rgba(255,255,255,0.75);
+            --muted: rgba(255,255,255,0.55);
+
+            --card-bg: rgba(255,255,255,0.05);
+            --card-border: rgba(212,175,55,0.18);
+
+            --radius: 20px;
+        }
+
+        body {
+            margin: 0;
+            padding: 28px 0 80px 0;
+            background: linear-gradient(160deg, var(--bg-deep), var(--bg-mid));
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Gold glow background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 25% 30%, rgba(212,175,55,0.06), transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(212,175,55,0.04), transparent 70%);
+            filter: blur(45px);
+            z-index: -1;
+        }
+
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particles span {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, rgba(212,175,55,0.6), rgba(212,175,55,0.2));
+            border-radius: 50%;
+            animation: floatUp 22s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) scale(0.4); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        .policy-card {
+            width: min(900px, 92%);
+            padding: 32px;
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+            backdrop-filter: blur(14px);
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 4px;
+            background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h3, h5 {
+            color: var(--gold-1);
+        }
+
+        p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+
+        .back-btn {
+            margin-top: 24px;
+            padding: 12px 22px;
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--gold-1);
+            color: var(--text-primary);
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.25s ease;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            background: rgba(212,175,55,0.12);
+            color: var(--gold-1);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 600px) {
+            .policy-card { padding: 20px; }
+            h2 { font-size: 26px; }
+        }
+
+    </style>
 </head>
+
 <body>
-<div class="policy-card">
-<h2>Cancellation & Refund Policy</h2>
-<h3>Last updated on Dec 1st 2025</h3>
-<h5>CHITTEM JASWANTH believes in helping its customers as far as possible, and has therefore a liberal cancellation policy. Under this policy:</h5>
-<p>Cancellations will be considered only if the request is made within 1-2 days of placing the order. However, the cancellation request may not be entertained if the orders have been communicated to the vendors/merchants and they have initiated the process of shipping them.
 
-CHITTEM JASWANTH does not accept cancellation requests for perishable items like flowers, eatables etc. However, refund/replacement can be made if the customer establishes that the quality of product delivered is not good.
+    <!-- Floating Gold Dust -->
+    <div class="particles">
+        <span style="left: 10%; animation-delay:0s;"></span>
+        <span style="left: 30%; animation-delay:2s;"></span>
+        <span style="left: 50%; animation-delay:4s;"></span>
+        <span style="left: 70%; animation-delay:1s;"></span>
+        <span style="left: 90%; animation-delay:3s;"></span>
+    </div>
 
-In case of receipt of damaged or defective items please report the same to our Customer Service team. The request will, however, be entertained once the merchant has checked and determined the same at his own end. This should be reported within 1-2 days of receipt of the products.
+    <div class="policy-card">
+        <h2>Cancellation & Refund Policy</h2>
+        <h3>Last updated on Dec 1st 2025</h3>
 
-In case you feel that the product received is not as shown on the site or as per your expectations, you must bring it to the notice of our customer service within 1-2 days of receiving the product. The Customer Service Team after looking into your complaint will take an appropriate decision.
+        <h5>
+            CHITTEM JASWANTH believes in providing the best possible assistance to customers, and follows a clear and fair cancellation policy:
+        </h5>
 
-In case of complaints regarding products that come with a warranty from manufacturers, please refer the issue to them.
+        <p>
+Cancellations will be considered only if the request is made within **1–2 days** of placing the order.
+However, cancellation may not be possible if the order has already been processed or shipped by the vendor.
 
-In case of any Refunds approved by the CHITTEM JASWANTH, it’ll take 1-2 days for the refund to be processed to the end customer.</p>
+Cancellations cannot be accepted for **perishable items** such as flowers or food products.  
+Refunds or replacements may be offered if the customer proves that the delivered product was of poor quality.
 
+If you receive a **damaged or defective item**, please report it to Customer Service within **1–2 days** of delivery.  
+The vendor must verify and confirm the defect before a refund is issued.
 
+If the product does not match your expectations or differs from what was shown on the website, notify us within **1–2 days**.  
+Our Customer Service Team will review the complaint and take appropriate action.
 
-	</div>
+Products covered under **manufacturer warranty** must be handled directly with the manufacturer.
+
+If a refund is approved by CHITTEM JASWANTH, please allow **1–2 days** for the refund to be processed back to the customer.
+        </p>
+
+        <a href="/home" class="back-btn">⬅ Back to Home</a>
+    </div>
 
 </body>
 </html>

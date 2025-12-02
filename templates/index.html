@@ -1,246 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
 
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-      :root {
-        --bg-1: #070013;
-        --bg-2: #120425;
-        --bg-3: #1c0640;
+        *, *::before, *::after { box-sizing: border-box; }
 
-        --glass: rgba(255, 255, 255, 0.06);
-        --glass-border: rgba(255, 255, 255, 0.1);
+        :root {
+            --bg-deep: #0C0C0C;
+            --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
+            --card: #131313;
+            --card-hover: #181818;
+            --gold-1: #D4AF37;
+            --gold-2: #F5C542;
+            --gold-3: #C9A227;
+            --gold-border: rgba(212, 175, 55, 0.18);
+            --gold-border-subtle: rgba(212, 175, 55, 0.08);
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.72);
+            --text-muted: rgba(255, 255, 255, 0.48);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 22px;
+            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(212, 175, 55, 0.04);
+            --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
+            --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-        --text-light: rgba(255, 255, 255, 0.95);
-        --text-soft: rgba(255, 255, 255, 0.75);
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Inter', 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 80px;
+        }
 
-        --neon-purple: #9b5cff;
-        --neon-cyan: #11cbe8;
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-        --radius: 24px;
-        --blur: blur(18px);
-      }
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
 
-      body {
-        margin: 0;
-        height: 100vh;
-        font-family: 'Inter', sans-serif;
-        background: radial-gradient(circle at top, var(--bg-3), var(--bg-2) 50%, var(--bg-1));
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        overflow-x: hidden;
-        color: var(--text-light);
-      }
+        .particles span {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.5), rgba(212, 175, 55, 0.15));
+            border-radius: 50%;
+            animation: float-up 22s linear infinite;
+        }
 
-      /* -------------------- AURORA BACKLIGHT -------------------- */
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: radial-gradient(600px 400px at 10% 20%, rgba(155, 92, 255, 0.18), transparent 60%),
-                    radial-gradient(600px 400px at 90% 80%, rgba(17, 203, 232, 0.18), transparent 65%),
-                    radial-gradient(400px 350px at 60% 40%, rgba(255, 79, 216, 0.1), transparent 70%);
-        filter: blur(40px);
-        opacity: 0.8;
-        z-index: -1;
-      }
+        @keyframes float-up {
+            0% { transform: translateY(100vh) scale(0.3); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
 
-      /* -------------------- FLOATING PARTICLES -------------------- */
-      .particles {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        top: 0;
-        left: 0;
-        z-index: -1;
-      }
-      .particles span {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4));
-        border-radius: 50%;
-        animation: drop 16s linear infinite;
-        opacity: 0.7;
-      }
+        h1 {
+            position: relative;
+            z-index: 2;
+            margin-top: 40px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
 
-      @keyframes drop {
-        from { transform: translateY(110vh) scale(0.4); opacity: 0.5; }
-        to { transform: translateY(-10vh) scale(1); opacity: 1; }
-      }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            width: min(1180px, calc(100% - 48px));
+            margin-top: 40px;
+            z-index: 2;
+            padding: 0 12px;
+        }
 
-      /* -------------------- PAGE TITLE -------------------- */
-      h1 {
-        margin-top: 40px;
-        font-size: 36px;
-        text-align: center;
-        color: var(--text-light);
-        font-weight: 800;
-        letter-spacing: 0.3px;
-        text-shadow: 0 6px 20px rgba(155,92,255,0.2);
-      }
+        .box {
+            padding: 28px 24px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(175deg, var(--card), #0F0F10);
+            border: 0.5px solid var(--gold-border-subtle);
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: center;
+            min-height: 180px;
+        }
 
-      /* -------------------- FIXED AUTO GRID (3×N) -------------------- */
-      .container {
-        width: min(1100px, 90%);
-        margin: 80px auto 180px auto;
+        .box:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold-border);
+            box-shadow: var(--shadow-gold);
+            background: var(--card-hover);
+        }
 
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-auto-rows: 220px;
-        gap: 28px;
+        .box h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold-1);
+        }
 
-        z-index: 2;
-      }
+        .float-btn {
+            position: fixed;
+            left: 20px;
+            padding: 12px 20px;
+            background: linear-gradient(175deg, var(--card), #0F0F10);
+            border: 0.5px solid var(--gold-border-subtle);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 10;
+            transition: var(--transition-fast);
+            text-decoration: none;
+        }
 
-      /* -------------------- BOX CARDS -------------------- */
-      .box {
-        padding: 22px;
-        height: 200px;
-        border-radius: var(--radius);
-        background: rgba(255,255,255,0.05);
-        backdrop-filter: var(--blur);
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 12px 30px rgba(0,0,0,0.35);
-        cursor: pointer;
-        text-align: center;
-        transition: 0.25s ease;
-        position: relative;
-      }
+        .float-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--gold-border);
+            color: var(--gold-1);
+        }
 
-      .box:hover {
-        transform: translateY(-6px);
-        border-color: rgba(155,92,255,0.35);
-        box-shadow: 0 20px 40px rgba(155,92,255,0.2);
-      }
+        .profile-btn { bottom: 160px; }
+        .history-btn { bottom: 120px; }   /* ⭐ NEW BUTTON POSITION */
+        .Logout-btn { bottom: 80px; }
 
-      .box::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(120deg, var(--neon-purple), var(--neon-cyan));
-        background-size: 300% 300%;
-        filter: blur(30px);
-        opacity: 0.08;
-        z-index: -1;
-        animation: soft-move 20s infinite linear;
-      }
-
-      @keyframes soft-move {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-
-      .box h2 {
-        margin-top: 25px;
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--text-light);
-      }
-
-      .box p {
-        margin-top: 8px;
-        font-size: 14px;
-        color: var(--text-soft);
-      }
-
-      /* -------------------- FLOATING BUTTONS -------------------- */
-      .float-btn {
-        position: fixed;
-        left: 22px;
-        padding: 12px 18px;
-        border-radius: 16px;
-        font-size: 14px;
-        color: var(--text-light);
-        background: rgba(255,255,255,0.06);
-        backdrop-filter: blur(14px);
-        border: 1px solid rgba(255,255,255,0.1);
-        text-decoration: none;
-        font-weight: 600;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.35);
-        transition: 0.25s ease;
-        z-index: 10;
-      }
-
-      .float-btn:hover {
-        transform: translateY(-4px);
-        background: rgba(255,255,255,0.1);
-      }
-
-      .profile-btn { bottom: 120px; }
-      .history-btn { bottom: 70px; }
-      .logout-btn { bottom: 20px; }
-
-      /* -------------------- RESPONSIVE -------------------- */
-      @media (max-width: 768px) {
-        .container { margin-top: 100px; }
-        .box { height: 160px; }
-        h1 { font-size: 28px; margin-top: 26px; }
-      }
     </style>
-  </head>
+</head>
+<body>
 
-  <body>
-    <!-- Background Particles -->
     <div class="particles">
-      <span style="left:10%; animation-delay:1s;"></span>
-      <span style="left:30%; animation-delay:3s;"></span>
-      <span style="left:50%; animation-delay:2s;"></span>
-      <span style="left:70%; animation-delay:4s;"></span>
-      <span style="left:90%; animation-delay:1.5s;"></span>
+        <span style="left:5%; animation-delay:0s;"></span>
+        <span style="left:15%; animation-delay:3s;"></span>
+        <span style="left:30%; animation-delay:1s;"></span>
+        <span style="left:45%; animation-delay:4s;"></span>
+        <span style="left:60%; animation-delay:2s;"></span>
+        <span style="left:75%; animation-delay:5s;"></span>
+        <span style="left:90%; animation-delay:1s;"></span>
     </div>
 
     <h1>SIMATS Smart Tools</h1>
 
     <!-- FLOATING BUTTONS LEFT SIDE -->
     <a href="/profile" class="float-btn profile-btn">My Profile 👤</a>
+
+    <!-- ⭐ NEW HISTORY BUTTON (added correctly) -->
     <a href="/history" class="float-btn history-btn">My History 📜</a>
-    <a href="/login" class="float-btn logout-btn">Log Out</a>
 
-    <!-- GRID ITEMS -->
+    <a href="/login" class="float-btn Logout-btn">Log Out</a>
+
+    <!-- MAIN GRID -->
     <div class="container">
+        <div class="box" onclick="window.location.href='/attendance'">
+            <h2>Attendance</h2>
+            <p>Calculate your attendance percentage</p>
+        </div>
 
-      <div class="box" onclick="window.location.href='/attendance'">
-        <h2>Attendance</h2>
-        <p>Calculate your attendance percentage</p>
-      </div>
+        <div class="box" onclick="window.location.href='/cgpa'">
+            <h2>CGPA</h2>
+            <p>Calculate your SIMATS-based CGPA</p>
+        </div>
 
-      <div class="box" onclick="window.location.href='/cgpa'">
-        <h2>CGPA</h2>
-        <p>Calculate your SIMATS-based CGPA</p>
-      </div>
+        <div class="box" onclick="window.location.href='/capstone'">
+            <h2>Capstone Maker</h2>
+            <p>Create Your Simats Capstone Report</p>
+        </div>
 
-      <div class="box" onclick="window.location.href='/capstone'">
-        <h2>Capstone Maker</h2>
-        <p>Create your SIMATS capstone report</p>
-      </div>
+        <div class="box" onclick="window.location.href='/pdfs'">
+            <h2>Concept Maps</h2>
+            <p>Simats Concept Maps Available Here</p>
+        </div>
 
-      <div class="box" onclick="window.location.href='/pdfs'">
-        <h2>Concept Maps</h2>
-        <p>Access SIMATS concept maps</p>
-      </div>
+        <div class="box" onclick="window.location.href='/faculty'">
+            <h2>Faculty Numbers</h2>
+            <p>Search The Faculty Numbers</p>
+        </div>
 
-      <div class="box" onclick="window.location.href='/faculty'">
-        <h2>Faculty Numbers</h2>
-        <p>Search faculty contact numbers</p>
-      </div>
-
-      <div class="box" onclick="window.location.href='/ai-tools'">
-        <h2>AI Tools</h2>
-        <p>Discover powerful AI tools</p>
-      </div>
-
+        <div class="box" onclick="window.location.href='/ai-tools'">
+            <h2>AI-Tools</h2>
+            <p>Here You Can Discover The Ai Tools</p>
+        </div>
     </div>
-  </body>
+
+</body>
+
+<footer style="
+    width: 100%;
+    padding: 16px 0;
+    text-align: center;
+    background: rgba(19,19,19,0.95);
+    border-top: 0.5px solid rgba(212,175,55,0.1);
+    color: var(--text-secondary);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+">
+    <a href="/privacy-policy" style="color:#ccc; margin:0 12px;">Privacy Policy</a>
+    |
+    <a href="/refund-policy" style="color:#ccc; margin:0 12px;">Refund Policy</a>
+    |
+    <a href="/terms" style="color:#ccc; margin:0 12px;">Terms & Conditions</a>
+    |
+    <a href="/shipping-policy" style="color:#ccc; margin:0 12px;">Delivery Policy</a>
+    |
+    <a href="/contact" style="color:#ccc; margin:0 12px;">Contact Us</a>
+</footer>
 
 </html>
