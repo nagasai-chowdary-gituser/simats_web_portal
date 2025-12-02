@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My History</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Inter", sans-serif;
+            background: radial-gradient(circle at top, #1c0640, #120425 50%, #070013);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 34px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 12px rgba(155, 92, 255, 0.6);
+        }
+
+        .history-box {
+            width: 80%;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            color: white;
+        }
+
+        th, td {
+            padding: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.12);
+            font-size: 16px;
+        }
+
+        tr:hover td {
+            background: rgba(155, 92, 255, 0.12);
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: rgba(17, 203, 232, 0.25);
+            border: 1px solid rgba(17, 203, 232, 0.4);
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: rgba(17, 203, 232, 0.45);
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(12px);
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-4px);
+            background: rgba(155,92,255,0.25);
+        }
+    </style>
+</head>
+<body>
+
+<h1>📜 My Capstone History</h1>
+
+<div class="history-box">
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Download</th>
+        </tr>
+
+        {% for r in records %}
+        <tr>
+            <td>{{ r.title }}</td>
+            <td>{{ r.created_at }}</td>
+
+            <td>
+                <a class="btn" href="/download_history/{{ r.id }}">Download</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<a class="back-btn" href="/home">⬅ Back to Home</a>
+
+</body>
+</html>

@@ -104,6 +104,19 @@ class User(db.Model):
     is_admin = db.Column(db.Boolean, default=False)
     security_bike = db.Column(db.String(120), nullable=True)
 
+class Payment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    amount = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(20), nullable=False)  # success / failed
+    payment_id = db.Column(db.String(100), nullable=True)
+
+class CapstoneHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    title = db.Column(db.String(300), nullable=False)
+    file_path = db.Column(db.String(500), nullable=False)
+    created_at = db.Column(db.String(50), nullable=False)  # store date-time
 
 # -----------------------------
 # CREATE ADMIN IF NOT EXISTS
@@ -125,10 +138,12 @@ def create_admin_once():
     if not admin_created:
         db.create_all()
 
-        admin = User.query.filter_by(username="admin").first()
+        # Check admin by EMAIL (unique always)
+        admin = User.query.filter_by(email="admin@system.com").first()
+
         if not admin:
             admin = User(
-                username="admin",
+                username="admin",   # <-- NEW USERNAME HERE
                 email="admin@system.com",
                 reg_number="ADMIN",
                 password=generate_password_hash("admin123"),
@@ -137,21 +152,33 @@ def create_admin_once():
             )
             db.session.add(admin)
             db.session.commit()
-            print("🔥 Admin Created: admin / admin123")
+            print("🔥 Admin Created!")
 
         admin_created = True
+
 
 
 # -----------------------------
 # AUTH HELPERS (DECORATORS)
 # -----------------------------
-def login_required(f):
-    @wraps(f)
-    def wrapper(*args, **kwargs):
-        if "user_id" not in session:
-            return redirect(url_for("login"))
-        return f(*args, **kwargs)
-    return wrapper
+def login_required(admin_only=False):
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+
+            # If not logged in
+            if "user_id" not in session:
+                return redirect(url_for("login"))
+
+            # If admin-only route
+            if admin_only and not session.get("is_admin"):
+                return "❌ Access Denied – Admin Only"
+
+            return f(*args, **kwargs)
+
+        return wrapper
+    return decorator
+
 
 
 def admin_required(f):
@@ -205,7 +232,7 @@ def default_route():
 
 
 @app.route("/home")
-@login_required
+@login_required()
 def index():
     return render_template("index.html")
 
@@ -214,7 +241,7 @@ def index():
 # USER PROFILE PAGE
 # -----------------------------
 @app.route("/profile")
-@login_required
+@login_required()
 def profile():
     user = User.query.get(session["user_id"])
     return render_template("profile.html", user=user)
@@ -342,7 +369,7 @@ def forgot_password():
 # USER CHANGE PASSWORD
 # -----------------------------
 @app.route("/change_password", methods=["GET", "POST"])
-@login_required
+@login_required()
 def change_password():
     message = ""
     if request.method == "POST":
@@ -371,7 +398,7 @@ def change_password():
 # ADMIN PAGE WITH SEARCH + COUNT
 # -----------------------------
 @app.route("/admin")
-@admin_required
+@login_required(admin_only=True)
 def admin_page():
 
     search = request.args.get("search", "").strip()
@@ -381,16 +408,25 @@ def admin_page():
     else:
         users = User.query.all()
 
-    user_count = len(User.query.all())
+    user_count = len(users)
 
-    return render_template("admin.html", users=users, search=search, user_count=user_count)
+    # ⭐ TOTAL SUCCESSFUL CAPSTONE PAYMENTS ⭐
+    total_capstone_payments = Payment.query.filter_by(status="success").count()
+
+    return render_template(
+        "admin.html",
+        users=users,
+        search=search,
+        user_count=user_count,
+        total_capstone_payments=total_capstone_payments
+    )
 
 
 # -----------------------------
 # LOGOUT
 # -----------------------------
 @app.route("/logout")
-@login_required
+@login_required()
 def logout():
     session.clear()
     return redirect(url_for("login"))
@@ -400,7 +436,7 @@ def logout():
 # ATTENDANCE PAGE
 # -----------------------------
 @app.route("/attendance", methods=["GET", "POST"])
-@login_required
+@login_required()
 def attendance_calc():
     if request.method == "POST":
         try:
@@ -419,7 +455,7 @@ def attendance_calc():
 # CGPA PAGE
 # -----------------------------
 @app.route("/cgpa", methods=["GET", "POST"])
-@login_required
+@login_required()
 def cgpa_calc():
     if request.method == "POST":
 
@@ -466,13 +502,13 @@ def cgpa_calc():
 # CAPSTONE FORM
 # -----------------------------
 @app.route("/capstone")
-@login_required
+@login_required()
 def capstone_form():
     return render_template("capstone_form.html")
 
 
 @app.route("/generate_capstone", methods=["POST"])
-@login_required
+@login_required()
 def generate_capstone():
 
     data = request.get_json()
@@ -504,6 +540,17 @@ def generate_capstone():
     final_docx = os.path.join(output_dir, "final_capstone.docx")
     merge_docx(fixed_pages + [ai_docx_path], final_docx)
 
+    # ⭐ NEW: Save generation history (BEFORE payment)
+    from datetime import datetime
+    history = CapstoneHistory(
+        user_id=session["user_id"],
+        title=title,
+        file_path=final_docx,
+        created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    )
+    db.session.add(history)
+    db.session.commit()
+
     # 4. Save for payment
     session["capstone_file_path"] = final_docx
     session["project_title"] = title
@@ -511,6 +558,12 @@ def generate_capstone():
     # 5. ALWAYS send to payment page
     return jsonify({"redirect": "/payment"})
 
+
+@app.route("/history")
+@login_required()
+def history_page():
+    records = CapstoneHistory.query.filter_by(user_id=session["user_id"]).all()
+    return render_template("history.html", records=records)
 
 
 
@@ -523,7 +576,7 @@ PDF_FOLDER = os.path.join(BASE_DIR, "static", "pdfs")
 
 
 @app.route("/pdfs")
-@login_required
+@login_required()
 def list_pdfs():
     if not os.path.exists(PDF_FOLDER):
         os.makedirs(PDF_FOLDER)
@@ -533,7 +586,7 @@ def list_pdfs():
 
 
 @app.route("/download/<filename>")
-@login_required
+@login_required()
 def download_pdf(filename):
     return send_from_directory(PDF_FOLDER, filename, as_attachment=True)
 
@@ -579,7 +632,7 @@ def chatbot_ask():
 FACULTY_FILE = os.path.join(BASE_DIR, "static", "data", "final_staff_numbers_fix.json")
 
 @app.route("/faculty")
-@login_required
+@login_required()
 def faculty_page():
     try:
         with open(FACULTY_FILE, "r", encoding="utf-8") as f:
@@ -591,7 +644,7 @@ def faculty_page():
     return render_template("faculty.html", faculty=faculty_list)
 ### ai tools for students
 @app.route("/ai-tools")
-@login_required
+@login_required()
 def ai_tools():
     import json, os
     tools_file = os.path.join(BASE_DIR, "static", "data", "ai_tools.json")
@@ -604,27 +657,27 @@ def ai_tools():
 
 ### Private Policy
 @app.route("/privacy-policy")
-@login_required
+@login_required()
 def privacy_policy():
     return render_template("policies/privacy_policy.html")
 
 @app.route("/refund-policy")
-@login_required
+@login_required()
 def refund_policy():
     return render_template("policies/refund_policy.html")
 
 @app.route("/terms")
-@login_required
+@login_required()
 def terms_conditions():
     return render_template("policies/terms_conditions.html")
 
 @app.route("/shipping-policy")
-@login_required
+@login_required()
 def shipping_policy():
     return render_template("policies/shipping_policy.html")
 
 @app.route("/contact")
-@login_required
+@login_required()
 def contact_page():
     return render_template("policies/contact.html")
 
@@ -633,7 +686,7 @@ def contact_page():
 # ⭐⭐⭐ PAYMENT PAGE ⭐⭐⭐
 # ============================================================
 @app.route("/payment")
-@login_required
+@login_required()
 def payment_page():
     amount_rupees = 19
 
@@ -650,7 +703,7 @@ def payment_page():
 # ⭐⭐⭐ CREATE RAZORPAY ORDER ⭐⭐⭐
 # ============================================================
 @app.route("/create_order", methods=["POST"])
-@login_required
+@login_required()
 def create_order():
     amount_rupees = 19
     amount_paise = amount_rupees * 100
@@ -672,7 +725,7 @@ def create_order():
 # ⭐⭐⭐ PAYMENT SUCCESS HANDLER ⭐⭐⭐
 # ============================================================
 @app.route("/payment_success", methods=["POST"])
-@login_required
+@login_required()
 def payment_success():
     data = request.form
 
@@ -689,6 +742,16 @@ def payment_success():
         })
     except:
         return "❌ Payment verification failed", 400
+
+    # ⭐ SAVE SUCCESS PAYMENT IN DATABASE ⭐
+    payment = Payment(
+        user_id=session["user_id"],
+        amount=19,
+        status="success",
+        payment_id=razorpay_payment_id
+    )
+    db.session.add(payment)
+    db.session.commit()
 
     # Allow download of last generated file
     file_path = session.get("capstone_file_path")

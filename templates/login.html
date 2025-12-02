@@ -6,251 +6,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
 
+    <!-- IMPORT FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap');
+    /* ----------------------------------------------------
+       FINAL BOSS FUTURISTIC GLASS-NEON THEME
+       ---------------------------------------------------- */
 
     :root{
-        --bg-deep:#0a0118; /* deep navy */
-        --bg-mid:#130828; /* purple-mid */
-        --bg-navy:#0f1535; /* navy */
-        --glass: rgba(255,255,255,0.08);
-        --glass-strong: rgba(255,255,255,0.12);
-        --glass-border: rgba(255,255,255,0.14);
-        --neon-purple: #a855f7;
-        --neon-cyan: #06b6d4;
-        --neon-violet: #8b5cf6;
-        --text-primary: #e6eefb;
-        --text-muted: rgba(230,238,251,0.8);
-        --radius-lg: 22px;
-        --blur-heavy: blur(24px);
+        --gn-bg-dark: #070013;
+        --gn-light-border: rgba(255,255,255,0.05);
+
+        --gn-accent: #9b5cff;
+        --gn-accent-cyan: #11cbe8;
+        --gn-accent-pink: #ff4fd8;
+
+        --gn-text: rgba(255,255,255,0.92);
+        --gn-text-soft: rgba(255,255,255,0.75);
+
+        --gn-radius: 26px;
+        --gn-blur: blur(16px);
     }
 
     body {
         margin: 0;
-        font-family: 'Inter', 'Poppins', sans-serif;
+        font-family: "Inter", sans-serif;
         height: 100vh;
-        background: linear-gradient(160deg,var(--bg-deep) 0%,var(--bg-mid) 45%,var(--bg-navy) 100%);
+        background: radial-gradient(circle at top, #1a0635, #0a0118 60%, #05000f 100%);
         display: flex;
         justify-content: center;
         align-items: center;
+        color: var(--gn-text);
         overflow: hidden;
-        color: var(--text-primary);
     }
 
-    /* FLOATING PARTICLES */
+    /* Background Aurora */
+    body::before{
+        content:"";
+        position:fixed;
+        inset:0;
+        background:
+            radial-gradient(600px 400px at 10% 20%, rgba(155,92,255,0.12), transparent 60%),
+            radial-gradient(500px 350px at 90% 80%, rgba(17,203,232,0.12), transparent 70%),
+            radial-gradient(400px 300px at 50% 40%, rgba(255,79,216,0.12), transparent 60%);
+        filter: blur(40px);
+        z-index: -2;
+        opacity: 0.8;
+    }
+
+    /* Stars */
     .stars {
         position: fixed;
         width: 100%;
         height: 100%;
         top: 0; left: 0;
         pointer-events: none;
-        z-index: 1;
     }
     .stars span {
         position: absolute;
-        width: 6px;
-        height: 6px;
-        background: rgba(255,255,255,0.7);
+        width: 4px; height: 4px;
+        background: radial-gradient(circle, rgba(255,255,255,0.85), rgba(255,255,255,0.45));
         border-radius: 50%;
-        animation: rise 12s linear infinite;
+        animation: rise 18s linear infinite;
+        opacity: 0.65;
     }
     @keyframes rise {
-        from { transform: translateY(110vh) scale(0.4); opacity: 0.4; }
+        from { transform: translateY(110vh) scale(0.5); opacity: 0.3; }
         to   { transform: translateY(-10vh) scale(1); opacity: 1; }
     }
 
-    /* LOGIN CARD */
+    /* Login Wrapper */
     .wrapper {
-        z-index: 2;
+        z-index: 5;
         width: 420px;
-        max-width: calc(100% - 40px);
-        padding: 36px;
-        border-radius: var(--radius-lg);
-        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 12px 40px rgba(2,6,23,0.6), 0 2px 12px rgba(168,85,247,0.06) inset;
-        backdrop-filter: var(--blur-heavy);
+        max-width: 92%;
+        padding: 40px;
+        border-radius: var(--gn-radius);
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--gn-light-border);
+        backdrop-filter: var(--gn-blur);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.45);
         position: relative;
         overflow: hidden;
-        transform: translateZ(0);
     }
 
-    /* GLOW ANIMATION */
-    .wrapper::before {
-        content: "";
-        position: absolute;
-        inset: -2px;
-        border-radius: var(--radius-lg);
-        background: linear-gradient(120deg,var(--neon-purple),var(--neon-violet),var(--neon-cyan));
-        background-size: 300% 300%;
-        animation: glow 9s linear infinite;
-        z-index: -1;
-        filter: blur(18px);
-        opacity: 0.28;
-    }
-
-    @keyframes glow { 0%{ background-position: 0% 50% } 50%{ background-position: 100% 50% } 100%{ background-position: 0% 50% }}
-
+    /* Heading */
     h2 {
         font-size: 28px;
-        color: var(--text-primary);
         font-weight: 700;
-        margin-bottom: 20px;
-        letter-spacing: 0.2px;
-        text-shadow: 0 4px 20px rgba(168,85,247,0.08);
+        text-align:center;
+        margin-bottom: 25px;
+        color: var(--gn-text);
     }
 
-    /* INPUT FIELDS */
-    .input-box {
-        text-align: left;
-        margin-bottom: 18px;
-    }
+    /* Input Boxes */
+    .input-box { margin-bottom: 18px; }
+
     .input-box label {
-        color: #e2e8f0;
         font-size: 14px;
+        color: var(--gn-text-soft);
+        margin-bottom: 6px;
+        display:block;
     }
+
     .input-box input {
-        width: 100%;
-        padding: 12px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.06);
-        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-        color: var(--text-primary);
+        width: 92%;
+        padding: 14px 14px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.04);
+        color: var(--gn-text);
         outline: none;
         font-size: 15px;
-        box-shadow: 0 6px 18px rgba(2,6,23,0.4) inset;
-    }
-    .input-box input:focus {
-        border-color: rgba(168,85,247,0.6);
-        box-shadow: 0 0 22px rgba(168,85,247,0.12);
+        transition: .25s ease;
     }
 
-    /* LOGIN BUTTON */
+    .input-box input:focus {
+        border-color: var(--gn-accent);
+        box-shadow: 0 0 10px rgba(155,92,255,0.15);
+    }
+
+    /* Password Eye Fix */
+    .password-field {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .password-field input {
+        padding-right: 42px !important;
+    }
+
+    /* Clean minimal eye icon (line style) */
+    .toggle-eye {
+        position: absolute;
+        right: 12px;
+        font-size: 20px;
+        cursor: pointer;
+        color: var(--gn-text-soft);
+        user-select: none;
+        transition: 0.2s ease;
+    }
+
+    .toggle-eye:hover {
+        color: var(--gn-accent-cyan);
+    }
+
+    /* Button */
     button {
         width: 100%;
-        padding: 14px 18px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.06);
-        background: linear-gradient(135deg, rgba(168,85,247,0.95), rgba(8,145,178,0.95));
+        padding: 14px;
+        border-radius: 16px;
+        border: none;
+        background: linear-gradient(135deg, var(--gn-accent), var(--gn-accent-cyan));
         color: #fff;
         font-size: 16px;
         font-weight: 700;
         cursor: pointer;
-        margin-top: 12px;
-        transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
-        box-shadow: 0 10px 30px rgba(168,85,247,0.18);
+        box-shadow: 0 10px 30px rgba(155,92,255,0.20);
+        transition: 0.25s ease;
     }
-    button:hover { transform: translateY(-4px); box-shadow: 0 16px 42px rgba(168,85,247,0.22) }
 
-    /* LINKS */
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 14px 36px rgba(155,92,255,0.30);
+    }
+
     .link {
         margin-top: 15px;
-        color: #e2e8f0;
-        font-size: 14px;
+        color: var(--gn-text-soft);
+        text-align: center;
     }
     .link a {
-        color: #ff9a00;
-        text-decoration: none;
+        color: var(--gn-accent-cyan);
         font-weight: 600;
-    }
-    .link a:hover { text-decoration: underline; }
-
-    /* FORGOT PASSWORD LINK */
-    .forgot {
-        margin-top: -10px;
-        margin-bottom: 15px;
-        text-align: right;
+        text-decoration: none;
     }
     .forgot a {
-        color: var(--neon-cyan);
+        color: var(--gn-accent-cyan);
         font-size: 13px;
-        text-decoration: none;
-        font-weight: 700;
-        text-shadow: 0 2px 8px rgba(6,182,212,0.06);
-    }
-    .forgot a:hover {
-        text-decoration: underline;
     }
 
-    /* ERROR MESSAGE */
+    /* Error */
     .error-msg {
-        background: rgba(239,68,68,0.06);
-        border: 1px solid rgba(239,68,68,0.12);
-        padding: 10px;
+        background: rgba(255,80,80,0.10);
+        border: 1px solid rgba(255,80,80,0.25);
+        padding: 12px;
         border-radius: 12px;
         color: #ffb4b4;
-        margin-bottom: 15px;
-        text-align: center;
         font-weight: 600;
-        box-shadow: 0 4px 16px rgba(239,68,68,0.06);
-    }
-
-    /* SHAKE ANIMATION */
-    .shake {
-        animation: shakeAnim 0.35s ease;
-    }
-    @keyframes shakeAnim {
-        0%   { transform: translateX(0); }
-        25%  { transform: translateX(-8px); }
-        50%  { transform: translateX(8px); }
-        75%  { transform: translateX(-8px); }
-        100% { transform: translateX(0); }
-    }
-
-    /* small helper note */
-    .note {
-        color: #cfe0ff;
-        font-size: 13px;
-        margin-top: 6px;
-    }
-
-    /* responsive tweaks */
-    @media (max-width: 480px) {
-        .wrapper { width: 96%; padding: 20px; border-radius: 16px; backdrop-filter: blur(12px); }
-        h2 { font-size: 22px; }
-        .input-box input { width: 100%; }
-        button { width: 100%; padding: 14px; }
-        .stars span { width: 5px; height: 5px; }
+        text-align:center;
+        margin-bottom: 18px;
     }
     </style>
 </head>
 
 <body>
 
+<!-- Background Stars -->
 <div class="stars">
     <span style="left:10%; animation-delay:1s;"></span>
-    <span style="left:30%; animation-delay:2s;"></span>
-    <span style="left:50%; animation-delay:3s;"></span>
-    <span style="left:70%; animation-delay:4s;"></span>
+    <span style="left:35%; animation-delay:2s;"></span>
+    <span style="left:55%; animation-delay:3s;"></span>
+    <span style="left:75%; animation-delay:4s;"></span>
     <span style="left:90%; animation-delay:1.5s;"></span>
 </div>
 
-<!-- SHAKE CLASS -->
+<!-- LOGIN CARD -->
 <div class="wrapper {% if shake %}shake{% endif %}">
+
     <h2>Welcome Back 👋</h2>
 
-    <!-- ERROR MESSAGE -->
     {% if message %}
     <div class="error-msg">{{ message }}</div>
     {% endif %}
 
     <form method="POST">
-        <!-- hidden fake fields to reduce password managers autofill -->
-        <input type="text" name="fake_username" style="display:none" autocomplete="off">
-        <input type="password" name="fake_password" style="display:none" autocomplete="new-password">
+
+        <input type="text" name="fake_username" style="display:none">
+        <input type="password" name="fake_password" style="display:none">
 
         <div class="input-box">
             <label>Register Number</label>
-            <input type="text" name="reg_no" placeholder="e.g. 192424292.simats" required autocomplete="off">
-            <div class="note">Use the number part before <code>.simats@saveetha.com</code></div>
+            <input type="text" name="reg_no" placeholder="e.g. 192424292" required autocomplete="off">
         </div>
 
-        <div class="input-box">
+        <div class="note">Use only the number part before <code>.simats@saveetha.com</code></div>
+
+        <div class="input-box password-box">
             <label>Password</label>
-            <input type="password" name="l_pass" placeholder="Enter password" required autocomplete="new-password">
+
+            <div class="password-field">
+                <input type="password" name="l_pass" id="passwordInput"
+                       placeholder="Enter password" required autocomplete="new-password">
+
+                <!-- Simple minimal eye icon -->
+                <span class="toggle-eye" onclick="togglePassword()">👁</span>
+            </div>
         </div>
 
-        <!-- FORGOT PASSWORD LINK -->
         <div class="forgot">
             <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
         </div>
@@ -261,7 +256,15 @@
     <div class="link">
         New user? <a href="{{ url_for('register') }}">Create an account</a>
     </div>
+
 </div>
+
+<script>
+function togglePassword() {
+    const pwd = document.getElementById("passwordInput");
+    pwd.type = pwd.type === "password" ? "text" : "password";
+}
+</script>
 
 </body>
 </html>

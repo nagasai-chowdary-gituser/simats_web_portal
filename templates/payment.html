@@ -12,13 +12,15 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
+        :root{ --bg-deep:#030016; --bg-mid:#100a1b; --neon-purple:#a855f7; --neon-cyan:#06b6d4; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.08); --blur-strong: blur(22px) }
+
         body {
             margin: 0;
             padding: 0;
             font-family: "Poppins", sans-serif;
-            background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-            height: 100vh;
-            color: white;
+            background: radial-gradient(1000px circle at 10% 10%, rgba(168,85,247,0.06), transparent 6%), linear-gradient(135deg,var(--bg-deep),var(--bg-mid));
+            min-height: 100vh;
+            color: var(--text-primary, #e6eefb);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,9 +38,10 @@
             position: absolute;
             width: 6px;
             height: 6px;
-            background: rgba(255,255,255,0.7);
+            background: radial-gradient(circle, rgba(168,85,247,0.95), rgba(6,182,212,0.6));
             border-radius: 50%;
             animation: floatUp 12s linear infinite;
+            opacity: 0.95;
         }
         @keyframes floatUp {
             from { transform: translateY(110vh) scale(0.4); opacity: 0.4; }
@@ -46,41 +49,44 @@
         }
 
         .card {
-            background: rgba(255,255,255,0.10);
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
             padding: 35px;
-            border-radius: 22px;
-            width: 450px;
+            border-radius: 24px;
+            width: 420px;
             text-align: center;
-            backdrop-filter: blur(14px);
-            border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 0 25px rgba(0,0,0,0.6);
+            backdrop-filter: var(--blur-strong);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 28px rgba(2,6,23,0.45);
         }
 
         h2 {
             margin: 10px 0 20px;
-            font-size: 26px;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary, #e6eefb);
+            text-shadow: 0 8px 34px rgba(104,33,122,0.04);
         }
 
         .pay-btn {
-            margin-top: 25px;
-            padding: 14px 28px;
-            background: #ff9a00;
+            margin-top: 20px;
+            padding: 12px 26px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
             border: none;
             border-radius: 14px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            color: black;
+            color: #070712;
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 12px rgba(255,154,0,0.7);
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            box-shadow: 0 8px 22px rgba(168,85,247,0.10);
         }
 
         .pay-btn:hover {
-            transform: scale(1.07);
-            box-shadow: 0 0 18px rgba(255,154,0,1);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 28px rgba(168,85,247,0.12);
         }
+        .pay-btn.secondary { background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color: var(--text-primary, #e6eefb); border: 1px solid rgba(255,255,255,0.04) }
+        .pay-btn + .pay-btn { margin-left: 12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color: var(--text-primary, #e6eefb); border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 22px rgba(2,6,23,0.5) }
     </style>
 </head>
 
