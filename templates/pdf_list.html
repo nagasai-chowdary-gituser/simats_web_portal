@@ -8,19 +8,9 @@
     <title>Download PDFs</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            font-family: "Poppins", sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-            overflow: hidden;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700,800&family=Inter:wght@300;400;600;700&display=swap');
+        :root{ --bg-deep:#0a0118; --bg-mid:#130828; --bg-navy:#0f1535; --glass: rgba(255,255,255,0.08); --glass-border: rgba(255,255,255,0.12); --neon-purple:#a855f7; --neon-cyan:#06b6d4; --text-primary:#e6eefb; --radius-lg:22px }
+        body { margin:0; padding:0; min-height:100vh; font-family:'Inter','Poppins',sans-serif; display:flex; justify-content:center; align-items:center; background: linear-gradient(165deg,var(--bg-deep),var(--bg-mid) 40%,var(--bg-navy)); color:var(--text-primary); overflow:auto }
 
         /* floating stars */
         .stars {
@@ -29,64 +19,38 @@
             height: 100%;
             pointer-events: none;
             top: 0; left: 0;
-            z-index: 0;
+            </div>
+
+            <style>
+                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700,800&family=Inter:wght@300;400;600;700&display=swap');
+                :root{--bg-deep:#0a0118;--bg-mid:#130828;--bg-navy:#0f1535;--glass:rgba(255,255,255,0.08);--glass-strong:rgba(255,255,255,0.12);--glass-border:rgba(255,255,255,0.14);--neon-purple:#a855f7;--neon-cyan:#06b6d4;--neon-violet:#8b5cf6;--text-primary:#e6eefb;--text-muted:rgba(230,238,251,0.8);--radius-lg:22px;--radius-md:18px}
+                *{box-sizing:border-box}
+                body{font-family:'Inter','Poppins',sans-serif;margin:0;background:linear-gradient(165deg,var(--bg-deep),var(--bg-mid) 40%,var(--bg-navy));color:var(--text-primary);min-height:100vh;padding:40px 20px}
+                body::before{content:'';position:fixed;inset:0;background:radial-gradient(900px 500px at 15% 20%,rgba(168,85,247,0.06),transparent 60%),radial-gradient(700px 400px at 85% 70%,rgba(6,182,212,0.04),transparent 55%);z-index:0;pointer-events:none}
+                .particles{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+                .particles span{position:absolute;width:6px;height:6px;background:radial-gradient(circle,rgba(168,85,247,0.9),rgba(6,182,212,0.6));border-radius:50%;animation:particle-float 14s ease-in-out infinite}
+                @keyframes particle-float{0%,100%{transform:translateY(100vh) scale(0.4);opacity:0}50%{transform:translateY(50vh) translateX(30px) scale(1);opacity:0.8}}
+                .header{text-align:center;margin-bottom:40px;position:relative;z-index:2}
+                .header h1{font-size:42px;font-weight:800;margin-bottom:8px;color:var(--text-primary);letter-spacing:0.2px}
+                .header p{font-size:16px;color:var(--text-muted)}
+                .back-btn{position:fixed;top:24px;left:24px;z-index:100;padding:10px 18px;border-radius:var(--radius-md);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.06);color:var(--text-muted);font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s ease}
+                .back-btn:hover{background:rgba(255,255,255,0.04);transform:translateY(-2px);box-shadow:0 12px 32px rgba(168,85,247,0.06)}
+                .container{position:relative;z-index:2;max-width:1000px;margin:0 auto}
+                .pdf-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+                .pdf-item{padding:20px 24px;border-radius:var(--radius-lg);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid var(--glass-border);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:space-between;transition:all 0.3s ease}
+                .pdf-item:hover{transform:translateY(-6px);box-shadow:0 22px 48px rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.24)}
+                .pdf-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--neon-purple),var(--neon-cyan));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+                .pdf-info{flex:1;margin-left:20px}
+                .pdf-name{font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+                .pdf-date{font-size:13px;color:var(--text-muted)}
+                .pdf-actions{display:flex;gap:12px}
+                .btn-action{padding:10px 16px;border-radius:var(--radius-md);background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid var(--glass-border);color:var(--neon-cyan);font-size:14px;font-weight:600;text-decoration:none;transition:all 0.3s ease;display:inline-block}
+                .btn-action:hover{background:var(--neon-purple);color:#fff;border-color:var(--neon-purple);transform:scale(1.03)}
+                @media (max-width:768px){.header h1{font-size:32px}.pdf-item{flex-direction:column;align-items:flex-start;gap:16px}.pdf-info{margin-left:0}.pdf-actions{width:100%;justify-content:stretch;gap:8px}.btn-action{flex:1;text-align:center}.back-btn{position:static;margin-bottom:20px;display:inline-block}}
+            </style>
         }
 
-        .stars span {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: rgba(255,255,255,0.72);
-            border-radius: 50%;
-            animation: rise 12s linear infinite;
-        }
-
-        @keyframes rise {
-            from { transform: translateY(110vh) scale(0.3); opacity: 0.4; }
-            to   { transform: translateY(-10vh) scale(1); opacity: 1; }
-        }
-
-        /* main card */
-        .card {
-            width: 530px;
-            height: 600px;
-            padding: 40px;
-            border-radius: 25px;
-            background: rgba(255,255,255,0.10);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 0 28px rgba(0,0,0,0.55);
-            z-index: 2;
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: -2px;
-            border-radius: 40px;
-            background: linear-gradient(135deg,#ff512f,#dd2476,#1e90ff,#ff9a00);
-            background-size: 400% 400%;
-            animation: glow 7s ease infinite;
-            z-index: -1;
-            opacity: 0.45;
-            filter: blur(12px);
-        }
-
-        @keyframes glow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        h2 {
-            font-size: 28px;
-            color: #fff;
-            margin-bottom: 15px;
-            text-shadow: 0 0 12px rgba(255,255,255,0.5);
-        }
+        h2 { font-size:24px; color:var(--text-primary); margin-bottom:14px; font-weight:800 }
 
         /* SEARCH BOX */
         .search-box {
@@ -94,18 +58,7 @@
             margin-bottom: 18px;
         }
 
-        .search-box input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            background: rgba(255,255,255,0.20);
-            color: white;
-            font-size: 14px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
+        .search-box input { width:100%; padding:12px; border-radius:12px; border:1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); color:var(--text-primary); font-size:14px; text-align:center; outline:none }
 
         .search-box input::placeholder {
             color: #ddd;
@@ -133,28 +86,10 @@
             margin: 0;
         }
 
-        li {
-            background: rgba(255,255,255,0.15);
-            padding: 13px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            color: #e2e8f0;
-            font-weight: 500;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        li { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); padding: 12px 14px; border-radius: 12px; margin-bottom:12px; color:var(--text-primary); font-weight:600; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,255,255,0.06) }
 
         /* buttons */
-        a.download-btn {
-            padding: 4px 10px;
-            border-radius: 5px;
-            background: linear-gradient(135deg,#ff512f,#dd2476);
-            color: white;
-            text-decoration: none;
-            font-weight: 550;
-            transition: 0.25s;
-        }
+        a.download-btn { padding:6px 10px; border-radius:8px; background: linear-gradient(135deg,var(--neon-purple),var(--neon-cyan)); color:#fff; text-decoration:none; font-weight:700; transition: all 0.22s }
 
         a.download-btn:hover {
             transform: translateY(-2px);
@@ -164,8 +99,7 @@
         .home-btn {
             margin-top: 25px;
             padding: 12px 20px;
-            background: rgba(255,255,255,0.18);
-            border: 1px solid rgba(255,255,255,0.25);
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.06);
             border-radius: 14px;
             font-size: 16px;
             color: #fff;
@@ -174,11 +108,9 @@
             transition: 0.25s;
         }
 
-        .home-btn:hover {
-            background: rgba(255,255,255,0.32);
-            transform: scale(1.05);
-        }
+        .home-btn:hover { background: linear-gradient(135deg,var(--neon-purple),var(--neon-cyan)); transform: translateY(-4px); box-shadow: 0 12px 36px rgba(168,85,247,0.12) }
 
+        @media (max-width: 768px) { .card { width: calc(100% - 32px); padding:18px; } .search-box { width: calc(100% - 32px) } .tools-grid { grid-template-columns: repeat(1, 1fr); } }
     </style>
 
 </head>
