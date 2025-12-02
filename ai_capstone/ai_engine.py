@@ -10,7 +10,7 @@ if not api_key:
 # ✔ NEW way to configure Gemini API
 genai.configure(api_key=api_key)
 
-MODEL_NAME = MODEL_NAME = "gemini-2.0-flash"   # ✔ Correct model naming in new SDK
+MODEL_NAME = "gemini-2.0-flash"   # ✔ Correct model naming in new SDK
 
 def generate_ai_content(title: str) -> dict:
     """
