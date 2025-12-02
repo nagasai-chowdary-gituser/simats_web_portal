@@ -7,17 +7,34 @@
     <title>Login</title>
 
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap');
+
+    :root{
+        --bg-deep:#0a0118; /* deep navy */
+        --bg-mid:#130828; /* purple-mid */
+        --bg-navy:#0f1535; /* navy */
+        --glass: rgba(255,255,255,0.08);
+        --glass-strong: rgba(255,255,255,0.12);
+        --glass-border: rgba(255,255,255,0.14);
+        --neon-purple: #a855f7;
+        --neon-cyan: #06b6d4;
+        --neon-violet: #8b5cf6;
+        --text-primary: #e6eefb;
+        --text-muted: rgba(230,238,251,0.8);
+        --radius-lg: 22px;
+        --blur-heavy: blur(24px);
+    }
 
     body {
         margin: 0;
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', 'Poppins', sans-serif;
         height: 100vh;
-        background: linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+        background: linear-gradient(160deg,var(--bg-deep) 0%,var(--bg-mid) 45%,var(--bg-navy) 100%);
         display: flex;
         justify-content: center;
         align-items: center;
         overflow: hidden;
+        color: var(--text-primary);
     }
 
     /* FLOATING PARTICLES */
@@ -45,15 +62,17 @@
     /* LOGIN CARD */
     .wrapper {
         z-index: 2;
-        width: 400px;
-        padding: 40px;
-        border-radius: 25px;
-        background: rgba(255,255,255,0.10);
-        backdrop-filter: blur(16px);
-        border: 1px solid rgba(255,255,255,0.25);
-        box-shadow: 0 0 25px rgba(0,0,0,0.55);
+        width: 420px;
+        max-width: calc(100% - 40px);
+        padding: 36px;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 12px 40px rgba(2,6,23,0.6), 0 2px 12px rgba(168,85,247,0.06) inset;
+        backdrop-filter: var(--blur-heavy);
         position: relative;
         overflow: hidden;
+        transform: translateZ(0);
     }
 
     /* GLOW ANIMATION */
@@ -61,27 +80,24 @@
         content: "";
         position: absolute;
         inset: -2px;
-        border-radius: 25px;
-        background: linear-gradient(135deg,#ff512f,#dd2476,#1e90ff,#ff9a00);
-        background-size: 400% 400%;
-        animation: glow 7s ease infinite;
+        border-radius: var(--radius-lg);
+        background: linear-gradient(120deg,var(--neon-purple),var(--neon-violet),var(--neon-cyan));
+        background-size: 300% 300%;
+        animation: glow 9s linear infinite;
         z-index: -1;
-        filter: blur(10px);
-        opacity: 0.45;
+        filter: blur(18px);
+        opacity: 0.28;
     }
 
-    @keyframes glow {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+    @keyframes glow { 0%{ background-position: 0% 50% } 50%{ background-position: 100% 50% } 100%{ background-position: 0% 50% }}
 
     h2 {
-        font-size: 30px;
-        color: #fff;
+        font-size: 28px;
+        color: var(--text-primary);
         font-weight: 700;
-        margin-bottom: 25px;
-        text-shadow: 0 0 12px rgba(255,255,255,0.5);
+        margin-bottom: 20px;
+        letter-spacing: 0.2px;
+        text-shadow: 0 4px 20px rgba(168,85,247,0.08);
     }
 
     /* INPUT FIELDS */
@@ -94,38 +110,37 @@
         font-size: 14px;
     }
     .input-box input {
-        width: 94%;
-        padding: 13px;
+        width: 100%;
+        padding: 12px 14px;
         border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.25);
-        background: rgba(255,255,255,0.15);
-        color: #fff;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+        color: var(--text-primary);
         outline: none;
         font-size: 15px;
+        box-shadow: 0 6px 18px rgba(2,6,23,0.4) inset;
     }
     .input-box input:focus {
-        border-color: #ff9a00;
-        box-shadow: 0 0 15px rgba(255,154,0,0.65);
+        border-color: rgba(168,85,247,0.6);
+        box-shadow: 0 0 22px rgba(168,85,247,0.12);
     }
 
     /* LOGIN BUTTON */
     button {
-        width: 101%;
-        padding: 14px;
-        border-radius: 12px;
-        border: none;
-        background: linear-gradient(135deg,#ff512f,#dd2476);
+        width: 100%;
+        padding: 14px 18px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.06);
+        background: linear-gradient(135deg, rgba(168,85,247,0.95), rgba(8,145,178,0.95));
         color: #fff;
-        font-size: 17px;
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 700;
         cursor: pointer;
-        margin-top: 10px;
-        transition: 0.3s;
+        margin-top: 12px;
+        transition: transform 0.28s cubic-bezier(.2,.9,.2,1), box-shadow 0.28s ease;
+        box-shadow: 0 10px 30px rgba(168,85,247,0.18);
     }
-    button:hover {
-        transform: translateY(-3px);
-        filter: brightness(1.15);
-    }
+    button:hover { transform: translateY(-4px); box-shadow: 0 16px 42px rgba(168,85,247,0.22) }
 
     /* LINKS */
     .link {
@@ -147,10 +162,11 @@
         text-align: right;
     }
     .forgot a {
-        color: #ffb84d;
+        color: var(--neon-cyan);
         font-size: 13px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
+        text-shadow: 0 2px 8px rgba(6,182,212,0.06);
     }
     .forgot a:hover {
         text-decoration: underline;
@@ -158,15 +174,15 @@
 
     /* ERROR MESSAGE */
     .error-msg {
-        background: rgba(255,0,0,0.20);
-        border: 1px solid rgba(255,0,0,0.35);
+        background: rgba(239,68,68,0.06);
+        border: 1px solid rgba(239,68,68,0.12);
         padding: 10px;
         border-radius: 12px;
-        color: #ff4d4d;
+        color: #ffb4b4;
         margin-bottom: 15px;
         text-align: center;
         font-weight: 600;
-        box-shadow: 0 0 15px rgba(255,0,0,0.6);
+        box-shadow: 0 4px 16px rgba(239,68,68,0.06);
     }
 
     /* SHAKE ANIMATION */
@@ -190,10 +206,11 @@
 
     /* responsive tweaks */
     @media (max-width: 480px) {
-        .wrapper { width: 92%; padding: 24px; border-radius: 16px; }
+        .wrapper { width: 96%; padding: 20px; border-radius: 16px; backdrop-filter: blur(12px); }
         h2 { font-size: 22px; }
         .input-box input { width: 100%; }
-        button { width: 100%; }
+        button { width: 100%; padding: 14px; }
+        .stars span { width: 5px; height: 5px; }
     }
     </style>
 </head>
