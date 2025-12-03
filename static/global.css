@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 
-*, *::before, *::after { 
-    box-sizing: border-box; 
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 :root {
     --bg-deep: #0C0C0C;
@@ -32,25 +30,20 @@
     --transition-smooth: 280ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* 🔥 FIXED BODY — NO AUTO CENTER ANYMORE */
 body {
     margin: 0;
     padding: 24px;
     min-height: 100vh;
     background: var(--bg-gradient);
-    font-family: 'Inter', 'Poppins', sans-serif;
+    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--text-primary);
-}
-
-/* 🔥 ONLY LOGIN PAGES WILL CENTER */
-.center-body {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    -webkit-font-smoothing: antialiased;
 }
 
-.center-body::before {
+body::before {
     content: '';
     position: fixed;
     top: -50%;
@@ -63,8 +56,6 @@ body {
     z-index: -1;
 }
 
-
-/* --- YOUR EXISTING LOGIN WRAPPER, INPUTS, BUTTONS --- */
 .wrapper {
     width: 100%;
     max-width: 440px;
@@ -108,9 +99,10 @@ h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 22px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
     text-align: center;
 }
 
@@ -118,11 +110,14 @@ input[type="password"] {
     width: 100%;
     padding: 14px 16px;
     font-size: 15px;
+    font-family: inherit;
+    color: var(--text-primary);
     background: var(--input-bg);
     border: 1px solid var(--input-border);
     border-radius: var(--radius-sm);
-    color: var(--text-primary);
     box-shadow: var(--shadow-input);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    outline: none;
 }
 
 input[type="password"]:focus {
@@ -134,25 +129,53 @@ input[type="password"]:focus {
 button[type="submit"] {
     width: 100%;
     padding: 16px 24px;
-    background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
-    border-radius: var(--radius-md);
-    border: none;
+    font-family: 'Poppins', sans-serif;
     font-size: 15px;
     font-weight: 700;
+    color: #0A0A0A;
+    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    border: none;
+    border-radius: var(--radius-md);
     cursor: pointer;
+    box-shadow: var(--shadow-gold);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
 }
 
 .msg {
     padding: 14px 18px;
     border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
     background: rgba(255, 107, 107, 0.08);
     border: 0.5px solid rgba(255, 107, 107, 0.2);
     color: var(--error);
 }
 
+.success {
+    padding: 14px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(74, 222, 128, 0.08);
+    border: 0.5px solid rgba(74, 222, 128, 0.2);
+    color: var(--success);
+}
+
 a {
     color: var(--gold-1);
+    text-decoration: none;
+    transition: color var(--transition-fast);
 }
+
 a:hover {
     color: var(--gold-2);
 }
