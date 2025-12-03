@@ -1,293 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faculty Directory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; }
+/* Fonts & Base Design */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
 :root {
-    --bg-deep: #0C0C0C;
-    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
+    --bg-gradient: linear-gradient(168deg, #0A0A0A, #0C0C0C 40%, #080808);
     --card: #131313;
     --gold-1: #D4AF37;
     --gold-2: #F5C542;
-    --gold-3: #C9A227;
-    --gold-border-subtle: rgba(212, 175, 55, 0.08);
-    --gold-border: rgba(212, 175, 55, 0.18);
-    --text-primary: rgba(255, 255, 255, 0.95);
-    --text-secondary: rgba(255, 255, 255, 0.72);
-    --text-muted: rgba(255, 255, 255, 0.48);
-    --input-bg: rgba(255, 255, 255, 0.03);
-    --input-border: rgba(255, 255, 255, 0.06);
+    --text-primary: rgba(255,255,255,0.95);
+    --text-secondary: rgba(255,255,255,0.72);
     --radius-sm: 12px;
-    --radius-md: 16px;
     --radius-lg: 22px;
-    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
-    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
-    --shadow-input: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
-    margin: 0;
-    padding: 28px;
     background: var(--bg-gradient);
-    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-    min-height: 100vh;
+    margin: 0;
+    padding: 10px;
+    font-family: "Inter", sans-serif;
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
-    overflow: auto;
 }
 
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Subtle gold particles */
-.stars {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-.stars span {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--gold-1);
-    border-radius: 50%;
-    opacity: 0.25;
-    animation: floatUp 14s linear infinite;
-}
-
-@keyframes floatUp {
-    from { transform: translateY(110vh) scale(0.3); opacity: 0; }
-    10% { opacity: 0.25; }
-    90% { opacity: 0.25; }
-    to { transform: translateY(-10vh) scale(1); opacity: 0; }
-}
-
+/* Title */
 .title {
-    position: relative;
-    z-index: 2;
-    margin: 20px 0 28px 0;
-    font-family: 'Poppins', sans-serif;
-    font-size: 30px;
+    font-size: 26px;
+    margin: 20px 0;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    background: linear-gradient(135deg, var(--gold-2), var(--gold-1));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-align: center;
 }
 
-.faculty-box {
-    position: relative;
-    z-index: 2;
+/* Section Box */
+.section-box {
     width: 100%;
-    max-width: 900px;
-    padding: 32px;
+    max-width: 430px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,215,0,0.15);
     border-radius: var(--radius-lg);
-    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
-    border: 0.5px solid var(--gold-border-subtle);
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
-}
-
-.faculty-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
-    opacity: 0.6;
-}
-
-h2 {
-    margin: 0 0 20px 0;
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-
-#searchInput {
-    width: 100%;
-    padding: 14px 18px;
+    padding: 18px;
     margin-bottom: 20px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--input-border);
-    background: var(--input-bg);
-    color: var(--text-primary);
-    font-size: 15px;
-    box-shadow: var(--shadow-input);
-    outline: none;
-    transition: all var(--transition-fast);
 }
 
-#searchInput::placeholder { color: var(--text-muted); }
-
-#searchInput:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.04);
-}
-
-#searchInput:focus {
-    border-color: var(--gold-1);
-    background: rgba(212, 175, 55, 0.03);
-    box-shadow: var(--shadow-input), 0 0 0 3px rgba(212, 175, 55, 0.08);
-}
-
-#facultyList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 420px;
+/* Faculty list container FIXED */
+.faculty-container {
+    width: 100%;
+    padding-top: 10px;
+    max-height: 260px; /* FINAL SMALL BOX */
     overflow-y: auto;
 }
 
-#facultyList::-webkit-scrollbar {
-    width: 6px;
-}
-
-#facultyList::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 3px;
-}
-
-#facultyList::-webkit-scrollbar-thumb {
-    background: var(--gold-border);
-    border-radius: 3px;
-}
-
+/* Faculty Item */
 .faculty-item {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 16px 20px;
+    padding: 12px 14px;
     margin-bottom: 10px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
     border-radius: var(--radius-sm);
-    border: 0.5px solid rgba(255, 255, 255, 0.04);
-    transition: all var(--transition-fast);
 }
 
-.faculty-item:hover {
-    transform: translateY(-2px);
-    background: rgba(212, 175, 55, 0.03);
-    border-color: var(--gold-border);
-    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.06);
+.name { font-weight: 600; }
+.phone { color: var(--gold-1); font-weight: 700; }
+
+/* Badges */
+.badge {
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 11px;
 }
 
-.name {
-    font-weight: 600;
-    font-size: 15px;
-    color: var(--text-primary);
-}
+.badge-strict { background: rgba(255,70,70,0.25); color: #ff6f6f; }
+.badge-loose { background: rgba(70,255,120,0.25); color: #4dff88; }
+.badge-moderate { background: rgba(70,150,255,0.25); color: #62a8ff; }
 
-.phone {
-    font-weight: 600;
-    font-size: 15px;
-    color: var(--gold-1);
-}
-
-.home-btn {
+/* Input Fields */
+input, select {
     width: 100%;
-    padding: 14px 24px;
-    margin-top: 24px;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: transparent;
-    color: var(--text-secondary);
-    font-family: 'Poppins', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: white;
+}
+
+select option {
+    background: #1a1a1a;
+}
+
+/* Submit Button */
+.suggest-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    background: var(--gold-2);
+    color: black;
+    font-weight: 700;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    border: none;
 }
 
-.home-btn:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-    body { padding: 16px; }
-    .title { font-size: 24px; margin-bottom: 20px; }
-    .faculty-box { padding: 24px 20px; border-radius: var(--radius-md); }
-    #facultyList { max-height: 320px; }
-    .faculty-item { padding: 14px 16px; flex-direction: column; align-items: flex-start; gap: 8px; }
-    .phone { font-size: 14px; }
+/* Home Button */
+.go-home {
+    position: fixed;
+    bottom: 16px;
+    width: 90%;
+    max-width: 430px;
+    padding: 14px;
+    border-radius: var(--radius-lg);
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    text-align: center;
 }
 </style>
 </head>
+
 <body>
 
-<!-- Subtle gold particles -->
-<div class="stars">
-    <span style="left:10%; animation-delay:1s; animation-duration:11s;"></span>
-    <span style="left:30%; animation-delay:4s; animation-duration:13s;"></span>
-    <span style="left:50%; animation-delay:2s; animation-duration:9s;"></span>
-    <span style="left:70%; animation-delay:6s; animation-duration:12s;"></span>
-    <span style="left:90%; animation-delay:3s; animation-duration:15s;"></span>
-</div>
+<h1 class="title">SIMATS Faculty</h1>
 
-<h1 class="title">SIMATS Faculty Directory</h1>
+<!-- ⭐ BOX 1: Faculty List ⭐ -->
+<div class="section-box">
+    <h3>Find Faculty</h3>
 
-<div class="faculty-box">
-    <h2>Search Faculty</h2>
+    <input type="text" id="searchInput" placeholder="Search faculty…" onkeyup="filterFaculty()">
 
-    <input type="text" id="searchInput" placeholder="Search by faculty name..." onkeyup="filterFaculty()">
-
-    <ul id="facultyList">
+    <div class="faculty-container" id="facultyList">
         {% for f in faculty %}
-        <li class="faculty-item">
-            <span class="name">{{ f["FACULTY NAME"] }}</span>
-            <span class="phone">{{ f["PHONE NUMBER"] }}</span>
-        </li>
-        {% endfor %}
-    </ul>
+        <div class="faculty-item">
+            <span class="name">{{ f["Name"] }}</span>
+            <span class="phone">{{ f["Phone Number"] }}</span>
 
-    <button class="home-btn" onclick="window.location.href='/home'">← Go To Home</button>
+            {% if f["Strict/Loose"] %}
+                {% if f["Strict/Loose"].lower() == "strict" %}
+                    <span class="badge badge-strict">Strict</span>
+                {% elif f["Strict/Loose"].lower() == "moderate" %}
+                    <span class="badge badge-moderate">Moderate</span>
+                {% else %}
+                    <span class="badge badge-loose">Loose</span>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
+<!-- ⭐ BOX 2: Update Existing Faculty ⭐ -->
+<div class="section-box">
+    <h3>Add Behavior to Existing Faculty</h3>
+
+    <input id="existPhone" placeholder="Faculty Phone Number">
+
+    <select id="existBehavior">
+        <option value="">Select Behavior</option>
+        <option value="strict">Strict</option>
+        <option value="moderate">Moderate</option>
+        <option value="loose">Loose</option>
+    </select>
+
+    <button class="suggest-btn" onclick="sendExistingBehavior()">Submit</button>
+</div>
+
+<!-- ⭐ BOX 3: Suggest New Faculty ⭐ -->
+<div class="section-box">
+    <h3>Suggest New Faculty</h3>
+
+    <input id="sName" placeholder="Faculty Name">
+    <input id="sPhone" placeholder="Phone Number">
+
+    <select id="sBehavior">
+        <option value="">Select Behavior</option>
+        <option value="strict">Strict</option>
+        <option value="moderate">Moderate</option>
+        <option value="loose">Loose</option>
+    </select>
+
+    <button class="suggest-btn" onclick="sendNewSuggestion()">Submit</button>
+</div>
+
+<div class="go-home" onclick="window.location.href='/home'">← Go Home</div>
+
+
+<!-- ⭐⭐⭐ JAVASCRIPT ⭐⭐⭐ -->
 <script>
+/* FILTER FACULTY */
 function filterFaculty() {
-    let input = document.getElementById("searchInput").value.toLowerCase();
+    let s = document.getElementById("searchInput").value.toLowerCase();
     let items = document.querySelectorAll(".faculty-item");
 
     items.forEach(item => {
         let name = item.querySelector(".name").innerText.toLowerCase();
-        item.style.display = name.includes(input) ? "flex" : "none";
+        item.style.display = name.includes(s) ? "flex" : "none";
     });
+}
+
+/* UPDATE EXISTING FACULTY */
+function sendExistingBehavior() {
+    let phone = document.getElementById("existPhone").value.trim();
+    let behavior = document.getElementById("existBehavior").value;
+
+    if (!phone || !behavior) {
+        alert("Please enter phone number & behavior.");
+        return;
+    }
+
+    fetch("/suggest-existing-behavior", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            phone_number: phone,
+            behavior: behavior
+        })
+    })
+    .then(r => r.json())
+    .then(d => alert(d.message))
+    .catch(err => alert("Error: " + err));
+}
+
+/* SUGGEST NEW FACULTY */
+function sendNewSuggestion() {
+    let name = document.getElementById("sName").value.trim();
+    let phone = document.getElementById("sPhone").value.trim();
+    let behavior = document.getElementById("sBehavior").value;
+
+    if (!name || !phone || !behavior) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    fetch("/faculty-suggestion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            faculty_name: name,
+            phone_number: phone,
+            behavior: behavior
+        })
+    })
+    .then(r => r.json())
+    .then(d => alert(d.message))
+    .catch(err => alert("Error: " + err));
 }
 </script>
 

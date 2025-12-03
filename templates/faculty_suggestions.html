@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Suggestions – Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-deep:#0C0C0C;
+            --bg-gradient:linear-gradient(168deg,#0A0A0A 0%,#0C0C0C 40%,#080808 100%);
+            --card:#131313;
+            --gold-1:#D4AF37;
+            --gold-2:#F5C542;
+            --gold-3:#C9A227;
+            --gold-border-subtle:rgba(212,175,55,0.08);
+            --gold-border:rgba(212,175,55,0.18);
+            --text-primary:rgba(255,255,255,0.95);
+            --text-secondary:rgba(255,255,255,0.72);
+            --radius-sm:12px;
+            --radius-md:16px;
+            --radius-lg:22px;
+        }
+        body{
+            margin:0;
+            padding:24px;
+            background:var(--bg-gradient);
+            font-family:'Inter','Poppins',sans-serif;
+            color:var(--text-primary);
+        }
+        .top-bar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+            margin-bottom:18px;
+        }
+        .top-bar h1{
+            margin:0;
+            font-size:24px;
+            font-weight:800;
+            background:linear-gradient(135deg,var(--gold-2),var(--gold-1),var(--gold-3));
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        .badge-count{
+            padding:8px 14px;
+            border-radius:var(--radius-sm);
+            border:1px solid var(--gold-border);
+            background:rgba(212,175,55,0.08);
+            font-size:13px;
+        }
+        .wrapper{
+            max-width:900px;
+            margin:0 auto;
+        }
+        .suggestion-card{
+            background:var(--card);
+            border-radius:var(--radius-lg);
+            border:1px solid var(--gold-border-subtle);
+            padding:18px 18px 14px;
+            margin-bottom:12px;
+        }
+        .suggestion-card h3{
+            margin:0 0 8px 0;
+            font-size:18px;
+            color:var(--gold-2);
+        }
+        .meta{
+            font-size:13px;
+            color:var(--text-secondary);
+            margin:2px 0;
+        }
+        .meta span{
+            color:var(--gold-2);
+        }
+        .actions{
+            margin-top:10px;
+            display:flex;
+            gap:8px;
+        }
+        .btn{
+            padding:8px 14px;
+            border-radius:var(--radius-sm);
+            border:none;
+            font-size:13px;
+            font-weight:600;
+            cursor:pointer;
+        }
+        .btn-approve{
+            background:linear-gradient(135deg,#4dff88,#2fd86a);
+            color:#031307;
+        }
+        .btn-update{
+            background:linear-gradient(135deg,#6fb1ff,#1f7bff);
+            color:#031307;
+        }
+        .btn-reject{
+            background:rgba(255,77,77,0.16);
+            color:#ff8080;
+            border:1px solid rgba(255,77,77,0.5);
+        }
+        .back-btn{
+            margin-top:20px;
+            padding:10px 18px;
+            border-radius:var(--radius-md);
+            border:1px solid rgba(255,255,255,0.15);
+            background:rgba(255,255,255,0.04);
+            color:var(--text-secondary);
+            font-size:14px;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <h1>Faculty Behaviour Suggestions</h1>
+    <div class="badge-count">Pending Suggestions: {{ suggestions|length }}</div>
+</div>
+
+<div class="wrapper">
+    {% if suggestions %}
+        {% for s in suggestions %}
+        <div class="suggestion-card">
+
+            {% if s["type"] == "existing" %}
+                <h3>Existing Faculty: {{ s["faculty_name"] }}</h3>
+                <p class="meta">📱 Phone: <span>{{ s["phone_number"] }}</span></p>
+                <p class="meta">📌 Suggested Behaviour:
+                    <span style="text-transform:capitalize;">{{ s["behavior"] }}</span>
+                </p>
+                <p class="meta">👤 Submitted by:
+                    <span>{{ s["submitted_by"] }}</span>
+                </p>
+                <div class="actions">
+                    <button class="btn btn-update"
+                            onclick="approveExisting({{ s['id'] }})">
+                        🔄 Update Behaviour
+                    </button>
+                    <button class="btn btn-reject"
+                            onclick="rejectSuggestion({{ s['id'] }})">
+                        ❌ Reject
+                    </button>
+                </div>
+
+            {% else %}
+                <h3>New Faculty: {{ s["name"] }}</h3>
+                <p class="meta">📱 Phone: <span>{{ s["phone_number"] }}</span></p>
+                <p class="meta">📌 Suggested Behaviour:
+                    <span style="text-transform:capitalize;">{{ s["dept"] }}</span>
+                </p>
+                <p class="meta">👤 Submitted by:
+                    <span>{{ s["added_by"] }}</span>
+                </p>
+                <div class="actions">
+                    <button class="btn btn-approve"
+                            onclick="approveNew({{ s['id'] }})">
+                        ✅ Approve & Add
+                    </button>
+                    <button class="btn btn-reject"
+                            onclick="rejectSuggestion({{ s['id'] }})">
+                        ❌ Reject
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="color:var(--text-secondary);">No suggestions yet.</p>
+    {% endif %}
+
+    <button class="back-btn" onclick="window.location.href='/admin'">
+        ← Back to Admin Dashboard
+    </button>
+</div>
+
+<script>
+function approveNew(id){
+    fetch(`/approve-new/${id}`, { method: "POST" })
+        .then(r => r.json())
+        .then(d => { alert(d.message); location.reload(); });
+}
+
+function approveExisting(id){
+    fetch(`/approve-existing/${id}`, { method: "POST" })
+        .then(r => r.json())
+        .then(d => { alert(d.message); location.reload(); });
+}
+
+function rejectSuggestion(id){
+    fetch(`/reject-suggestion/${id}`, { method: "POST" })
+        .then(r => r.json())
+        .then(d => { alert(d.message); location.reload(); });
+}
+</script>
+
+</body>
+</html>

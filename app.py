@@ -117,6 +117,8 @@ class CapstoneHistory(db.Model):
     title = db.Column(db.String(300), nullable=False)
     file_path = db.Column(db.String(500), nullable=False)
     created_at = db.Column(db.String(50), nullable=False)  # store date-time
+    
+
 
 # -----------------------------
 # CREATE ADMIN IF NOT EXISTS
@@ -629,7 +631,7 @@ def chatbot_ask():
     return jsonify({"answer": answer})"""
 
 ### For Staff Numbers
-FACULTY_FILE = os.path.join(BASE_DIR, "static", "data", "final_staff_numbers_fix.json")
+FACULTY_FILE = os.path.join(BASE_DIR, "static", "data", "full_info_faculty_numbers.json")
 
 @app.route("/faculty")
 @login_required()
@@ -642,6 +644,7 @@ def faculty_page():
         print("Error loading faculty JSON:", e)
 
     return render_template("faculty.html", faculty=faculty_list)
+
 ### ai tools for students
 @app.route("/ai-tools")
 @login_required()
@@ -655,7 +658,7 @@ def ai_tools():
     return render_template("ai_tools.html", tools=tools)
 
 
-### Private Policy
+### Policys
 @app.route("/privacy-policy")
 @login_required()
 def privacy_policy():
@@ -763,6 +766,230 @@ def payment_success():
         as_attachment=True,
         download_name="Capstone_Report.docx"
     )
+
+### admin update the strict/loose in json
+@app.route("/update-faculty-behavior", methods=["POST"])
+@login_required()
+def update_faculty_behavior():
+    # Only admins allowed
+    if not session.get("is_admin"):
+        return jsonify({"error": "Unauthorized"}), 403
+
+    try:
+        data = request.get_json()
+        name = data.get("name")
+        behavior = data.get("behavior")
+
+        with open(FACULTY_FILE, "r", encoding="utf-8") as f:
+            faculty = json.load(f)
+
+        updated = False
+        for person in faculty:
+            if person.get("Name", "").strip().lower() == name.strip().lower():
+                person["Strict/Loose"] = behavior
+                updated = True
+                break
+
+        if not updated:
+            return jsonify({"error": "Faculty not found"}), 404
+
+        with open(FACULTY_FILE, "w", encoding="utf-8") as f:
+            json.dump(faculty, f, indent=4)
+
+        return jsonify({"message": "Updated successfully!"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+### faculty suggestions by users
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "static", "data")
+
+SUGGESTION_FILE = os.path.join(DATA_DIR, "faculty_suggestions.json")
+MASTER_FILE = os.path.join(DATA_DIR, "full_info_faculty_numbers.json")
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return default
+
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=4)
+
+
+
+@app.route("/faculty-suggestion", methods=["POST"])
+@login_required()
+def faculty_suggestion():
+    data = request.get_json() or {}
+
+    faculty_name = data.get("faculty_name", "").strip()
+    phone = data.get("phone_number", "").strip()
+    behavior = data.get("behavior", "").strip()
+
+    if not faculty_name or not phone or not behavior:
+        return jsonify({"message": "Missing fields"}), 400
+
+    suggestions = load_json(SUGGESTION_FILE, [])
+    new_id = suggestions[-1]["id"] + 1 if suggestions else 1
+
+    suggestions.append({
+        "id": new_id,
+        "type": "new",
+        "name": faculty_name,
+        "phone_number": phone,
+        "dept": behavior,
+        "added_by": session.get("username")
+    })
+
+    save_json(SUGGESTION_FILE, suggestions)
+
+    return jsonify({"message": "New faculty suggestion submitted!"})
+
+
+
+
+
+
+
+
+
+
+@app.route("/faculty-suggestions")
+@login_required(admin_only=True)
+def faculty_suggestions_page():
+    try:
+        with open(SUGGESTION_FILE, "r", encoding="utf-8") as f:
+            suggestions = json.load(f)
+    except:
+        suggestions = []
+
+    return render_template("faculty_suggestions.html", suggestions=suggestions)
+    
+
+
+@app.route("/approve-new/<int:sid>", methods=["POST"])
+@login_required(admin_only=True)
+def approve_new(sid):
+
+    suggestions = load_json(SUGGESTION_FILE, [])
+    suggestion = next((s for s in suggestions if s["id"] == sid), None)
+
+    if not suggestion:
+        return jsonify({"message": "Invalid suggestion"}), 400
+
+    name = suggestion["name"]
+    phone = int(suggestion["phone_number"])
+    behavior = suggestion["dept"]
+
+    master = load_json(MASTER_FILE, [])
+
+    # Prevent duplicates
+    if any(str(f["Phone Number"]) == str(phone) for f in master):
+        return jsonify({"message": "Faculty already exists!"}), 400
+
+    master.append({
+        "Name": name,
+        "Phone Number": phone,
+        "Strict/Loose": behavior
+    })
+
+    save_json(MASTER_FILE, master)
+
+    # Remove from suggestion list
+    suggestions = [s for s in suggestions if s["id"] != sid]
+    save_json(SUGGESTION_FILE, suggestions)
+
+    return jsonify({"message": "New faculty added successfully!"})
+
+
+@app.route("/approve-existing/<int:sid>", methods=["POST"])
+@login_required(admin_only=True)
+def approve_existing(sid):
+
+    suggestions = load_json(SUGGESTION_FILE, [])
+    suggestion = next((s for s in suggestions if s["id"] == sid), None)
+
+    if not suggestion:
+        return jsonify({"message": "Invalid suggestion"}), 400
+
+    phone = suggestion["phone_number"]
+    behavior = suggestion["behavior"]
+
+    master = load_json(MASTER_FILE, [])
+
+    for f in master:
+        if str(f["Phone Number"]) == str(phone):
+            f["Strict/Loose"] = behavior
+
+    save_json(MASTER_FILE, master)
+
+    # Remove suggestion from list
+    suggestions = [s for s in suggestions if s["id"] != sid]
+    save_json(SUGGESTION_FILE, suggestions)
+
+    return jsonify({"message": "Behavior updated successfully!"})
+
+
+
+
+@app.route("/reject-suggestion/<int:sid>", methods=["POST"])
+@login_required(admin_only=True)
+def reject_suggestion(sid):
+
+    suggestions = load_json(SUGGESTION_FILE, [])
+
+    suggestions = [s for s in suggestions if s["id"] != sid]
+
+    save_json(SUGGESTION_FILE, suggestions)
+
+    return jsonify({"message": "Suggestion rejected!"})
+
+
+
+
+@app.route("/suggest-existing-behavior", methods=["POST"])
+@login_required()
+def suggest_existing_behavior():
+    data = request.get_json() or {}
+    phone = data.get("phone_number")
+    behavior = data.get("behavior")
+
+    if not phone or not behavior:
+        return jsonify({"message": "Missing data"}), 400
+
+    master = load_json(MASTER_FILE, [])
+
+    faculty = next((f for f in master if str(f["Phone Number"]) == str(phone)), None)
+
+    if not faculty:
+        return jsonify({"message": "Faculty with this phone not found"}), 400
+
+    if faculty.get("Strict/Loose"):
+        return jsonify({"message": "This faculty already has a behaviour"}), 400
+
+    suggestions = load_json(SUGGESTION_FILE, [])
+    new_id = suggestions[-1]["id"] + 1 if suggestions else 1
+
+    suggestions.append({
+        "id": new_id,
+        "type": "existing",
+        "faculty_name": faculty["Name"],
+        "phone_number": phone,
+        "behavior": behavior,
+        "submitted_by": session.get("username")
+    })
+
+    save_json(SUGGESTION_FILE, suggestions)
+
+    return jsonify({"message": "Behaviour update suggestion submitted!"})
+
 
 
 # -----------------------------

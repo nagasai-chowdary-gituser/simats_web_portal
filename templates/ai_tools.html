@@ -7,137 +7,78 @@
     <title>AI Tools Explorer</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
-
-*, *::before, *::after { box-sizing: border-box; }
-
-:root {
-    --bg-deep: #0C0C0C;
-    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
-    --card: #131313;
-    --gold-1: #D4AF37;
-    --gold-2: #F5C542;
-    --gold-3: #C9A227;
-    --gold-border-subtle: rgba(212, 175, 55, 0.08);
-    --gold-border: rgba(212, 175, 55, 0.18);
-    --text-primary: rgba(255, 255, 255, 0.95);
-    --text-secondary: rgba(255, 255, 255, 0.72);
-    --text-muted: rgba(255, 255, 255, 0.48);
-    --input-bg: rgba(255, 255, 255, 0.03);
-    --input-border: rgba(255, 255, 255, 0.06);
-    --radius-sm: 12px;
-    --radius-md: 16px;
-    --radius-lg: 22px;
-    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
-    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
-    --shadow-input: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 body {
     margin: 0;
-    padding: 32px;
-    background: var(--bg-gradient);
-    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-    min-height: 100vh;
-    color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    padding: 0;
+    background: #0A0A0A;
+    font-family: 'Inter', sans-serif;
+    color: white;
 }
 
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Subtle gold particles */
-.stars {
-    position: fixed;
+/* ⭐ TOP BUTTONS BLOCK ⭐ */
+.top-controls {
     width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
-
-.stars span {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--gold-1);
-    border-radius: 50%;
-    opacity: 0.25;
-    animation: floatUp 14s linear infinite;
-}
-
-@keyframes floatUp {
-    from { transform: translateY(110vh) scale(0.3); opacity: 0; }
-    10% { opacity: 0.25; }
-    90% { opacity: 0.25; }
-    to { transform: translateY(-10vh) scale(1); opacity: 0; }
-}
-
-.title {
-    position: relative;
-    z-index: 2;
+    max-width: 1200px;
+    margin: 20px auto 10px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
     text-align: center;
-    margin: 20px 0 32px 0;
-    font-family: 'Poppins', sans-serif;
-    font-size: 36px;
+}
+
+/* Home Button */
+.home-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Title */
+.title {
+    font-size: 32px;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
+    background: linear-gradient(135deg, #FFD44D, white);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
 }
 
-/* Search */
-.search-box {
-    position: relative;
-    z-index: 2;
+/* Search + Sort Row */
+.top-row {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto 28px auto;
+    max-width: 900px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .search-box input {
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--input-border);
-    background: var(--input-bg);
-    color: var(--text-primary);
-    font-size: 15px;
-    box-shadow: var(--shadow-input);
-    outline: none;
-    transition: all var(--transition-fast);
+    width: 300px;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
 }
 
-.search-box input::placeholder { color: var(--text-muted); }
-
-.search-box input:focus {
-    border-color: var(--gold-1);
-    background: rgba(212, 175, 55, 0.03);
-    box-shadow: var(--shadow-input), 0 0 0 3px rgba(212, 175, 55, 0.08);
+.sort-select {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
 }
 
-/* Categories */
+/* Category Buttons */
 .categories {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 900px;
-    margin: 0 auto 32px auto;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -145,204 +86,165 @@ body::before {
 }
 
 .category {
-    padding: 10px 18px;
-    border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
     cursor: pointer;
-    transition: all var(--transition-fast);
-    color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 500;
-}
-
-.category:hover {
-    transform: translateY(-2px);
-    border-color: var(--gold-border);
-    color: var(--gold-1);
-    background: rgba(212, 175, 55, 0.04);
+    font-size: 14px;
+    color: white;
 }
 
 .category.active {
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
-    color: #0A0A0A;
-    border-color: transparent;
+    background: #FFD44D;
+    color: black;
     font-weight: 700;
 }
 
-/* Tools Grid */
+/* ⭐ FIXED TOOLS GRID ⭐ */
 .tools-grid {
-    position: relative;
-    z-index: 2;
     width: 100%;
-    max-width: 1150px;
-    margin: 0 auto 40px auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    max-width: 1200px;
+    margin: 40px auto 60px auto;
+
+    display: flexbox;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
     gap: 20px;
 }
 
+/* Tool Cards */
 .tool-card {
-    padding: 24px;
-    border-radius: var(--radius-md);
-    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
-    border: 0.5px solid var(--gold-border-subtle);
-    box-shadow: var(--shadow-card);
-    transition: all var(--transition-fast);
+    width: 100%;
+    padding: 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
 }
 
 .tool-card h2 {
-    font-family: 'Poppins', sans-serif;
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 700;
-    margin: 0 0 8px 0;
-    color: var(--text-primary);
+    color: #FFD44D;
 }
 
 .tool-card p {
-    margin: 0;
-    color: var(--gold-1);
     font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-}
-
-.tool-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--gold-border);
-    box-shadow: var(--shadow-card), 0 8px 32px rgba(212, 175, 55, 0.08);
-}
-
-.home-btn {
-    position: relative;
-    z-index: 2;
-    display: block;
-    margin: 0 auto 40px auto;
-    padding: 14px 32px;
-    border-radius: var(--radius-md);
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: var(--text-secondary);
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    transition: all var(--transition-fast);
-    width: fit-content;
-}
-
-.home-btn:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
-    border-color: rgba(255, 255, 255, 0.12);
-    transform: translateY(-2px);
-}
-
-@media (max-width: 680px) {
-    body { padding: 16px; }
-    .title { font-size: 26px; margin-bottom: 24px; }
-    .tools-grid { gap: 14px; }
-    .tool-card { padding: 18px; }
-    .category { padding: 8px 14px; font-size: 12px; }
+    opacity: 0.7;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Subtle gold particles -->
-<div class="stars">
-    <span style="left:10%; animation-delay:1s; animation-duration:11s;"></span>
-    <span style="left:35%; animation-delay:4s; animation-duration:13s;"></span>
-    <span style="left:60%; animation-delay:2s; animation-duration:10s;"></span>
-    <span style="left:85%; animation-delay:5s; animation-duration:14s;"></span>
+<div class="top-controls">
+
+    <a href="/home" class="home-btn">← Go Home</a>
+
+    <h1 class="title">AI Tools Explorer</h1>
+
+    <div class="top-row">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search AI tool..." onkeyup="filterTools()">
+        </div>
+
+        <select id="sortSelect" class="sort-select" onchange="sortTools()">
+            <option value="az">Sort A → Z</option>
+            <option value="za">Sort Z → A</option>
+        </select>
+    </div>
+
+    <!-- ⭐ FIXED CATEGORY BUTTONS ⭐ -->
+    <div class="categories">
+        <div class="category active" onclick="filterCategory('all', this)">All</div>
+        <div class="category" onclick="filterCategory('research', this)">Research</div>
+        <div class="category" onclick="filterCategory('writing & editing', this)">Writing</div>
+        <div class="category" onclick="filterCategory('coding & programming', this)">Coding</div>
+        <div class="category" onclick="filterCategory('design & presentation', this)">Design</div>
+        <div class="category" onclick="filterCategory('note-taking & study', this)">Study</div>
+        <div class="category" onclick="filterCategory('mathematics & science', this)">Math</div>
+    </div>
+
 </div>
 
-<h1 class="title">AI Tools Explorer</h1>
-
-<!-- Search -->
-<div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search any AI tool..." onkeyup="filterTools()">
-</div>
-
-<!-- Categories -->
-<div class="categories">
-    <div class="category active" onclick="filterCategory('all', this)">All</div>
-    <div class="category" onclick="filterCategory('research', this)">Research</div>
-    <div class="category" onclick="filterCategory('writing & editing', this)">Writing</div>
-    <div class="category" onclick="filterCategory('coding & programming', this)">Coding</div>
-    <div class="category" onclick="filterCategory('design & presentation', this)">Design</div>
-    <div class="category" onclick="filterCategory('note-taking & study', this)">Study</div>
-    <div class="category" onclick="filterCategory('mathematics & science', this)">Math</div>
-</div>
-
-<!-- Tools Grid -->
 <div class="tools-grid" id="toolsGrid"></div>
 
-<!-- Load JSON + Build Cards -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     fetch("/static/data/ai_tools.json")
         .then(res => res.json())
-        .then(data => loadTools(data.ai_tools_for_students))
-})
+        .then(data => loadTools(data.ai_tools_for_students));
+});
+
+let TOOL_DATA = [];
 
 function loadTools(categories) {
     const grid = document.getElementById("toolsGrid");
     grid.innerHTML = "";
+    TOOL_DATA = [];
 
     categories.forEach(cat => {
         let catTag = cat.category.toLowerCase();
 
         cat.tools.forEach(tool => {
-            let card = document.createElement("div");
-            card.classList.add("tool-card");
-
-            card.setAttribute("data-category", catTag);
-            card.setAttribute("data-name", tool.toLowerCase());
-
-            card.innerHTML = `
-                <h2>${tool}</h2>
-                <p>${cat.category}</p>
-            `;
-
-            grid.appendChild(card);
+            TOOL_DATA.push({ name: tool, category: catTag });
         });
+    });
+
+    renderTools(TOOL_DATA);
+}
+
+function renderTools(list) {
+    const grid = document.getElementById("toolsGrid");
+    grid.innerHTML = "";
+
+    list.forEach(t => {
+        grid.innerHTML += `
+            <div class="tool-card" data-category="${t.category}" data-name="${t.name.toLowerCase()}">
+                <h2>${t.name}</h2>
+                <p>${t.category.toUpperCase()}</p>
+            </div>
+        `;
     });
 }
 
 function filterTools() {
     let text = document.getElementById("searchInput").value.toLowerCase();
-    let tools = document.querySelectorAll(".tool-card");
-
-    tools.forEach(t => {
+    document.querySelectorAll(".tool-card").forEach(t => {
         let name = t.getAttribute("data-name");
         t.style.display = name.includes(text) ? "block" : "none";
     });
 }
 
 function filterCategory(cat, element) {
-    // Update active state
-    document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
-    if (element) element.classList.add('active');
+    document.querySelectorAll(".category").forEach(c => c.classList.remove("active"));
+    element.classList.add("active");
 
-    let tools = document.querySelectorAll(".tool-card");
-
-    tools.forEach(t => {
+    document.querySelectorAll(".tool-card").forEach(t => {
         let category = t.getAttribute("data-category");
-
-        if (cat === "all" || category === cat.toLowerCase()) {
-            t.style.display = "block";
-        } else {
-            t.style.display = "none";
-        }
+        t.style.display = (cat === "all" || category === cat) ? "block" : "none";
     });
 }
-</script>
 
-<a href="/home" class="home-btn">← Go Home</a>
+function sortTools() {
+    let type = document.getElementById("sortSelect").value;
+
+    let sorted = [...TOOL_DATA];
+
+    sorted.sort((a, b) =>
+        type === "az"
+            ? a.name.localeCompare(b.name)
+            : b.name.localeCompare(a.name)
+    );
+
+    renderTools(sorted);
+}
+</script>
 
 </body>
 </html>
