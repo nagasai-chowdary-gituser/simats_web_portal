@@ -17,7 +17,7 @@
     {
         "Name": "Mary Anjalin F",
         "Phone Number": 9790239922,
-        "Strict/Loose": null
+        "Strict/Loose": "strict"
     },
     {
         "Name": "DR MANONMANI V",
@@ -9707,7 +9707,7 @@
     {
         "Name": "Mr.Madhu Sundar",
         "Phone Number": 9894404229,
-        "Strict/Loose": null
+        "Strict/Loose": "loose"
     },
     {
         "Name": "Dr.K.VASUGI",

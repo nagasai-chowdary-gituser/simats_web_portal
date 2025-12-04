@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "username": "DeltaForce",
+        "email": "admin@system.com",
+        "reg_number": "Delta-admin",
+        "password": "scrypt:32768:8:1$NFUnEUq31exZbljv$b4bb516ca28d5ba3a9f8f7d28bb3fbe57c19d0229694bb2300560e3919d5e3f1968cc4ac5a4bf7c5bc448c628472aae9eccfc144dd1b3b6771f24a03689d41bb",
+        "is_admin": 1,
+        "security_bike": "adminbike"
+    },
+    {
+        "id": 2,
+        "username": "nagasai",
+        "email": "192424292.simats@saveetha.com",
+        "reg_number": "192424292",
+        "password": "scrypt:32768:8:1$q9qDaGGVxsbQwlwO$3f6a93dc04a7ff3e15761fb85bcf87189564066785f52e8eeaeb09604e735575687fa06d20054e3c6bf7dde15bf4bd3e94f4656af6b32891bc45855461109061",
+        "is_admin": 0,
+        "security_bike": "ns160"
+    },
+    {
+        "id": 3,
+        "username": "vignesh",
+        "email": "192424153.simats@saveetha.com",
+        "reg_number": "192424153",
+        "password": "scrypt:32768:8:1$zjLBktO3kmCaUba5$3f64b4999be34dbcfdc92bd09d171029622b24f4d9864e8a07f57b8dc0aa7877d7800daa4c056ebbefda35665860eaf27ebe4faed0ca8ae776974fc6cd4f532c",
+        "is_admin": 0,
+        "security_bike": "ns200"
+    },
+    {
+        "id": 4,
+        "username": "shahid",
+        "email": "192424311.simats@saveetha.com",
+        "reg_number": "192424311",
+        "password": "scrypt:32768:8:1$1r3ICHGQ9CRsKfek$5afb82e3743623cb5876b90fb2a45fc0081b81d9d3560cf15f9ec9e96a0172aab86a8afff6ef9ead9ad0c08e01db48f06ce8843fee140f4a2efe3e2f6bc01762",
+        "is_admin": 0,
+        "security_bike": "h2r"
+    }
+]

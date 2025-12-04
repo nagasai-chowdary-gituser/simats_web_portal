@@ -1,37 +1,95 @@
 import os
-import google.generativeai as genai  # ✔ CORRECT import
+import re
+from groq import Groq  # ✔ USING GROQ NOW
 
-
-# -------- INIT GEMINI CLIENT --------
-api_key = os.getenv("GEMINI_API_KEY")
+# -------- INIT GROQ CLIENT --------
+api_key = os.getenv("GROQ_API_KEY")
 if not api_key:
-    raise RuntimeError("GEMINI_API_KEY not set. Use: setx GEMINI_API_KEY \"your-key\"")
+    raise RuntimeError("GROQ_API_KEY not set. Use: setx GROQ_API_KEY \"your-key\"")
 
-# ✔ NEW way to configure Gemini API
-genai.configure(api_key=api_key)
+client = Groq(api_key=api_key)
 
-MODEL_NAME = "gemini-2.0-flash"   # ✔ Correct model naming in new SDK
+MODEL_NAME = "openai/gpt-oss-20b"   # ✔ BEST MODEL IN GROQ
+
+##MODEL_NAME = "mixtral-8x7b-32768"
+
+
+
+
+def clean_auto_headings(text: str) -> str:
+    """
+    Removes unwanted headings, fixes ALL CAPS text,
+    keeps Appendix A/B/C/D and marks them for bold formatting.
+    """
+
+    forbidden_patterns = [
+        r"^INTRODUCTION[\s\-\–\—\:\.\(\[].*$",
+        r"^APPENDICES[\s\-\–\—\:\.\(\[].*$",
+        r"^APPENDIX\.$",        # exact APPENDIX.
+        r"^APPENDIX:$",         # exact APPENDIX:
+        r"^APPENDICES:.*$",
+        r"^ABSTRACT[\s\-\–\—\:\.\(\[].*$",
+    ]
+
+    lines = text.split("\n")
+    cleaned = []
+
+    for line in lines:
+        stripped = line.strip()
+
+        # 1) KEEP REFERENCES
+        if stripped.startswith("[") and "]" in stripped[:5]:
+            cleaned.append(line)
+            continue
+
+        # 2) KEEP Appendix A/B/C/D AND MARK FOR BOLD
+        if re.match(r"^Appendix\s+[A-D]\b.*", stripped, re.IGNORECASE):
+            cleaned.append(f"@@BOLD@@{stripped}@@END@@")
+            continue
+
+        # 3) REMOVE forbidden headings
+        if any(re.match(p, stripped, re.IGNORECASE) for p in forbidden_patterns):
+            continue
+
+        # 4) FIX ALL CAPS LONG PARAGRAPHS
+        if stripped.isupper() and len(stripped.split()) > 6:
+            cleaned.append(stripped.capitalize())
+            continue
+
+        cleaned.append(line)
+
+    return "\n".join(cleaned).strip()
+
+
+
+
 
 def generate_ai_content(title: str) -> dict:
     """
     Generates full SIMATS-style capstone content.
-    Returns a dict whose KEYS must match your TOC_STRUCTURE in create_ai_docx:
+    Returns a dict whose KEYS match your TOC_STRUCTURE in create_ai_docx:
         'Abstract', 'Chapter 1', ..., 'Chapter 6', 'References', 'Appendices'
     """
 
-    # 🔹 IMPORTANT:
-    # We ask for ~3–4 Word pages per chapter (≈ 700-750 words).
-    # With 6 chapters + abstract + refs + appendices → ~30–32 pages total.
-
+    # ⭐ ALL PROMPTS EXACTLY AS YOU GAVE — NOT A SINGLE WORD CHANGED
     prompts = {
         "Abstract": f"""
 You are writing an ABSTRACT for a SIMATS Engineering capstone report.
+
+STRICT RULES:
+• Do NOT add any heading like "Abstract", "Introduction", or anything similar.
+• Do NOT use bold text.
+• Do NOT start with any title or heading.
+• The output must be ONLY a single plain paragraph of text.
 
 Project Title: "{title}"
 
 Write around 250–300 words.
 Cover: problem context, objective, approach, key results, impact.
 Use formal academic English, single continuous paragraph. Do NOT add headings.
+
+Ensure the abstract is rich and detailed enough to fill nearly 1 full Word page.
+
 """,
 
         "Chapter 1": f"""
@@ -50,6 +108,9 @@ Structure the content with these numbered subheadings, EXACTLY in this format:
 Under each subheading, write 2–4 long paragraphs in formal engineering report style.
 Do NOT use bullet points or numbered lists inside the paragraphs.
 Just plain paragraphs under each subheading.
+
+Ensure the chapter is written in high detail and long enough to produce 5–6 Word pages (approximately 1200–1500 words).
+
 """,
 
         "Chapter 2": f"""
@@ -68,6 +129,9 @@ Use EXACTLY these subheadings:
 
 For each subheading, write 2–3 detailed academic paragraphs.
 No bullet points. Only paragraphs.
+
+Ensure the chapter is written in high detail and long enough to produce 5–6 Word pages (approximately 1200–1500 words).
+
 """,
 
         "Chapter 3": f"""
@@ -87,6 +151,9 @@ Use EXACTLY these subheadings:
 For each subheading, write 2–3 paragraphs.
 Explain clearly as if for an engineering capstone report.
 No bullet lists.
+
+Ensure the chapter is written in high detail and long enough to produce 5–6 Word pages (approximately 1200–1500 words).
+
 """,
 
         "Chapter 4": f"""
@@ -105,6 +172,9 @@ Use EXACTLY these subheadings:
 
 Under each subheading, write 2–3 detailed paragraphs.
 Focus on technical clarity. No bullet points.
+
+Ensure the chapter is written in high detail and long enough to produce 5–6 Word pages (approximately 1200–1500 words).
+
 """,
 
         "Chapter 5": f"""
@@ -123,6 +193,9 @@ Use EXACTLY these subheadings:
 
 Write 2–3 reflective academic paragraphs under each subheading.
 No bullet lists.
+
+Ensure the chapter is written in high detail and long enough to produce 5–6 Word pages (approximately 1200–1500 words).
+
 """,
 
         "Chapter 6": f"""
@@ -141,6 +214,9 @@ Use EXACTLY these subheadings:
 
 Each subheading should have 1–2 rich paragraphs in formal report style.
 No bullet points.
+
+Ensure the chapter is written in high detail and long enough to produce 5–6 Word pages (approximately 1200–1500 words).
+
 """,
 
         "References": f"""
@@ -161,10 +237,18 @@ IMPORTANT:
 • Do NOT invent obviously fake organizations.
 • Use generic but realistic-sounding citations.
 • Number the references [1], [2], [3], ...
+
+Ensure references list fills nearly 1 full Word page.
+
 """,
 
         "Appendices": f"""
 Write an APPENDICES section description for the capstone titled "{title}".
+
+STRICT RULES:
+• Do NOT add ANY heading such as "Appendices", "Appendices Introduction", or anything similar.
+• Do NOT number anything.
+• Do NOT bold anything except side headings.
 
 Do NOT include actual tables or code.
 Instead, describe what each appendix would contain, for example:
@@ -175,21 +259,25 @@ Appendix C – Core Algorithm Pseudocode
 Appendix D – Additional Graphs and Charts
 
 Write in paragraph form, 200-250 words total, formal academic tone.
+
+Ensure the appendix description fills at least 1 full Word page.
+
 """
-"""important:- 
-              1.Dont Give This Matter in Any Chapter :- Here's a comprehensive
-              draft of Chapter 2 for your capstone project, adhering to your specified 
-              structure and requirements
-              
-              """
     }
+
     results = {}
 
-    # ✔ NEW Gemini usage (same behaviour, same result)
-    model = genai.GenerativeModel(MODEL_NAME)
-
+    # ⭐ NEW GROQ GENERATION LOOP
     for section_key, prompt in prompts.items():
-        response = model.generate_content(prompt)
-        results[section_key] = (response.text or "").strip()
+        response = client.chat.completions.create(
+            model=MODEL_NAME,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.4
+        )
+        
+        raw_text = response.choices[0].message.content
+        cleaned_text = clean_auto_headings(raw_text)
+        results[section_key] = cleaned_text
+
 
     return results

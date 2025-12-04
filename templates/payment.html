@@ -12,108 +12,91 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; }
-
-:root {
-    --bg-deep: #0C0C0C;
-    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
-    --card: #131313;
-    --gold-1: #D4AF37;
-    --gold-2: #F5C542;
-    --gold-3: #C9A227;
-    --gold-border-subtle: rgba(212, 175, 55, 0.08);
-    --gold-border: rgba(212, 175, 55, 0.18);
-    --text-primary: rgba(255, 255, 255, 0.95);
-    --text-secondary: rgba(255, 255, 255, 0.72);
-    --text-muted: rgba(255, 255, 255, 0.48);
-    --radius-sm: 12px;
-    --radius-md: 16px;
-    --radius-lg: 22px;
-    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
-    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
-    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 body {
     margin: 0;
-    padding: 28px;
-    background: var(--bg-gradient);
-    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 0;
+    background: linear-gradient(135deg, #e8f4fc 0%, #f5f0ff 50%, #e8ecf4 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
 }
 
-body::before {
-    content: '';
+/* Navbar */
+.navbar {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Subtle gold particles */
-.stars {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
     top: 0;
     left: 0;
-    z-index: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.stars span {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--gold-1);
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: floatUp 14s linear infinite;
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
+    text-decoration: none;
 }
 
-@keyframes floatUp {
-    from { transform: translateY(110vh) scale(0.3); opacity: 0; }
-    10% { opacity: 0.3; }
-    90% { opacity: 0.3; }
-    to { transform: translateY(-10vh) scale(1); opacity: 0; }
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-nav a {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4a5568;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.navbar-nav a:hover {
+    color: #1a1a2e;
+}
+
+.navbar-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    background: transparent;
+    border: 1.5px solid #1a1a2e;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.navbar-btn:hover {
+    background: #1a1a2e;
+    color: white;
 }
 
 .card {
-    position: relative;
-    z-index: 2;
     width: 100%;
     max-width: 460px;
+    margin: 24px;
     padding: 42px 38px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
-    border: 0.5px solid var(--gold-border-subtle);
-    box-shadow: var(--shadow-card);
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
     text-align: center;
-    overflow: hidden;
-}
-
-.card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
-    opacity: 0.6;
 }
 
 h2 {
@@ -121,23 +104,20 @@ h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 22px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #1a1a2e;
 }
 
 .info-row {
     text-align: left;
     padding: 14px 18px;
     margin-bottom: 12px;
-    border-radius: var(--radius-sm);
-    background: rgba(255, 255, 255, 0.02);
-    border: 0.5px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
 }
 
 .info-row b {
-    color: var(--gold-1);
+    color: #3b5998;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -148,21 +128,21 @@ h2 {
 
 .info-row span {
     font-size: 15px;
-    color: var(--text-primary);
+    color: #2d3748;
 }
 
 .amount-display {
     margin: 24px 0;
     padding: 20px;
-    background: linear-gradient(145deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
-    border: 1px solid var(--gold-border);
-    border-radius: var(--radius-md);
+    background: rgba(59, 89, 152, 0.05);
+    border: 1px solid rgba(59, 89, 152, 0.15);
+    border-radius: 12px;
 }
 
 .amount-display .label {
     font-size: 12px;
     font-weight: 600;
-    color: var(--text-muted);
+    color: #4a5568;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -171,7 +151,7 @@ h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 32px;
     font-weight: 800;
-    color: var(--gold-2);
+    color: #3b5998;
     margin-top: 4px;
 }
 
@@ -179,59 +159,45 @@ h2 {
     width: 100%;
     padding: 16px 24px;
     margin-top: 8px;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     border: none;
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
-    color: #0A0A0A;
+    background: #3b5998;
+    color: #ffffff;
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: var(--shadow-gold);
-    transition: all var(--transition-fast);
-    position: relative;
-    overflow: hidden;
-}
-
-.pay-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+    transition: all 0.15s ease;
 }
 
 .pay-btn:hover {
+    background: #2d4373;
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
 }
-
-.pay-btn:hover::before { left: 100%; }
 
 .pay-btn.secondary {
     margin-top: 12px;
     background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: none;
+    color: #4a5568;
+    border: 1.5px solid #e2e8f0;
 }
 
 .pay-btn.secondary:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: #f7fafc;
+    color: #1a1a2e;
+    border-color: #cbd5e0;
     transform: translateY(-2px);
-    box-shadow: none;
 }
 
-.pay-btn.secondary::before { display: none; }
+@media (max-width: 768px) {
+    .navbar { padding: 0 24px; }
+    .navbar-nav { gap: 16px; }
+}
 
 @media (max-width: 480px) {
-    body { padding: 16px; }
-    .card { padding: 32px 24px; border-radius: var(--radius-md); }
+    .navbar { padding: 0 16px; }
+    .navbar-nav a:not(.navbar-btn) { display: none; }
+    .card { margin: 16px; padding: 32px 24px; border-radius: 16px; }
     h2 { font-size: 18px; }
     .amount-display .value { font-size: 26px; }
     .pay-btn { padding: 14px 20px; font-size: 14px; }
@@ -241,16 +207,18 @@ h2 {
 
 <body>
 
-<!-- Subtle gold particles -->
-<div class="stars">
-    <span style="left:10%; animation-delay:1s; animation-duration:11s;"></span>
-    <span style="left:35%; animation-delay:4s; animation-duration:13s;"></span>
-    <span style="left:60%; animation-delay:2s; animation-duration:10s;"></span>
-    <span style="left:85%; animation-delay:5s; animation-duration:14s;"></span>
-</div>
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="/" class="navbar-brand">SIMATS ENGINEERING</a>
+    <ul class="navbar-nav">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+    </ul>
+</nav>
 
 <div class="card">
-    <h2>Complete Payment to Download Report</h2>
+    <h2>Complete Payment to Download Report 💳</h2>
 
     <div class="info-row">
         <b>User</b>
@@ -304,7 +272,7 @@ document.getElementById("payBtn").onclick = async function(e) {
             document.getElementById("paymentForm").submit();
         },
 
-        "theme": { "color": "#D4AF37" }
+        "theme": { "color": "#3b5998" }
     };
 
     var rzp1 = new Razorpay(options);

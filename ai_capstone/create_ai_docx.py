@@ -172,14 +172,15 @@ def insert_table_of_contents(doc):
 def create_ai_docx(sections: dict, output_path: str):
     doc = Document()
 
-    # 1) Insert TOC (do not touch)
+    # 1) Insert TOC
     insert_table_of_contents(doc)
+    # Keep this page break so Abstract starts on next page
     doc.add_page_break()
 
     # 2) CHAPTERS IN FIXED ORDER
     for chapter_title, _, _ in TOC_STRUCTURE:
 
-        # Find matching AI-generated key
+        # Find matching AI-generated key (e.g. "Chapter 1", "Abstract", "Appendices")
         real_key = None
         for key in sections.keys():
             if key.lower().startswith(chapter_title.lower()):
@@ -209,21 +210,27 @@ def create_ai_docx(sections: dict, output_path: str):
             continue
 
         # ---------------------------------------------------
-        # FINAL BOSS — SINGLE-LINE CHAPTER HEADING
-        # Always prints:  CHAPTER X: TITLE
-        # Never duplicates
+        # CHAPTER / ABSTRACT / APPENDICES HEADING
         # ---------------------------------------------------
-        if ":" in real_key:
-            # AI generated correct heading
-            heading_text = real_key.upper()
+        ct = chapter_title.lower()
+
+        if ct == "abstract":
+            # Just "ABSTRACT"
+            heading_text = "ABSTRACT"
+        elif ct == "appendices":
+            # Just "APPENDICES"
+            heading_text = "APPENDICES"
         else:
-            # Extract title from content first line
-            first_line = cleaned.split("\n")[0].strip()
-            if ":" in first_line:
-                heading_text = first_line.upper()
+            # Chapter 1, 2, ... (normal chapters)
+            if ":" in real_key:
+                heading_text = real_key.upper()
             else:
-                # fallback if no title found
-                heading_text = f"{real_key.upper()}: INTRODUCTION"
+                first_line = cleaned.split("\n")[0].strip()
+                if ":" in first_line:
+                    heading_text = first_line.upper()
+                else:
+                    # fallback: CHAPTER 1  (no extra "INTRODUCTION" to avoid confusion)
+                    heading_text = real_key.upper()
 
         heading = doc.add_paragraph()
         run = heading.add_run(heading_text)
@@ -232,31 +239,45 @@ def create_ai_docx(sections: dict, output_path: str):
         run.font.size = Pt(16)
         heading.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
-        doc.add_paragraph()  # spacing
+        doc.add_paragraph()  # spacing under heading
 
         # ---------------------------------------------------
-        # CONTENT SECTION
+        # CONTENT SECTION (FINAL BOSS VERSION)
         # ---------------------------------------------------
         for line in cleaned.split("\n"):
             line = line.strip()
             if not line:
                 continue
 
-            # Skip duplicate headings inside content
-            if line.lower().startswith("chapter"):
+            # Skip duplicate headings inside AI text
+            if line.lower().startswith("chapter") or line.lower().startswith("abstract") or line.lower().startswith("appendices"):
                 continue
 
-            # Bold subheadings: 1.1, 1.2, 3.4 etc.
+            # 1) Handle BOLD markers from clean_auto_headings (Appendix A/B/C/D)
+            if line.startswith("@@BOLD@@") and line.endswith("@@END@@"):
+                pure = line.replace("@@BOLD@@", "").replace("@@END@@", "").strip()
+                p = doc.add_paragraph(pure)
+                set_style(p, bold=True, size=12, align="left")
+                continue
+
+            # 2) Backup: if AI outputs "Appendix A ..." without markers, still bold it
+            if re.match(r"^Appendix\s+[A-Z]\b.*", line, re.IGNORECASE):
+                p = doc.add_paragraph(line)
+                set_style(p, bold=True, size=12, align="left")
+                continue
+
+            # 3) Bold numeric subheadings like "1.1 Background Information"
             if re.match(r"^\d+\.\d+\s", line):
                 p = doc.add_paragraph(line)
                 set_style(p, bold=True, size=12, align="left")
+                continue
 
-            else:
-                p = doc.add_paragraph(line)
-                set_style(p, bold=False, size=12, align="justify")
+            # 4) Normal paragraph
+            p = doc.add_paragraph(line)
+            set_style(p, bold=False, size=12, align="justify")
 
+        # Page break after each section
         doc.add_page_break()
 
     # SAVE FILE
     doc.save(output_path)
-

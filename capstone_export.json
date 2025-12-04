@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "user_id": 2,
+        "title": "smart climate monitering system using apis and python",
+        "file_path": "C:\\Users\\asus\\Desktop\\simats_web_portal\\ai_capstone\\output\\capstone_a1dac072d88747c985c837c48c8d5d26.docx",
+        "created_at": "pending"
+    },
+    {
+        "id": 2,
+        "user_id": 2,
+        "title": "smart climate monitering system using apis and python",
+        "file_path": "C:\\Users\\asus\\Desktop\\simats_web_portal\\ai_capstone\\output\\capstone_08511bba3a234763ad5c7c0e61e15e7e.docx",
+        "created_at": "pending"
+    },
+    {
+        "id": 3,
+        "user_id": 2,
+        "title": "analysis about indian stock market based on live plus previous data",
+        "file_path": "C:\\Users\\asus\\Desktop\\simats_web_portal\\ai_capstone\\output\\capstone_79434c5d094c487ca5a95ad91ac80f8c.docx",
+        "created_at": "paid"
+    },
+    {
+        "id": 4,
+        "user_id": 2,
+        "title": "cyber threts detection using python and kali linux",
+        "file_path": "C:\\Users\\asus\\Desktop\\simats_web_portal\\ai_capstone\\output\\final_capstone.docx",
+        "created_at": null
+    }
+]

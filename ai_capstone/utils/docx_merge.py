@@ -7,6 +7,6 @@ def merge_docx(docs, output_path):
 
     for doc_path in docs[1:]:
         sub = Document(doc_path)
-        composer.append(sub)   # this preserves images, headers, footers
+        composer.append(sub)   # docxcompose handles page breaks
 
     composer.save(output_path)

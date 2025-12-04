@@ -7,78 +7,123 @@
     <title>AI Tools Explorer</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 body {
     margin: 0;
     padding: 0;
-    background: #0A0A0A;
-    font-family: 'Inter', sans-serif;
-    color: white;
+    background: linear-gradient(135deg, #e8f4fc 0%, #f5f0ff 50%, #e8ecf4 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
-/* ⭐ TOP BUTTONS BLOCK ⭐ */
-.top-controls {
-    width: 100%;
-    max-width: 1200px;
-    margin: 20px auto 10px auto;
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 12px;
-    text-align: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Home Button */
-.home-btn {
-    padding: 10px 20px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
     text-decoration: none;
 }
 
-/* Title */
-.title {
-    font-size: 32px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #FFD44D, white);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-/* Search + Sort Row */
-.top-row {
+.navbar-nav a {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4a5568;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.navbar-nav a:hover {
+    color: #1a1a2e;
+}
+
+.navbar-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    background: transparent;
+    border: 1.5px solid #1a1a2e;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.navbar-btn:hover {
+    background: #1a1a2e;
+    color: white;
+}
+
+.title {
+    text-align: center;
+    margin: 100px 0 32px 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: #1a1a2e;
+}
+
+/* Search */
+.search-box {
     width: 100%;
-    max-width: 900px;
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
+    max-width: 800px;
+    margin: 0 auto 28px auto;
+    padding: 0 24px;
 }
 
 .search-box input {
-    width: 300px;
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
+    width: 100%;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #ffffff;
+    color: #2d3748;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.15s ease;
 }
 
-.sort-select {
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
+.search-box input::placeholder { color: #a0aec0; }
+
+.search-box input:focus {
+    border-color: #3b5998;
+    box-shadow: 0 0 0 3px rgba(59, 89, 152, 0.15);
 }
 
-/* Category Buttons */
+/* Categories */
 .categories {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 32px auto;
+    padding: 0 24px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -86,165 +131,212 @@ body {
 }
 
 .category {
-    padding: 8px 16px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
     cursor: pointer;
-    font-size: 14px;
-    color: white;
+    transition: all 0.15s ease;
+    color: #4a5568;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.category:hover {
+    transform: translateY(-2px);
+    border-color: #3b5998;
+    color: #3b5998;
+    background: #f7fafc;
 }
 
 .category.active {
-    background: #FFD44D;
-    color: black;
+    background: #3b5998;
+    color: #ffffff;
+    border-color: #3b5998;
     font-weight: 700;
 }
 
-/* ⭐ FIXED TOOLS GRID ⭐ */
+/* Tools Grid */
 .tools-grid {
     width: 100%;
-    max-width: 1200px;
-    margin: 40px auto 60px auto;
-
-    display: flexbox;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr);
-    justify-items: center;
+    max-width: 1150px;
+    margin: 0 auto 40px auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
 }
 
-/* Tool Cards */
 .tool-card {
-    width: 100%;
-    padding: 20px;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
+    padding: 24px;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    transition: all 0.15s ease;
 }
 
 .tool-card h2 {
-    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
     font-weight: 700;
-    color: #FFD44D;
+    margin: 0 0 8px 0;
+    color: #1a1a2e;
 }
 
 .tool-card p {
+    margin: 0;
+    color: #3b5998;
     font-size: 12px;
-    opacity: 0.7;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.tool-card:hover {
+    transform: translateY(-4px);
+    border-color: #3b5998;
+    box-shadow: 0 8px 32px rgba(59, 89, 152, 0.12);
+}
+
+.home-btn {
+    display: block;
+    margin: 0 auto 40px auto;
+    padding: 14px 32px;
+    border-radius: 12px;
+    background: transparent;
+    border: 1.5px solid #e2e8f0;
+    color: #4a5568;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    width: fit-content;
+}
+
+.home-btn:hover {
+    background: #f7fafc;
+    color: #1a1a2e;
+    border-color: #cbd5e0;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .navbar { padding: 0 24px; }
+    .navbar-nav { gap: 16px; }
+}
+
+@media (max-width: 680px) {
+    .title { font-size: 26px; margin: 90px 0 24px 0; }
+    .tools-grid { gap: 14px; }
+    .tool-card { padding: 18px; }
+    .category { padding: 8px 14px; font-size: 12px; }
+}
+
+@media (max-width: 480px) {
+    .navbar { padding: 0 16px; }
+    .navbar-nav a:not(.navbar-btn) { display: none; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="top-controls">
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="/" class="navbar-brand">SIMATS ENGINEERING</a>
+    <ul class="navbar-nav">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+    </ul>
+</nav>
 
-    <a href="/home" class="home-btn">← Go Home</a>
+<h1 class="title">AI Tools Explorer 🤖</h1>
 
-    <h1 class="title">AI Tools Explorer</h1>
-
-    <div class="top-row">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="Search AI tool..." onkeyup="filterTools()">
-        </div>
-
-        <select id="sortSelect" class="sort-select" onchange="sortTools()">
-            <option value="az">Sort A → Z</option>
-            <option value="za">Sort Z → A</option>
-        </select>
-    </div>
-
-    <!-- ⭐ FIXED CATEGORY BUTTONS ⭐ -->
-    <div class="categories">
-        <div class="category active" onclick="filterCategory('all', this)">All</div>
-        <div class="category" onclick="filterCategory('research', this)">Research</div>
-        <div class="category" onclick="filterCategory('writing & editing', this)">Writing</div>
-        <div class="category" onclick="filterCategory('coding & programming', this)">Coding</div>
-        <div class="category" onclick="filterCategory('design & presentation', this)">Design</div>
-        <div class="category" onclick="filterCategory('note-taking & study', this)">Study</div>
-        <div class="category" onclick="filterCategory('mathematics & science', this)">Math</div>
-    </div>
-
+<!-- Search -->
+<div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search any AI tool..." onkeyup="filterTools()">
 </div>
 
+<!-- Categories -->
+<div class="categories">
+    <div class="category active" onclick="filterCategory('all', this)">All</div>
+    <div class="category" onclick="filterCategory('research', this)">Research</div>
+    <div class="category" onclick="filterCategory('writing & editing', this)">Writing</div>
+    <div class="category" onclick="filterCategory('coding & programming', this)">Coding</div>
+    <div class="category" onclick="filterCategory('design & presentation', this)">Design</div>
+    <div class="category" onclick="filterCategory('note-taking & study', this)">Study</div>
+    <div class="category" onclick="filterCategory('mathematics & science', this)">Math</div>
+</div>
+
+<!-- Tools Grid -->
 <div class="tools-grid" id="toolsGrid"></div>
 
+<!-- Load JSON + Build Cards -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     fetch("/static/data/ai_tools.json")
         .then(res => res.json())
-        .then(data => loadTools(data.ai_tools_for_students));
-});
-
-let TOOL_DATA = [];
+        .then(data => loadTools(data.ai_tools_for_students))
+})
 
 function loadTools(categories) {
     const grid = document.getElementById("toolsGrid");
     grid.innerHTML = "";
-    TOOL_DATA = [];
 
     categories.forEach(cat => {
         let catTag = cat.category.toLowerCase();
 
         cat.tools.forEach(tool => {
-            TOOL_DATA.push({ name: tool, category: catTag });
+            let card = document.createElement("div");
+            card.classList.add("tool-card");
+
+            card.setAttribute("data-category", catTag);
+            card.setAttribute("data-name", tool.toLowerCase());
+
+            card.innerHTML = `
+                <h2>${tool}</h2>
+                <p>${cat.category}</p>
+            `;
+
+            grid.appendChild(card);
         });
-    });
-
-    renderTools(TOOL_DATA);
-}
-
-function renderTools(list) {
-    const grid = document.getElementById("toolsGrid");
-    grid.innerHTML = "";
-
-    list.forEach(t => {
-        grid.innerHTML += `
-            <div class="tool-card" data-category="${t.category}" data-name="${t.name.toLowerCase()}">
-                <h2>${t.name}</h2>
-                <p>${t.category.toUpperCase()}</p>
-            </div>
-        `;
     });
 }
 
 function filterTools() {
     let text = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".tool-card").forEach(t => {
+    let tools = document.querySelectorAll(".tool-card");
+
+    tools.forEach(t => {
         let name = t.getAttribute("data-name");
         t.style.display = name.includes(text) ? "block" : "none";
     });
 }
 
 function filterCategory(cat, element) {
-    document.querySelectorAll(".category").forEach(c => c.classList.remove("active"));
-    element.classList.add("active");
+    // Update active state
+    document.querySelectorAll('.category').forEach(c => c.classList.remove('active'));
+    if (element) element.classList.add('active');
 
-    document.querySelectorAll(".tool-card").forEach(t => {
+    let tools = document.querySelectorAll(".tool-card");
+
+    tools.forEach(t => {
         let category = t.getAttribute("data-category");
-        t.style.display = (cat === "all" || category === cat) ? "block" : "none";
+
+        if (cat === "all" || category === cat.toLowerCase()) {
+            t.style.display = "block";
+        } else {
+            t.style.display = "none";
+        }
     });
 }
-
-function sortTools() {
-    let type = document.getElementById("sortSelect").value;
-
-    let sorted = [...TOOL_DATA];
-
-    sorted.sort((a, b) =>
-        type === "az"
-            ? a.name.localeCompare(b.name)
-            : b.name.localeCompare(a.name)
-    );
-
-    renderTools(sorted);
-}
 </script>
+
+<a href="/home" class="home-btn">← Go Home</a>
 
 </body>
 </html>

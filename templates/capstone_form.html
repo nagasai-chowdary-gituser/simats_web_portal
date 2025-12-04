@@ -9,87 +9,96 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; }
-
-:root {
-    --bg-deep: #0C0C0C;
-    --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
-    --card: #131313;
-    --gold-1: #D4AF37;
-    --gold-2: #F5C542;
-    --gold-3: #C9A227;
-    --gold-border-subtle: rgba(212, 175, 55, 0.08);
-    --gold-border: rgba(212, 175, 55, 0.18);
-    --text-primary: rgba(255, 255, 255, 0.95);
-    --text-secondary: rgba(255, 255, 255, 0.72);
-    --text-muted: rgba(255, 255, 255, 0.48);
-    --input-bg: rgba(255, 255, 255, 0.03);
-    --input-border: rgba(255, 255, 255, 0.06);
-    --radius-sm: 12px;
-    --radius-md: 16px;
-    --radius-lg: 22px;
-    --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.5), 0 4px 12px rgba(212, 175, 55, 0.06);
-    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
-    --shadow-input: inset 0 2px 8px rgba(0, 0, 0, 0.4);
-    --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 body {
     margin: 0;
-    padding: 28px;
-    background: var(--bg-gradient);
-    font-family: 'Inter', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    padding: 0;
+    background: linear-gradient(135deg, #e8f4fc 0%, #f5f0ff 50%, #e8ecf4 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     overflow: auto;
 }
 
-body::before {
-    content: '';
+/* Navbar */
+.navbar {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 80%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
-    pointer-events: none;
-    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 48px;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a2e;
+    text-decoration: none;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-nav a {
+    font-size: 15px;
+    font-weight: 500;
+    color: #4a5568;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.navbar-nav a:hover {
+    color: #1a1a2e;
+}
+
+.navbar-btn {
+    padding: 10px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    background: transparent;
+    border: 1.5px solid #1a1a2e;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.navbar-btn:hover {
+    background: #1a1a2e;
+    color: white;
 }
 
 .container {
-    position: relative;
-    z-index: 2;
     width: 100%;
     max-width: 600px;
     padding: 42px 38px;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(175deg, var(--card) 0%, #0F0F10 100%);
-    border: 0.5px solid var(--gold-border-subtle);
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
+    margin: 100px 24px 24px;
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
     animation: fadeIn 0.8s ease-out;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-.container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent 0%, var(--gold-1) 50%, transparent 100%);
-    opacity: 0.6;
 }
 
 h2 {
@@ -99,17 +108,14 @@ h2 {
     font-size: 26px;
     font-weight: 700;
     line-height: 1.3;
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #1a1a2e;
 }
 
 label {
     display: block;
     font-size: 12px;
     font-weight: 600;
-    color: var(--gold-1);
+    color: #3b5998;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -119,99 +125,81 @@ input {
     width: 100%;
     padding: 14px 16px;
     margin-bottom: 20px;
-    border-radius: var(--radius-sm);
-    border: 1px solid var(--input-border);
-    background: var(--input-bg);
-    color: var(--text-primary);
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #f7fafc;
+    color: #2d3748;
     font-size: 15px;
-    box-shadow: var(--shadow-input);
     outline: none;
-    transition: all var(--transition-fast);
+    transition: all 0.15s ease;
 }
 
-input::placeholder { color: var(--text-muted); }
+input::placeholder { color: #a0aec0; }
 
 input:hover {
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.04);
+    border-color: #cbd5e0;
 }
 
 input:focus {
-    border-color: var(--gold-1);
-    background: rgba(212, 175, 55, 0.03);
-    box-shadow: var(--shadow-input), 0 0 0 3px rgba(212, 175, 55, 0.08);
+    border-color: #3b5998;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 89, 152, 0.15);
 }
 
 .disclaimer {
     padding: 16px 18px;
     margin-bottom: 20px;
-    background: rgba(212, 175, 55, 0.04);
-    border: 1px solid var(--gold-border);
-    border-radius: var(--radius-sm);
+    background: rgba(59, 89, 152, 0.05);
+    border: 1px solid rgba(59, 89, 152, 0.15);
+    border-radius: 12px;
 }
 
 .disclaimer h4 {
     margin: 0 0 6px 0;
     font-size: 13px;
     font-weight: 700;
-    color: var(--gold-1);
+    color: #3b5998;
 }
 
 .disclaimer p {
     margin: 0;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: #4a5568;
 }
 
 button {
     width: 100%;
     padding: 16px 24px;
     margin-top: 8px;
-    border-radius: var(--radius-md);
+    border-radius: 12px;
     border: none;
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
     font-weight: 700;
     cursor: pointer;
-    transition: all var(--transition-fast);
-    position: relative;
-    overflow: hidden;
+    transition: all 0.15s ease;
 }
 
 button.primary {
-    background: linear-gradient(135deg, var(--gold-2) 0%, var(--gold-1) 50%, var(--gold-3) 100%);
-    color: #0A0A0A;
-    box-shadow: var(--shadow-gold);
-}
-
-button.primary::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+    background: #3b5998;
+    color: #ffffff;
 }
 
 button.primary:hover {
+    background: #2d4373;
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(212, 175, 55, 0.2);
 }
-
-button.primary:hover::before { left: 100%; }
 
 button.secondary {
     background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #4a5568;
+    border: 1.5px solid #e2e8f0;
 }
 
 button.secondary:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: #f7fafc;
+    color: #1a1a2e;
+    border-color: #cbd5e0;
     transform: translateY(-2px);
 }
 
@@ -223,12 +211,11 @@ button.secondary:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.92);
+    background: rgba(255, 255, 255, 0.95);
     z-index: 9999;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: var(--text-primary);
 }
 
 #loaderOverlay.active {
@@ -238,8 +225,8 @@ button.secondary:hover {
 .spinner {
     width: 60px;
     height: 60px;
-    border: 4px solid rgba(212, 175, 55, 0.2);
-    border-top: 4px solid var(--gold-1);
+    border: 4px solid rgba(59, 89, 152, 0.2);
+    border-top: 4px solid #3b5998;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin-bottom: 24px;
@@ -250,13 +237,19 @@ button.secondary:hover {
 #loaderOverlay p {
     font-size: 16px;
     text-align: center;
-    color: var(--text-secondary);
+    color: #4a5568;
     line-height: 1.6;
 }
 
+@media (max-width: 768px) {
+    .navbar { padding: 0 24px; }
+    .navbar-nav { gap: 16px; }
+}
+
 @media (max-width: 480px) {
-    body { padding: 16px; }
-    .container { padding: 32px 24px; border-radius: var(--radius-md); }
+    .navbar { padding: 0 16px; }
+    .navbar-nav a:not(.navbar-btn) { display: none; }
+    .container { margin: 90px 16px 16px; padding: 32px 24px; border-radius: 16px; }
     h2 { font-size: 22px; }
     input { padding: 12px 14px; font-size: 14px; }
     button { padding: 14px 20px; font-size: 14px; }
@@ -265,13 +258,23 @@ button.secondary:hover {
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="/" class="navbar-brand">SIMATS ENGINEERING</a>
+    <ul class="navbar-nav">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+    </ul>
+</nav>
+
 <div id="loaderOverlay">
     <div class="spinner"></div>
     <p>Generating your Capstone Report...<br>Please wait 2-3 minutes.</p>
 </div>
 
 <div class="container">
-    <h2>SIMATS Capstone<br>Report Generator</h2>
+    <h2>SIMATS Capstone<br>Report Generator 📄</h2>
 
     <form id="capstoneForm">
         <label>Project Title</label>

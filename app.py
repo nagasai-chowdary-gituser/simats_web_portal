@@ -28,13 +28,17 @@ import razorpay
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://postgres.qoyyvcnyijgjtdeodicu:deltaforce@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require"
+
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # -----------------------------
 # DB CONFIG
 # -----------------------------
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "database.db")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+###app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(BASE_DIR, "database.db")
+###app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = "super_secret_key"
 
 db = SQLAlchemy(app)
@@ -112,11 +116,15 @@ class Payment(db.Model):
     payment_id = db.Column(db.String(100), nullable=True)
 
 class CapstoneHistory(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    __tablename__ = "capstone_history"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.String(300), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
     file_path = db.Column(db.String(500), nullable=False)
-    created_at = db.Column(db.String(50), nullable=False)  # store date-time
+    created_at = db.Column(db.String(50), nullable=False)
+
+  # store date-time
     
 
 
@@ -519,17 +527,21 @@ def generate_capstone():
 
     title = data["title"].strip()
 
-    # 1. Generate AI content
+    print("STEP 1: Starting capstone...")
+
+    # 1. AI content
     from ai_capstone.ai_engine import generate_ai_content
     sections = generate_ai_content(title)
+    print("STEP 2: AI done")
 
     base_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(base_dir, "ai_capstone", "output")
     os.makedirs(output_dir, exist_ok=True)
 
-    # 2. Create AI chapter DOCX
+    # 2. Create DOCX
     from ai_capstone.create_ai_docx import create_ai_docx
     from ai_capstone.utils.docx_filler import merge_docx
+
     ai_docx_path = os.path.join(output_dir, "ai_chapters.docx")
     create_ai_docx(sections, ai_docx_path)
 
@@ -538,11 +550,10 @@ def generate_capstone():
     fixed_pages = [
         os.path.join(docx_dir, "fixed_front_pages.docx")
     ]
-
     final_docx = os.path.join(output_dir, "final_capstone.docx")
     merge_docx(fixed_pages + [ai_docx_path], final_docx)
 
-    # ⭐ NEW: Save generation history (BEFORE payment)
+    # ⭐ SAVE HISTORY
     from datetime import datetime
     history = CapstoneHistory(
         user_id=session["user_id"],
@@ -550,14 +561,19 @@ def generate_capstone():
         file_path=final_docx,
         created_at=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     )
-    db.session.add(history)
-    db.session.commit()
 
-    # 4. Save for payment
+    try:
+        db.session.add(history)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        print("🔥 DB ERROR:", e)
+        return jsonify({"error": "Database save failed"}), 500
+
+    # ⭐ ONLY RETURN AFTER SUCCESSFUL DB SAVE
     session["capstone_file_path"] = final_docx
     session["project_title"] = title
 
-    # 5. ALWAYS send to payment page
     return jsonify({"redirect": "/payment"})
 
 
@@ -576,6 +592,7 @@ def history_page():
 # ============================================================
 PDF_FOLDER = os.path.join(BASE_DIR, "static", "pdfs")
 
+CAPSTONE_FOLDER = os.path.join(BASE_DIR, "ai_capstone", "output")
 
 @app.route("/pdfs")
 @login_required()
@@ -586,11 +603,18 @@ def list_pdfs():
     pdf_files = [f for f in os.listdir(PDF_FOLDER) if f.lower().endswith(".pdf")]
     return render_template("pdf_list.html", pdfs=pdf_files)
 
-
-@app.route("/download/<filename>")
+@app.route("/download_history/<int:id>")
 @login_required()
-def download_pdf(filename):
-    return send_from_directory(PDF_FOLDER, filename, as_attachment=True)
+def download_history(id):
+    record = CapstoneHistory.query.get(id)
+    if not record:
+        return "Record not found", 404
+
+    filename = os.path.basename(record.file_path)
+
+    return send_from_directory(CAPSTONE_FOLDER, filename, as_attachment=True)
+
+
 
 """
 # ============================================================
@@ -828,37 +852,52 @@ def save_json(path, data):
 @login_required()
 def faculty_suggestion():
     data = request.get_json() or {}
-
-    faculty_name = data.get("faculty_name", "").strip()
+    
+    suggestion_type = data.get("type", "").strip()
     phone = data.get("phone_number", "").strip()
     behavior = data.get("behavior", "").strip()
-
-    if not faculty_name or not phone or not behavior:
-        return jsonify({"message": "Missing fields"}), 400
-
-    suggestions = load_json(SUGGESTION_FILE, [])
-    new_id = suggestions[-1]["id"] + 1 if suggestions else 1
-
-    suggestions.append({
-        "id": new_id,
-        "type": "new",
-        "name": faculty_name,
-        "phone_number": phone,
-        "dept": behavior,
-        "added_by": session.get("username")
-    })
-
-    save_json(SUGGESTION_FILE, suggestions)
-
-    return jsonify({"message": "New faculty suggestion submitted!"})
-
-
-
-
-
-
-
-
+    
+    # For existing faculty - only need phone and behavior
+    if suggestion_type == "existing":
+        if not phone or not behavior:
+            return jsonify({"message": "Missing fields"}), 400
+        
+        suggestions = load_json(SUGGESTION_FILE, [])
+        new_id = suggestions[-1]["id"] + 1 if suggestions else 1
+        
+        suggestions.append({
+            "id": new_id,
+            "type": "existing",
+            "phone_number": phone,
+            "behavior": behavior,
+            "added_by": session.get("username")
+        })
+        
+        save_json(SUGGESTION_FILE, suggestions)
+        return jsonify({"message": "Behaviour suggestion submitted!"})
+    
+    # For new faculty - need name, phone and behavior
+    else:
+        faculty_name = data.get("name", "").strip()
+        dept = data.get("dept", "").strip()
+        
+        if not faculty_name or not phone or not dept:
+            return jsonify({"message": "Missing fields"}), 400
+        
+        suggestions = load_json(SUGGESTION_FILE, [])
+        new_id = suggestions[-1]["id"] + 1 if suggestions else 1
+        
+        suggestions.append({
+            "id": new_id,
+            "type": "new",
+            "name": faculty_name,
+            "phone_number": phone,
+            "dept": dept,
+            "added_by": session.get("username")
+        })
+        
+        save_json(SUGGESTION_FILE, suggestions)
+        return jsonify({"message": "New faculty suggestion submitted!"})
 
 
 @app.route("/faculty-suggestions")
@@ -990,8 +1029,13 @@ def suggest_existing_behavior():
 
     return jsonify({"message": "Behaviour update suggestion submitted!"})
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
-
+@app.route("/services")
+def services():
+    return render_template("services.html")
 # -----------------------------
 # MAIN
 # -----------------------------

@@ -9,95 +9,95 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
 
-        *, *::before, *::after { box-sizing: border-box; }
-
-        :root {
-            --bg-deep: #0C0C0C;
-            --bg-gradient: linear-gradient(168deg, #0A0A0A 0%, #0C0C0C 40%, #080808 100%);
-            --card: #131313;
-            --card-hover: #181818;
-            --gold-1: #D4AF37;
-            --gold-2: #F5C542;
-            --gold-3: #C9A227;
-            --gold-border: rgba(212, 175, 55, 0.18);
-            --gold-border-subtle: rgba(212, 175, 55, 0.08);
-            --text-primary: rgba(255, 255, 255, 0.95);
-            --text-secondary: rgba(255, 255, 255, 0.72);
-            --text-muted: rgba(255, 255, 255, 0.48);
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 22px;
-            --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(212, 175, 55, 0.04);
-            --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.12);
-            --transition-fast: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-smooth: 280ms cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            font-family: 'Inter', 'Poppins', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: var(--bg-gradient);
-            color: var(--text-primary);
+            background: linear-gradient(135deg, #e8f4fc 0%, #f5f0ff 50%, #e8ecf4 100%);
             -webkit-font-smoothing: antialiased;
             padding-bottom: 80px;
         }
 
-        body::before {
-            content: '';
+        /* Navbar */
+        .navbar {
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at 20% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 70%, rgba(212, 175, 55, 0.02) 0%, transparent 40%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
             top: 0;
             left: 0;
-            z-index: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .particles span {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.5), rgba(212, 175, 55, 0.15));
-            border-radius: 50%;
-            animation: float-up 22s linear infinite;
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+            text-decoration: none;
         }
 
-        @keyframes float-up {
-            0% { transform: translateY(100vh) scale(0.3); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.6; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-nav a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #4a5568;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .navbar-nav a:hover {
+            color: #1a1a2e;
+        }
+
+        .navbar-btn {
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+            background: transparent;
+            border: 1.5px solid #1a1a2e;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+
+        .navbar-btn:hover {
+            background: #1a1a2e;
+            color: white;
         }
 
         h1 {
-            position: relative;
-            z-index: 2;
-            margin-top: 40px;
+            margin-top: 100px;
             font-family: 'Poppins', sans-serif;
             font-size: 38px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--gold-2), var(--gold-1), var(--gold-3));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1a1a2e;
             letter-spacing: -0.5px;
+        }
+
+        h5 {
+            color: #718096;
+            font-weight: 400;
+            margin-top: -10px;
         }
 
         .container {
@@ -106,141 +106,192 @@
             gap: 24px;
             width: min(1180px, calc(100% - 48px));
             margin-top: 40px;
-            z-index: 2;
             padding: 0 12px;
         }
 
         .box {
+            position: relative;
             padding: 28px 24px;
-            border-radius: var(--radius-lg);
-            background: linear-gradient(175deg, var(--card), #0F0F10);
-            border: 0.5px solid var(--gold-border-subtle);
-            box-shadow: var(--shadow-card);
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
             cursor: pointer;
-            transition: var(--transition-smooth);
+            transition: all 0.25s ease;
+            overflow: hidden;
             text-align: center;
             min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 1px solid rgba(0, 0, 0, 0.04);
         }
 
         .box:hover {
             transform: translateY(-6px);
-            border-color: var(--gold-border);
-            box-shadow: var(--shadow-gold);
-            background: var(--card-hover);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
         }
 
         .box h2 {
+            margin: 0 0 10px 0;
             font-size: 20px;
             font-weight: 700;
-            color: var(--gold-1);
+            color: #3b5998;
+        }
+
+        .box p {
+            margin: 0;
+            font-size: 14px;
+            color: #718096;
+            line-height: 1.5;
         }
 
         .float-btn {
             position: fixed;
             left: 20px;
             padding: 12px 20px;
-            background: linear-gradient(175deg, var(--card), #0F0F10);
-            border: 0.5px solid var(--gold-border-subtle);
-            border-radius: var(--radius-sm);
-            color: var(--text-primary);
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            color: #2d3748;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             z-index: 10;
-            transition: var(--transition-fast);
+            transition: all 0.15s ease;
             text-decoration: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
         }
 
         .float-btn:hover {
             transform: translateY(-2px);
-            border-color: var(--gold-border);
-            color: var(--gold-1);
+            border-color: #3b5998;
+            box-shadow: 0 8px 24px rgba(59, 89, 152, 0.15);
+            color: #3b5998;
         }
 
-        .profile-btn { bottom: 160px; }
-        .history-btn { bottom: 120px; }   /* ⭐ NEW BUTTON POSITION */
+        .profile-btn { bottom: 180px; }
+        .history-btn { bottom: 130px; }
         .Logout-btn { bottom: 80px; }
 
+        /* Footer */
+        .footer {
+            width: 100%;
+            padding: 16px 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+        }
+
+        .footer a {
+            color: #718096;
+            margin: 0 12px;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: #3b5998;
+        }
+
+        .footer-divider {
+            color: #e2e8f0;
+        }
+
+        @media (max-width: 768px) {
+            .navbar { padding: 0 24px; }
+            .navbar-nav { gap: 16px; }
+            h1 { font-size: 28px; margin-top: 90px; }
+            .container { 
+                grid-template-columns: 1fr; 
+                margin-top: 24px; 
+                gap: 16px; 
+            }
+            .box { 
+                min-height: 140px; 
+                padding: 24px 20px; 
+            }
+            .float-btn {
+                left: 12px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+            .profile-btn { bottom: 170px; }
+            .history-btn { bottom: 120px; }
+            .Logout-btn { bottom: 70px; }
+        }
+
+        @media (max-width: 480px) {
+            .navbar { padding: 0 16px; }
+            .navbar-nav a:not(.navbar-btn) { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="particles">
-        <span style="left:5%; animation-delay:0s;"></span>
-        <span style="left:15%; animation-delay:3s;"></span>
-        <span style="left:30%; animation-delay:1s;"></span>
-        <span style="left:45%; animation-delay:4s;"></span>
-        <span style="left:60%; animation-delay:2s;"></span>
-        <span style="left:75%; animation-delay:5s;"></span>
-        <span style="left:90%; animation-delay:1s;"></span>
+<!-- Navbar -->
+<nav class="navbar">
+    <a href="/" class="navbar-brand">SIMATS ENGINEERING</a>
+    <ul class="navbar-nav">
+        <li><a href="/about">About</a></li>
+        <li><a href="/services">Services</a></li>
+    </ul>
+</nav>
+
+<h1>SIMATS Smart Tools</h1>
+
+<a href="/profile" class="float-btn profile-btn">My Profile 👤</a>
+<a href="/history" class="float-btn history-btn">My Capstone 📜</a>
+<a href="/login" class="float-btn Logout-btn">Log Out</a>
+
+<div class="container">
+    <div class="box" onclick="window.location.href='/attendance'">
+        <h2>Attendance</h2>
+        <p>Calculate your attendance percentage</p>
     </div>
 
-    <h1>SIMATS Smart Tools</h1>
-
-    <!-- FLOATING BUTTONS LEFT SIDE -->
-    <a href="/profile" class="float-btn profile-btn">My Profile 👤</a>
-
-    <!-- ⭐ NEW HISTORY BUTTON (added correctly) -->
-    <a href="/history" class="float-btn history-btn">My History 📜</a>
-
-    <a href="/login" class="float-btn Logout-btn">Log Out</a>
-
-    <!-- MAIN GRID -->
-    <div class="container">
-        <div class="box" onclick="window.location.href='/attendance'">
-            <h2>Attendance</h2>
-            <p>Calculate your attendance percentage</p>
-        </div>
-
-        <div class="box" onclick="window.location.href='/cgpa'">
-            <h2>CGPA</h2>
-            <p>Calculate your SIMATS-based CGPA</p>
-        </div>
-
-        <div class="box" onclick="window.location.href='/capstone'">
-            <h2>Capstone Maker</h2>
-            <p>Create Your Simats Capstone Report</p>
-        </div>
-
-        <div class="box" onclick="window.location.href='/pdfs'">
-            <h2>Concept Maps</h2>
-            <p>Simats Concept Maps Available Here</p>
-        </div>
-
-        <div class="box" onclick="window.location.href='/faculty'">
-            <h2>Faculty Numbers</h2>
-            <p>Search The Faculty Numbers</p>
-        </div>
-
-        <div class="box" onclick="window.location.href='/ai-tools'">
-            <h2>AI-Tools</h2>
-            <p>Here You Can Discover The Ai Tools</p>
-        </div>
+    <div class="box" onclick="window.location.href='/cgpa'">
+        <h2>CGPA</h2>
+        <p>Calculate your SIMATS-based CGPA</p>
     </div>
 
-</body>
+    <div class="box" onclick="window.location.href='/capstone'">
+        <h2>Capstone Maker</h2>
+        <p>Create Your Simats Capstone Report</p>
+    </div>
 
-<footer style="
-    width: 100%;
-    padding: 16px 0;
-    text-align: center;
-    background: rgba(19,19,19,0.95);
-    border-top: 0.5px solid rgba(212,175,55,0.1);
-    color: var(--text-secondary);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    z-index: 10;
-">
-    <a href="/privacy-policy" style="color:#ccc; margin:0 12px;">Privacy Policy</a>
-    |
-    <a href="/refund-policy" style="color:#ccc; margin:0 12px;">Refund Policy</a>
-    |
-    <a href="/terms" style="color:#ccc; margin:0 12px;">Terms & Conditions</a>
-    |
-    <a href="/shipping-policy" style="color:#ccc; margin:0 12px;">Delivery Policy</a>
-    |
-    <a href="/contact" style="color:#ccc; margin:0 12px;">Contact Us</a>
+    <div class="box" onclick="window.location.href='/pdfs'">
+        <h2>Concept Maps</h2>
+        <p>Simats Concept Maps Available Here</p>
+    </div>
+
+    <div class="box" onclick="window.location.href='/faculty'">
+        <h2>Faculty Numbers</h2>
+        <p>Search The Faculty Numbers</p>
+    </div>
+
+    <div class="box" onclick="window.location.href='/ai-tools'">
+        <h2>AI-Tools</h2>
+        <p>Here You Can Discover The Ai Tools</p>
+    </div>
+</div>
+
+<footer class="footer">
+    <a href="/privacy-policy">Privacy Policy</a>
+    <span class="footer-divider">|</span>
+    <a href="/refund-policy">Refund Policy</a>
+    <span class="footer-divider">|</span>
+    <a href="/terms">Terms & Conditions</a>
+    <span class="footer-divider">|</span>
+    <a href="/shipping-policy">Delivery Policy</a>
+    <span class="footer-divider">|</span>
+    <a href="/contact">Contact Us</a>
 </footer>
 
+</body>
 </html>
